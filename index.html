@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YachtSpotter Mallorca</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YachtSpotter</title>
   <link rel="manifest" href="manifest.json">
 
   <style>
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      background: radial-gradient(circle at top, #1a1a1a, #000);
       color: white;
     }
 
     .header {
-      padding: 18px;
-      font-size: 22px;
-      font-weight: 700;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: 800;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(12px);
       position: sticky;
@@ -25,21 +25,14 @@
       z-index: 100;
     }
 
-    .sub {
-      margin-top: 5px;
-      font-size: 13px;
-      color: #aaaaaa;
-      font-weight: 400;
-    }
-
     video {
-  width: calc(100% - 20px);
-  margin: 10px;
-  border-radius: 18px;
-  background: #111111;
-  max-height: 320px;
-  object-fit: cover;
-}
+      width: calc(100% - 20px);
+      margin: 10px;
+      border-radius: 18px;
+      background: #111;
+      max-height: 420px;
+      object-fit: cover;
+    }
 
     button {
       width: calc(100% - 20px);
@@ -47,40 +40,44 @@
       padding: 16px;
       border: none;
       border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary {
       background: linear-gradient(135deg,#d4af37,#8f6f1f);
       color: black;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
+    }
+
+    .secondary {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
     }
 
     .card {
       margin: 10px;
-      padding: 16px;
+      padding: 18px;
       border-radius: 18px;
       background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(12px);
       border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .match {
-      color: #d4af37;
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    .confidence {
-      margin-top: 8px;
-      font-weight: 700;
-    }
-
     .small {
-      color: #aaaaaa;
-      font-size: 13px;
-      line-height: 1.5;
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
     canvas {
+      display: none;
+    }
+
+    .preview {
+      width: calc(100% - 20px);
+      margin: 10px;
+      border-radius: 18px;
       display: none;
     }
   </style>
@@ -88,138 +85,90 @@
 
 <body>
 
-  <div class="header">
-    🚢 YachtSpotter Mallorca
-    <div class="sub">Zero-cost yacht recognition prototype</div>
-  </div>
+  <div class="header">🚢 YachtSpotter</div>
 
   <video id="video" autoplay playsinline></video>
 
-  <button onclick="capture()">📸 Scan Yacht</button>
+  <button class="primary" onclick="capture()">🎯 Spot Yacht</button>
+
+  <button class="secondary" onclick="saveSnapshot()">🚢 Got Yacht</button>
+
+  <button class="secondary" onclick="openLens()">🔥 Hot Yacht</button>
+
+  <button class="secondary" onclick="installApp()">📲 Install YachtSpotter</button>
 
   <canvas id="canvas"></canvas>
 
-  <div id="results"></div>
+  <img id="preview" class="preview" alt="Yacht scan preview">
 
-  <script src="data.js"></script>
+  <div id="results"></div>
 
   <script>
     const video = document.getElementById("video");
 
     navigator.mediaDevices.getUserMedia({
-  video: {
-    facingMode: "environment"
-  }
-})
-
-.then(function(stream) {
-
-  video.srcObject = stream;
-
-})
-
-.catch(function() {
-
-  navigator.mediaDevices.getUserMedia({
-    video: true
-  })
-
-  .then(function(stream) {
-
-    video.srcObject = stream;
-
-  })
-
-  .catch(function() {
-
-    alert("Camera access denied or unavailable.");
-
-  });
-
-});
+      video: { facingMode: "environment" }
+    })
+    .then(function(stream) {
+      video.srcObject = stream;
+    })
+    .catch(function() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        video.srcObject = stream;
+      })
+      .catch(function() {
+        alert("Camera access denied or unavailable.");
+      });
+    });
 
     function capture() {
       const canvas = document.getElementById("canvas");
       const ctx = canvas.getContext("2d");
+      const preview = document.getElementById("preview");
 
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
 
       ctx.drawImage(video, 0, 0);
 
-      const features = fakeVision();
+      preview.src = canvas.toDataURL("image/jpeg", 0.9);
+      preview.style.display = "block";
 
-      const results = yachts.map(function(yacht) {
-        let score = 0;
-
-        yacht.tags.forEach(function(tag) {
-          if (features.includes(tag)) {
-            score += 30;
-          }
-        });
-
-        score += Math.random() * 10;
-
-        return {
-          name: yacht.name,
-          score: Math.round(score)
-        };
-      });
-
-      results.sort(function(a, b) {
-        return b.score - a.score;
-      });
-
-      showResults(results.slice(0, 3), features);
-    }
-
-    function fakeVision() {
-      const pool = [
-        "white",
-        "dark",
-        "huge",
-        "modern",
-        "sleek",
-        "glass",
-        "classic",
-        "black",
-        "green",
-        "gold",
-        "luxury",
-        "explorer",
-        "charter",
-        "pool",
-        "sailing",
-        "helipad",
-        "royal",
-        "spa"
-      ];
-
-      return pool
-        .sort(function() {
-          return Math.random() - 0.5;
-        })
-        .slice(0, 4);
-    }
-
-    function showResults(results, features) {
-      const div = document.getElementById("results");
-
-      div.innerHTML = `
+      document.getElementById("results").innerHTML = `
         <div class="card">
-          <strong>Detected Features</strong><br>
-          <span class="small">${features.join(" • ")}</span>
+          <strong>Yacht captured.</strong>
+          <div class="small">
+            Tap “Got Yacht” to save your sighting, then “Hot Yacht” to spot matches online.
+          </div>
         </div>
       `;
+    }
 
-      results.forEach(function(result) {
-        div.innerHTML += `
-          <div class="card">
-            <div class="match">${result.name}</div>
-            <div class="confidence">Confidence: ${result.score}%</div>
-          </div>
-        `;
-      });
+    function saveSnapshot() {
+      const canvas = document.getElementById("canvas");
+
+      if (!canvas.width || !canvas.height) {
+        alert("Tap Spot Yacht first.");
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.download = "yachtspotter-scan.jpg";
+      link.href = canvas.toDataURL("image/jpeg", 0.9);
+      link.click();
+    }
+
+    function openLens() {
+      window.open("https://lens.google/", "_blank");
+    }
+
+    function installApp() {
+      alert(
+        "To install YachtSpotter:\n\n" +
+        "iPhone:\nTap Share → Add to Home Screen\n\n" +
+        "Android:\nTap Menu → Install App"
+      );
     }
 
     if ("serviceWorker" in navigator) {
