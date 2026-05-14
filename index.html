@@ -10,13 +10,13 @@
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a1a, #000);
+      background: linear-gradient(180deg, #07182f, #020812);
       color: white;
     }
 
     .header {
       padding: 20px;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 900;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(12px);
@@ -34,15 +34,13 @@
     video, .preview {
       width: calc(100% - 20px);
       margin: 10px;
-      border-radius: 18px;
-      max-height: 380px;
+      border-radius: 20px;
+      max-height: 360px;
       object-fit: cover;
-      background: #111;
+      background: #06101f;
     }
 
-    .preview {
-      display: none;
-    }
+    .preview { display: none; }
 
     button, select, input {
       width: calc(100% - 20px);
@@ -55,13 +53,13 @@
     }
 
     button {
-      font-weight: 800;
+      font-weight: 850;
       cursor: pointer;
     }
 
     .primary {
-      background: linear-gradient(135deg,#d4af37,#8f6f1f);
-      color: black;
+      background: linear-gradient(135deg,#d4af37,#9c781f);
+      color: #06101f;
     }
 
     .secondary {
@@ -71,39 +69,83 @@
     }
 
     select, input {
-      background: #111;
+      background: #06101f;
       color: white;
-      border: 1px solid rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.16);
     }
 
     .card {
       margin: 10px;
       padding: 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .small {
-      color: #aaa;
-      font-size: 14px;
-      line-height: 1.5;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.10);
     }
 
     .gold {
       color: #d4af37;
-      font-weight: 800;
+      font-weight: 900;
     }
 
-    .sighting-img {
+    .small {
+      color: #b8c3d6;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .mini-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-buttons button {
+      width: auto;
+      flex: 1;
+      margin: 0;
+      padding: 10px;
+      font-size: 13px;
+      border-radius: 12px;
+    }
+
+    .pleasure-title {
+      margin: 22px 10px 8px;
+      font-size: 22px;
+      font-weight: 900;
+      color: #d4af37;
+    }
+
+    .carousel {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 0 10px 20px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .port-card {
+      min-width: 78%;
+      scroll-snap-align: start;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 14px;
+    }
+
+    .port-card img {
       width: 100%;
-      border-radius: 14px;
+      border-radius: 16px;
       margin-top: 10px;
     }
 
-    canvas {
-      display: none;
+    .footer {
+      margin: 20px 10px 30px;
+      color: #91a0ba;
+      font-size: 13px;
+      text-align: center;
     }
+
+    canvas { display: none; }
   </style>
 </head>
 
@@ -131,9 +173,15 @@
 
   <button class="primary" onclick="gotYacht()">🚢 Got Yacht</button>
 
-  <button class="secondary" onclick="installApp()">📲 Install YachtSpotter</button>
+  <button class="secondary" onclick="spotAnother()">⚓ Spot Another</button>
 
   <div id="results"></div>
+
+  <div id="pleasurePort"></div>
+
+  <div class="footer" onclick="installApp()">
+    📲 Add YachtSpotter to your Home Screen
+  </div>
 
   <script src="data.js"></script>
 
@@ -177,7 +225,7 @@
 
       const filtered = yachts.filter(function(yacht) {
         return yacht.name.toLowerCase().includes(q) ||
-               yacht.owner.toLowerCase().includes(q);
+               yacht.deepPockets.toLowerCase().includes(q);
       });
 
       loadYachts(filtered);
@@ -200,7 +248,7 @@
         <div class="card">
           <strong>Yacht spotted.</strong>
           <div class="small">
-            Search and choose the yacht you think it is, then tap <span class="gold">Got Yacht</span>.
+            Choose the yacht you think it is, then tap <span class="gold">Got Yacht</span>.
           </div>
         </div>
       `;
@@ -219,14 +267,16 @@
       document.getElementById("yachtInfo").innerHTML = `
         <div class="card">
           <div class="gold">${yacht.name}</div>
-          <div class="small">
-            Owner: ${yacht.owner}<br>
-            Length: ${yacht.length}
+          <div class="small">${yacht.blurb}</div>
+
+          <div class="mini-buttons">
+            <button class="secondary" onclick="openLink('${yacht.ownerLink}')">
+              💰 Deep Pockets
+            </button>
+            <button class="secondary" onclick="openLink('${yacht.yachtLink}')">
+              🛥 Below Deck
+            </button>
           </div>
-          <br>
-          <button class="secondary" onclick="openWiki('${yacht.wiki}')">
-            Public info
-          </button>
         </div>
       `;
     }
@@ -248,9 +298,10 @@
 
       const sighting = {
         name: yacht.name,
-        owner: yacht.owner,
-        length: yacht.length,
-        wiki: yacht.wiki,
+        deepPockets: yacht.deepPockets,
+        ownerLink: yacht.ownerLink,
+        yachtLink: yacht.yachtLink,
+        blurb: yacht.blurb,
         image: capturedImage,
         date: new Date().toLocaleString()
       };
@@ -265,47 +316,67 @@
       document.getElementById("results").innerHTML = `
         <div class="card">
           <strong class="gold">🔥 Hot Yacht!</strong>
-          <div class="small">
-            ${yacht.name} has been added to your YachtSpotter collection.
-          </div>
+          <div class="small">${yacht.name} has sailed into Pleasure Port.</div>
         </div>
       `;
 
-      renderSightings();
+      renderPleasurePort();
     }
 
-    function renderSightings() {
+    function renderPleasurePort() {
       const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
+      const area = document.getElementById("pleasurePort");
 
       if (sightings.length === 0) {
+        area.innerHTML = "";
         return;
       }
 
       let html = `
-        <div class="card">
-          <strong>Your YachtSpotter Collection</strong>
-          <div class="small">${sightings.length} sighting(s)</div>
-        </div>
+        <div class="pleasure-title">⚓ Pleasure Port</div>
+        <div class="carousel">
       `;
 
       sightings.forEach(function(s) {
         html += `
-          <div class="card">
+          <div class="port-card">
             <div class="gold">${s.name}</div>
             <div class="small">
-              Owner: ${s.owner}<br>
-              Length: ${s.length}<br>
-              Spotted: ${s.date}
+              💰 Deep Pockets: ${s.deepPockets}<br>
+              ${s.date}
             </div>
-            <button class="secondary" onclick="openWiki('${s.wiki}')">
-              Public info
-            </button>
-            <img class="sighting-img" src="${s.image}">
+
+            <div class="mini-buttons">
+              <button class="secondary" onclick="openLink('${s.ownerLink}')">
+                Deep Pockets
+              </button>
+              <button class="secondary" onclick="openLink('${s.yachtLink}')">
+                Below Deck
+              </button>
+            </div>
+
+            <img src="${s.image}" alt="${s.name}">
           </div>
         `;
       });
 
-      document.getElementById("results").innerHTML += html;
+      html += `</div>`;
+      area.innerHTML = html;
+    }
+
+    function spotAnother() {
+      capturedImage = null;
+      preview.src = "";
+      preview.style.display = "none";
+
+      document.getElementById("searchBox").value = "";
+      document.getElementById("yachtInfo").innerHTML = "";
+      document.getElementById("results").innerHTML = "";
+
+      loadYachts();
+      yachtSelect.value = "";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function updateRank() {
@@ -320,18 +391,18 @@
         rank = "🚢 Captain";
       }
 
-      document.getElementById("rankText").textContent = rank + " · " + count + " sightings";
+      document.getElementById("rankText").textContent = rank + " · " + count + " yachts";
     }
 
-    function openWiki(url) {
+    function openLink(url) {
       window.open(url, "_blank");
     }
 
     function installApp() {
       alert(
-        "To install YachtSpotter:\n\n" +
+        "To add YachtSpotter to your phone:\n\n" +
         "iPhone:\nTap Share → Add to Home Screen\n\n" +
-        "Android:\nTap Menu → Install App"
+        "Android:\nTap Menu → Add to Home Screen"
       );
     }
 
@@ -341,7 +412,7 @@
 
     loadYachts();
     updateRank();
-    renderSightings();
+    renderPleasurePort();
   </script>
 
 </body>
