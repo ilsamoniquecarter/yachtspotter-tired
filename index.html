@@ -6,18 +6,18 @@
   <title>YachtSpotter</title>
   <link rel="manifest" href="manifest.json">
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
       background: linear-gradient(180deg, #07182f, #020812);
       color: white;
     }
 
     .header {
-      padding: 20px;
-      font-size: 28px;
-      font-weight: 900;
+      padding: 22px 20px;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(12px);
       position: sticky;
@@ -25,16 +25,24 @@
       z-index: 10;
     }
 
-    .rank {
-      font-size: 14px;
+    .brand {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       color: #d4af37;
-      margin-top: 6px;
+    }
+
+    .rank {
+      font-size: 13px;
+      color: #b8c3d6;
+      margin-top: 4px;
     }
 
     video, .preview {
       width: calc(100% - 20px);
       margin: 10px;
-      border-radius: 20px;
+      border-radius: 22px;
       max-height: 360px;
       object-fit: cover;
       background: #06101f;
@@ -42,7 +50,7 @@
 
     .preview { display: none; }
 
-    button, select, input {
+    button, input {
       width: calc(100% - 20px);
       margin: 8px 10px;
       padding: 15px;
@@ -53,7 +61,7 @@
     }
 
     button {
-      font-weight: 850;
+      font-weight: 800;
       cursor: pointer;
     }
 
@@ -68,16 +76,33 @@
       border: 1px solid rgba(255,255,255,0.12);
     }
 
-    select, input {
+    input {
       background: #06101f;
       color: white;
       border: 1px solid rgba(255,255,255,0.16);
     }
 
+    .suggestions {
+      margin: 0 10px 10px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      display: none;
+    }
+
+    .suggestion {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+    }
+
+    .suggestion:last-child { border-bottom: none; }
+
     .card {
       margin: 10px;
       padding: 16px;
-      border-radius: 20px;
+      border-radius: 22px;
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.10);
     }
@@ -93,53 +118,77 @@
       line-height: 1.55;
     }
 
-    .mini-buttons {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
+    .pair-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+      text-align: center;
     }
 
-    .mini-buttons button {
-      width: auto;
-      flex: 1;
-      margin: 0;
+    .pair-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      color: white;
+    }
+
+    .pair-name {
+      font-size: 13px;
+      color: #b8c3d6;
+      min-height: 34px;
+    }
+
+    .pair-grid button {
+      width: 100%;
+      margin: 8px 0 0;
       padding: 10px;
       font-size: 13px;
       border-radius: 12px;
     }
 
     .pleasure-title {
-      margin: 22px 10px 8px;
-      font-size: 22px;
-      font-weight: 900;
+      margin: 24px 10px 8px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 1px;
       color: #d4af37;
+      text-transform: uppercase;
     }
 
     .carousel {
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding: 0 10px 20px;
+      padding: 0 10px 22px;
       scroll-snap-type: x mandatory;
     }
 
     .port-card {
-      min-width: 78%;
+      min-width: 82%;
       scroll-snap-align: start;
-      border-radius: 22px;
+      border-radius: 24px;
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
       padding: 14px;
     }
 
+    .pier {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #d4af37;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
     .port-card img {
       width: 100%;
-      border-radius: 16px;
-      margin-top: 10px;
+      border-radius: 18px;
+      margin-top: 12px;
     }
 
     .footer {
-      margin: 20px 10px 30px;
+      margin: 22px 10px 34px;
       color: #91a0ba;
       font-size: 13px;
       text-align: center;
@@ -152,7 +201,7 @@
 <body>
 
   <div class="header">
-    🚢 YachtSpotter
+    <div class="brand">🚢 YachtSpotter</div>
     <div class="rank" id="rankText">⚓ Crew</div>
   </div>
 
@@ -163,17 +212,11 @@
   <canvas id="canvas"></canvas>
   <img id="preview" class="preview" alt="Yacht preview">
 
-  <input id="searchBox" placeholder="Search yacht name..." oninput="filterYachts()">
+  <input id="searchBox" placeholder="Got Yacht?" oninput="showSuggestions()">
 
-  <select id="yachtSelect" onchange="showYachtInfo()">
-    <option value="">Choose yacht...</option>
-  </select>
+  <div id="suggestions" class="suggestions"></div>
 
   <div id="yachtInfo"></div>
-
-  <button class="primary" onclick="gotYacht()">🚢 Got Yacht</button>
-
-  <button class="secondary" onclick="spotAnother()">⚓ Spot Another</button>
 
   <div id="results"></div>
 
@@ -189,9 +232,9 @@
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
     const preview = document.getElementById("preview");
-    const yachtSelect = document.getElementById("yachtSelect");
 
     let capturedImage = null;
+    let selectedYacht = null;
 
     navigator.mediaDevices.getUserMedia({
       video: { facingMode: "environment" }
@@ -209,28 +252,6 @@
       });
     });
 
-    function loadYachts(list = yachts) {
-      yachtSelect.innerHTML = '<option value="">Choose yacht...</option>';
-
-      list.forEach(function(yacht) {
-        const option = document.createElement("option");
-        option.value = yachts.indexOf(yacht);
-        option.textContent = yacht.name;
-        yachtSelect.appendChild(option);
-      });
-    }
-
-    function filterYachts() {
-      const q = document.getElementById("searchBox").value.toLowerCase();
-
-      const filtered = yachts.filter(function(yacht) {
-        return yacht.name.toLowerCase().includes(q) ||
-               yacht.deepPockets.toLowerCase().includes(q);
-      });
-
-      loadYachts(filtered);
-    }
-
     function spotYacht() {
       const ctx = canvas.getContext("2d");
 
@@ -247,68 +268,103 @@
       document.getElementById("results").innerHTML = `
         <div class="card">
           <strong>Yacht spotted.</strong>
-          <div class="small">
-            Choose the yacht you think it is, then tap <span class="gold">Got Yacht</span>.
-          </div>
+          <div class="small">Type into <span class="gold">Got Yacht?</span> and choose the match.</div>
         </div>
       `;
     }
 
-    function showYachtInfo() {
-      const index = yachtSelect.value;
+    function showSuggestions() {
+      const q = document.getElementById("searchBox").value.toLowerCase();
+      const box = document.getElementById("suggestions");
 
-      if (index === "") {
-        document.getElementById("yachtInfo").innerHTML = "";
+      selectedYacht = null;
+      document.getElementById("yachtInfo").innerHTML = "";
+
+      if (!q) {
+        box.style.display = "none";
+        box.innerHTML = "";
         return;
       }
 
-      const yacht = yachts[index];
+      const matches = yachts.filter(function(yacht) {
+        return yacht.name.toLowerCase().includes(q) ||
+               yacht.deepPockets.toLowerCase().includes(q);
+      }).slice(0, 8);
+
+      if (matches.length === 0) {
+        box.style.display = "none";
+        box.innerHTML = "";
+        return;
+      }
+
+      box.innerHTML = "";
+
+      matches.forEach(function(yacht) {
+        const item = document.createElement("div");
+        item.className = "suggestion";
+        item.innerHTML = `<span class="gold">${yacht.name}</span><br><span class="small">${yacht.deepPockets}</span>`;
+        item.onclick = function() {
+          selectYacht(yacht);
+        };
+        box.appendChild(item);
+      });
+
+      box.style.display = "block";
+    }
+
+    function selectYacht(yacht) {
+      selectedYacht = yacht;
+
+      document.getElementById("searchBox").value = yacht.name;
+      document.getElementById("suggestions").style.display = "none";
 
       document.getElementById("yachtInfo").innerHTML = `
         <div class="card">
-          <div class="gold">${yacht.name}</div>
-          <div class="small">${yacht.blurb}</div>
+          <div class="pair-grid">
+            <div>
+              <div class="pair-title">${yacht.name}</div>
+              <div class="pair-name">Yacht</div>
+              <button class="secondary" onclick="openLink('${yacht.yachtLink}')">🛥 Below Deck</button>
+            </div>
 
-          <div class="mini-buttons">
-            <button class="secondary" onclick="openLink('${yacht.ownerLink}')">
-              💰 Deep Pockets
-            </button>
-            <button class="secondary" onclick="openLink('${yacht.yachtLink}')">
-              🛥 Below Deck
-            </button>
+            <div>
+              <div class="pair-title">${yacht.deepPockets}</div>
+              <div class="pair-name">Deep Pockets</div>
+              <button class="secondary" onclick="openLink('${yacht.ownerLink}')">💰 Deep Pockets</button>
+            </div>
           </div>
+
+          <button class="primary" onclick="hotYacht()">🔥 Hot Yacht</button>
         </div>
       `;
     }
 
-    function gotYacht() {
-      const index = yachtSelect.value;
-
+    function hotYacht() {
       if (!capturedImage) {
         alert("Tap Spot Yacht first.");
         return;
       }
 
-      if (index === "") {
-        alert("Choose the yacht first.");
+      if (!selectedYacht) {
+        alert("Choose your yacht first.");
         return;
       }
 
-      const yacht = yachts[index];
+      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
+
+      const pierNumber = sightings.length + 1;
 
       const sighting = {
-        name: yacht.name,
-        deepPockets: yacht.deepPockets,
-        ownerLink: yacht.ownerLink,
-        yachtLink: yacht.yachtLink,
-        blurb: yacht.blurb,
+        pier: pierNumber,
+        name: selectedYacht.name,
+        deepPockets: selectedYacht.deepPockets,
+        ownerLink: selectedYacht.ownerLink,
+        yachtLink: selectedYacht.yachtLink,
         image: capturedImage,
         date: new Date().toLocaleString()
       };
 
-      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
       sightings.unshift(sighting);
-
       localStorage.setItem("sightings", JSON.stringify(sightings));
 
       updateRank();
@@ -316,9 +372,15 @@
       document.getElementById("results").innerHTML = `
         <div class="card">
           <strong class="gold">🔥 Hot Yacht!</strong>
-          <div class="small">${yacht.name} has sailed into Pleasure Port.</div>
+          <div class="small">${selectedYacht.name} at Pier ${pierNumber}.</div>
         </div>
       `;
+
+      document.getElementById("searchBox").value = "";
+      document.getElementById("yachtInfo").innerHTML = "";
+      document.getElementById("suggestions").innerHTML = "";
+      document.getElementById("suggestions").style.display = "none";
+      selectedYacht = null;
 
       renderPleasurePort();
     }
@@ -333,26 +395,27 @@
       }
 
       let html = `
-        <div class="pleasure-title">⚓ Pleasure Port</div>
+        <div class="pleasure-title">Pleasure Port</div>
         <div class="carousel">
       `;
 
       sightings.forEach(function(s) {
         html += `
           <div class="port-card">
-            <div class="gold">${s.name}</div>
-            <div class="small">
-              💰 Deep Pockets: ${s.deepPockets}<br>
-              ${s.date}
-            </div>
+            <div class="pier">Pier ${s.pier}</div>
 
-            <div class="mini-buttons">
-              <button class="secondary" onclick="openLink('${s.ownerLink}')">
-                Deep Pockets
-              </button>
-              <button class="secondary" onclick="openLink('${s.yachtLink}')">
-                Below Deck
-              </button>
+            <div class="pair-grid">
+              <div>
+                <div class="pair-title">${s.name}</div>
+                <div class="pair-name">Yacht</div>
+                <button class="secondary" onclick="openLink('${s.yachtLink}')">🛥 Below Deck</button>
+              </div>
+
+              <div>
+                <div class="pair-title">${s.deepPockets}</div>
+                <div class="pair-name">Deep Pockets</div>
+                <button class="secondary" onclick="openLink('${s.ownerLink}')">💰 Deep Pockets</button>
+              </div>
             </div>
 
             <img src="${s.image}" alt="${s.name}">
@@ -362,21 +425,6 @@
 
       html += `</div>`;
       area.innerHTML = html;
-    }
-
-    function spotAnother() {
-      capturedImage = null;
-      preview.src = "";
-      preview.style.display = "none";
-
-      document.getElementById("searchBox").value = "";
-      document.getElementById("yachtInfo").innerHTML = "";
-      document.getElementById("results").innerHTML = "";
-
-      loadYachts();
-      yachtSelect.value = "";
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function updateRank() {
@@ -410,7 +458,6 @@
       navigator.serviceWorker.register("service-worker.js");
     }
 
-    loadYachts();
     updateRank();
     renderPleasurePort();
   </script>
