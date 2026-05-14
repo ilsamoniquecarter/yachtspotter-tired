@@ -1,21 +1,20 @@
 {
-  "name": "YachtSpotter Mallorca",
+  "name": "YachtSpotter",
   "short_name": "YachtSpotter",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#07182f",
+  "theme_color": "#07182f",
   "orientation": "portrait",
-  "description": "Mallorca superyacht spotting app",
-
+  "description": "A luxury yacht spotting game for Mallorca.",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192",
+      "src": "https://via.placeholder.com/192/07182f/d4af37?text=YS",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/512",
+      "src": "https://via.placeholder.com/512/07182f/d4af37?text=YS",
       "sizes": "512x512",
       "type": "image/png"
     }
