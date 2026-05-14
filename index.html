@@ -108,17 +108,35 @@
 
     navigator.mediaDevices.getUserMedia({
   video: {
-    facingMode: {
-      exact: "environment"
-    }
+    facingMode: "environment"
   }
 })
-      .then(function(stream) {
-        video.srcObject = stream;
-      })
-      .catch(function() {
-        alert("Camera access denied or unavailable.");
-      });
+
+.then(function(stream) {
+
+  video.srcObject = stream;
+
+})
+
+.catch(function() {
+
+  navigator.mediaDevices.getUserMedia({
+    video: true
+  })
+
+  .then(function(stream) {
+
+    video.srcObject = stream;
+
+  })
+
+  .catch(function() {
+
+    alert("Camera access denied or unavailable.");
+
+  });
+
+});
 
     function capture() {
       const canvas = document.getElementById("canvas");
