@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YachtSpotter Mallorca</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: white;
+    }
+
+    .header {
+      padding: 18px;
+      font-size: 22px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .sub {
+      margin-top: 5px;
+      font-size: 13px;
+      color: #aaaaaa;
+      font-weight: 400;
+    }
+
+    video {
+  width: calc(100% - 20px);
+  margin: 10px;
+  border-radius: 18px;
+  background: #111111;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+    button {
+      width: calc(100% - 20px);
+      margin: 10px;
+      padding: 16px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#d4af37,#8f6f1f);
+      color: black;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .card {
+      margin: 10px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .match {
+      color: #d4af37;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .confidence {
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
+    .small {
+      color: #aaaaaa;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    🚢 YachtSpotter Mallorca
+    <div class="sub">Zero-cost yacht recognition prototype</div>
+  </div>
+
+  <video id="video" autoplay playsinline></video>
+
+  <button onclick="capture()">📸 Scan Yacht</button>
+
+  <canvas id="canvas"></canvas>
+
+  <div id="results"></div>
+
+  <script src="data.js"></script>
+
+  <script>
+    const video = document.getElementById("video");
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        video.srcObject = stream;
+      })
+      .catch(function() {
+        alert("Camera access denied or unavailable.");
+      });
+
+    function capture() {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      ctx.drawImage(video, 0, 0);
+
+      const features = fakeVision();
+
+      const results = yachts.map(function(yacht) {
+        let score = 0;
+
+        yacht.tags.forEach(function(tag) {
+          if (features.includes(tag)) {
+            score += 30;
+          }
+        });
+
+        score += Math.random() * 10;
+
+        return {
+          name: yacht.name,
+          score: Math.round(score)
+        };
+      });
+
+      results.sort(function(a, b) {
+        return b.score - a.score;
+      });
+
+      showResults(results.slice(0, 3), features);
+    }
+
+    function fakeVision() {
+      const pool = [
+        "white",
+        "dark",
+        "huge",
+        "modern",
+        "sleek",
+        "glass",
+        "classic",
+        "black",
+        "green",
+        "gold",
+        "luxury",
+        "explorer",
+        "charter",
+        "pool",
+        "sailing",
+        "helipad",
+        "royal",
+        "spa"
+      ];
+
+      return pool
+        .sort(function() {
+          return Math.random() - 0.5;
+        })
+        .slice(0, 4);
+    }
+
+    function showResults(results, features) {
+      const div = document.getElementById("results");
+
+      div.innerHTML = `
+        <div class="card">
+          <strong>Detected Features</strong><br>
+          <span class="small">${features.join(" • ")}</span>
+        </div>
+      `;
+
+      results.forEach(function(result) {
+        div.innerHTML += `
+          <div class="card">
+            <div class="match">${result.name}</div>
+            <div class="confidence">Confidence: ${result.score}%</div>
+          </div>
+        `;
+      });
+    }
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+
+</body>
+</html>
