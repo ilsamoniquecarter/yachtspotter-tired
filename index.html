@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>YachtSpotter</title>
+
   <link rel="manifest" href="manifest.json">
 
   <style>
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a1a, #000);
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
       color: white;
     }
 
@@ -29,7 +32,7 @@
       width: calc(100% - 20px);
       margin: 10px;
       border-radius: 18px;
-      background: #111;
+      background: #111111;
       max-height: 420px;
       object-fit: cover;
     }
@@ -65,7 +68,7 @@
     }
 
     .small {
-      color: #aaa;
+      color: #aaaaaa;
       font-size: 14px;
       line-height: 1.6;
     }
@@ -80,100 +83,136 @@
       border-radius: 18px;
       display: none;
     }
+
   </style>
 </head>
 
 <body>
 
-  <div class="header">🚢 YachtSpotter</div>
+  <div class="header">
+    🚢 YachtSpotter
+  </div>
 
   <video id="video" autoplay playsinline></video>
 
-  <button class="primary" onclick="capture()">🎯 Spot Yacht</button>
+  <button class="primary" onclick="capture()">
+    🎯 Spot Yacht
+  </button>
 
-  <button class="secondary" onclick="saveSnapshot()">🚢 Got Yacht</button>
+  <button class="secondary" id="hotButton" onclick="hotYacht()" style="display:none;">
+    🔥 Hot Yacht
+  </button>
 
-  <button class="secondary" onclick="openLens()">🔥 Hot Yacht</button>
-
-  <button class="secondary" onclick="installApp()">📲 Install YachtSpotter</button>
+  <button class="secondary" onclick="installApp()">
+    📲 Install YachtSpotter
+  </button>
 
   <canvas id="canvas"></canvas>
 
-  <img id="preview" class="preview" alt="Yacht scan preview">
+  <img id="preview" class="preview" alt="Yacht preview">
 
   <div id="results"></div>
 
   <script>
+
     const video = document.getElementById("video");
 
     navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" }
+
+      video: {
+        facingMode: "environment"
+      }
+
     })
+
     .then(function(stream) {
+
       video.srcObject = stream;
+
     })
+
     .catch(function() {
-      navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function(stream) {
-        video.srcObject = stream;
+
+      navigator.mediaDevices.getUserMedia({
+
+        video: true
+
       })
+
+      .then(function(stream) {
+
+        video.srcObject = stream;
+
+      })
+
       .catch(function() {
+
         alert("Camera access denied or unavailable.");
+
       });
+
     });
 
     function capture() {
+
       const canvas = document.getElementById("canvas");
+
       const ctx = canvas.getContext("2d");
+
       const preview = document.getElementById("preview");
 
       canvas.width = video.videoWidth;
+
       canvas.height = video.videoHeight;
 
       ctx.drawImage(video, 0, 0);
 
       preview.src = canvas.toDataURL("image/jpeg", 0.9);
+
       preview.style.display = "block";
 
+      document.getElementById("hotButton").style.display = "block";
+
       document.getElementById("results").innerHTML = `
+
         <div class="card">
-          <strong>Yacht captured.</strong>
+
+          <strong>Yacht spotted.</strong>
+
           <div class="small">
-            Tap “Got Yacht” to save your sighting, then “Hot Yacht” to spot matches online.
+
+            Tap “Hot Yacht” to search for matching yachts online.
+
           </div>
+
         </div>
+
       `;
+
     }
 
-    function saveSnapshot() {
-      const canvas = document.getElementById("canvas");
+    function hotYacht() {
 
-      if (!canvas.width || !canvas.height) {
-        alert("Tap Spot Yacht first.");
-        return;
-      }
+      window.open("https://lens.google.com/", "_blank");
 
-      const link = document.createElement("a");
-      link.download = "yachtspotter-scan.jpg";
-      link.href = canvas.toDataURL("image/jpeg", 0.9);
-      link.click();
-    }
-
-    function openLens() {
-      window.open("https://lens.google/", "_blank");
     }
 
     function installApp() {
+
       alert(
         "To install YachtSpotter:\n\n" +
         "iPhone:\nTap Share → Add to Home Screen\n\n" +
         "Android:\nTap Menu → Install App"
       );
+
     }
 
     if ("serviceWorker" in navigator) {
+
       navigator.serviceWorker.register("service-worker.js");
+
     }
+
   </script>
 
 </body>
