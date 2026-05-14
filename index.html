@@ -4,116 +4,180 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>YachtSpotter</title>
-  <link rel="manifest" href="manifest.json">
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --navy: #07182f;
+      --navy-dark: #020812;
+      --gold: #d4af37;
+      --soft-gold: #b9932e;
+      --mist: #b8c3d6;
+      --glass: rgba(255,255,255,0.07);
+      --line: rgba(255,255,255,0.11);
+    }
+
     body {
       margin: 0;
       font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: linear-gradient(180deg, #07182f, #020812);
+      background: linear-gradient(180deg, var(--navy), var(--navy-dark));
       color: white;
     }
 
     .header {
-      padding: 22px 20px;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(12px);
+      padding: 24px 20px 18px;
       position: sticky;
       top: 0;
       z-index: 10;
+      background: rgba(7,24,47,0.86);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
     .brand {
       font-family: "Cormorant Garamond", serif;
-      font-size: 34px;
+      font-size: 38px;
       font-weight: 600;
-      letter-spacing: 0.5px;
-      color: #d4af37;
+      letter-spacing: 0.8px;
+      color: var(--gold);
+      line-height: 1;
     }
 
     .rank {
+      margin-top: 8px;
       font-size: 13px;
-      color: #b8c3d6;
+      color: var(--mist);
+      letter-spacing: 0.4px;
+    }
+
+    .intro {
+      margin: 18px 10px 4px;
+      padding: 16px;
+      border-radius: 22px;
+      background: var(--glass);
+      border: 1px solid var(--line);
+    }
+
+    .kicker {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--gold);
+      font-size: 25px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .helper {
       margin-top: 4px;
+      color: var(--mist);
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     video, .preview {
       width: calc(100% - 20px);
       margin: 10px;
-      border-radius: 22px;
+      border-radius: 24px;
       max-height: 360px;
       object-fit: cover;
       background: #06101f;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .preview { display: none; }
+    .preview {
+      display: none;
+    }
 
     button, input {
       width: calc(100% - 20px);
       margin: 8px 10px;
       padding: 15px;
-      border-radius: 16px;
+      border-radius: 18px;
       border: none;
-      font-size: 16px;
       box-sizing: border-box;
     }
 
     button {
-      font-weight: 800;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
       cursor: pointer;
     }
 
+    input {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      font-size: 16px;
+      background: rgba(2,8,18,0.76);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(184,195,214,0.72);
+    }
+
     .primary {
-      background: linear-gradient(135deg,#d4af37,#9c781f);
+      background: linear-gradient(135deg, var(--gold), var(--soft-gold));
       color: #06101f;
     }
 
     .secondary {
       background: rgba(255,255,255,0.08);
       color: white;
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    input {
-      background: #06101f;
-      color: white;
-      border: 1px solid rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.13);
     }
 
     .suggestions {
       margin: 0 10px 10px;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(2,8,18,0.88);
+      border: 1px solid rgba(255,255,255,0.11);
       display: none;
     }
 
     .suggestion {
-      padding: 14px;
+      padding: 14px 16px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       cursor: pointer;
     }
 
-    .suggestion:last-child { border-bottom: none; }
+    .suggestion:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      color: var(--gold);
+    }
+
+    .suggestion-person {
+      font-size: 13px;
+      color: var(--mist);
+      margin-top: 2px;
+    }
 
     .card {
       margin: 10px;
       padding: 16px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      background: var(--glass);
+      border: 1px solid var(--line);
     }
 
     .gold {
-      color: #d4af37;
-      font-weight: 900;
+      color: var(--gold);
+      font-weight: 700;
     }
 
     .small {
-      color: #b8c3d6;
+      color: var(--mist);
       font-size: 14px;
       line-height: 1.55;
     }
@@ -121,38 +185,47 @@
     .pair-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
       margin-top: 14px;
       text-align: center;
+      align-items: start;
     }
 
     .pair-title {
       font-family: "Cormorant Garamond", serif;
-      font-size: 22px;
+      font-size: 25px;
       color: white;
+      line-height: 1.05;
     }
 
     .pair-name {
-      font-size: 13px;
-      color: #b8c3d6;
-      min-height: 34px;
+      margin-top: 5px;
+      font-size: 12px;
+      color: var(--mist);
+      min-height: 32px;
+      letter-spacing: 0.4px;
     }
 
     .pair-grid button {
       width: 100%;
-      margin: 8px 0 0;
+      margin: 10px 0 0;
       padding: 10px;
-      font-size: 13px;
-      border-radius: 12px;
+      font-size: 15px;
+      border-radius: 14px;
+      letter-spacing: 0.9px;
+    }
+
+    .hot-button {
+      margin-top: 16px;
     }
 
     .pleasure-title {
-      margin: 24px 10px 8px;
+      margin: 28px 10px 10px;
       font-family: "Cormorant Garamond", serif;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 600;
-      letter-spacing: 1px;
-      color: #d4af37;
+      letter-spacing: 3px;
+      color: var(--gold);
       text-transform: uppercase;
     }
 
@@ -160,59 +233,75 @@
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding: 0 10px 22px;
+      padding: 0 10px 24px;
       scroll-snap-type: x mandatory;
     }
 
     .port-card {
       min-width: 82%;
       scroll-snap-align: start;
-      border-radius: 24px;
+      border-radius: 26px;
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
-      padding: 14px;
+      padding: 15px;
     }
 
     .pier {
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: #d4af37;
+      font-size: 11px;
+      letter-spacing: 2.4px;
+      color: var(--gold);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .port-card img {
       width: 100%;
       border-radius: 18px;
       margin-top: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .footer {
-      margin: 22px 10px 34px;
-      color: #91a0ba;
-      font-size: 13px;
+      margin: 24px 10px 36px;
+      font-family: "Cormorant Garamond", serif;
+      color: rgba(212,175,55,0.78);
+      font-size: 18px;
       text-align: center;
+      letter-spacing: 0.5px;
+      cursor: pointer;
     }
 
-    canvas { display: none; }
+    canvas {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
 
   <div class="header">
-    <div class="brand">🚢 YachtSpotter</div>
-    <div class="rank" id="rankText">⚓ Crew</div>
+    <div class="brand">YachtSpotter</div>
+    <div class="rank" id="rankText">Crew</div>
+  </div>
+
+  <div class="intro">
+    <div class="kicker">Spot Yacht</div>
+    <div class="helper">Tap to scan.</div>
   </div>
 
   <video id="video" autoplay playsinline></video>
 
-  <button class="primary" onclick="spotYacht()">🎯 Spot Yacht</button>
+  <button class="primary" onclick="spotYacht()">SPOT YACHT</button>
 
   <canvas id="canvas"></canvas>
   <img id="preview" class="preview" alt="Yacht preview">
 
-  <input id="searchBox" placeholder="Got Yacht?" oninput="showSuggestions()">
+  <div class="intro">
+    <div class="kicker">Got Yacht</div>
+    <div class="helper">See a stern and start typing...</div>
+  </div>
+
+  <input id="searchBox" placeholder="Start typing yacht name..." oninput="showSuggestions()">
 
   <div id="suggestions" class="suggestions"></div>
 
@@ -223,7 +312,7 @@
   <div id="pleasurePort"></div>
 
   <div class="footer" onclick="installApp()">
-    📲 Add YachtSpotter to your Home Screen
+    Save YachtSpotter to Home Screen
   </div>
 
   <script src="data.js"></script>
@@ -267,8 +356,9 @@
 
       document.getElementById("results").innerHTML = `
         <div class="card">
-          <strong>Yacht spotted.</strong>
-          <div class="small">Type into <span class="gold">Got Yacht?</span> and choose the match.</div>
+          <div class="small">
+            Yacht captured. Use <span class="gold">Got Yacht</span> to match the stern name.
+          </div>
         </div>
       `;
     }
@@ -302,7 +392,10 @@
       matches.forEach(function(yacht) {
         const item = document.createElement("div");
         item.className = "suggestion";
-        item.innerHTML = `<span class="gold">${yacht.name}</span><br><span class="small">${yacht.deepPockets}</span>`;
+        item.innerHTML = `
+          <div class="suggestion-name">${yacht.name}</div>
+          <div class="suggestion-person">${yacht.deepPockets}</div>
+        `;
         item.onclick = function() {
           selectYacht(yacht);
         };
@@ -324,17 +417,17 @@
             <div>
               <div class="pair-title">${yacht.name}</div>
               <div class="pair-name">Yacht</div>
-              <button class="secondary" onclick="openLink('${yacht.yachtLink}')">🛥 Below Deck</button>
+              <button class="secondary" onclick="openLink('${yacht.yachtLink}')">BELOW DECK</button>
             </div>
 
             <div>
               <div class="pair-title">${yacht.deepPockets}</div>
               <div class="pair-name">Deep Pockets</div>
-              <button class="secondary" onclick="openLink('${yacht.ownerLink}')">💰 Deep Pockets</button>
+              <button class="secondary" onclick="openLink('${yacht.ownerLink}')">DEEP POCKETS</button>
             </div>
           </div>
 
-          <button class="primary" onclick="hotYacht()">🔥 Hot Yacht</button>
+          <button class="primary hot-button" onclick="hotYacht()">HOT YACHT</button>
         </div>
       `;
     }
@@ -351,7 +444,6 @@
       }
 
       const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
-
       const pierNumber = sightings.length + 1;
 
       const sighting = {
@@ -371,8 +463,8 @@
 
       document.getElementById("results").innerHTML = `
         <div class="card">
-          <strong class="gold">🔥 Hot Yacht!</strong>
-          <div class="small">${selectedYacht.name} at Pier ${pierNumber}.</div>
+          <div class="kicker">Hot Yacht</div>
+          <div class="helper">${selectedYacht.name} · Pier ${pierNumber}</div>
         </div>
       `;
 
@@ -408,13 +500,13 @@
               <div>
                 <div class="pair-title">${s.name}</div>
                 <div class="pair-name">Yacht</div>
-                <button class="secondary" onclick="openLink('${s.yachtLink}')">🛥 Below Deck</button>
+                <button class="secondary" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
               </div>
 
               <div>
                 <div class="pair-title">${s.deepPockets}</div>
                 <div class="pair-name">Deep Pockets</div>
-                <button class="secondary" onclick="openLink('${s.ownerLink}')">💰 Deep Pockets</button>
+                <button class="secondary" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
               </div>
             </div>
 
@@ -431,12 +523,12 @@
       const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
       const count = sightings.length;
 
-      let rank = "⚓ Crew";
+      let rank = "Crew";
 
       if (count >= 20) {
-        rank = "👑 Commodore";
+        rank = "Commodore";
       } else if (count >= 5) {
-        rank = "🚢 Captain";
+        rank = "Captain";
       }
 
       document.getElementById("rankText").textContent = rank + " · " + count + " yachts";
@@ -448,7 +540,7 @@
 
     function installApp() {
       alert(
-        "To add YachtSpotter to your phone:\n\n" +
+        "To save YachtSpotter to your phone:\n\n" +
         "iPhone:\nTap Share → Add to Home Screen\n\n" +
         "Android:\nTap Menu → Add to Home Screen"
       );
