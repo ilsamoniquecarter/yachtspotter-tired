@@ -3,47 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>YachtSpotter</title>
-
   <link rel="manifest" href="manifest.json">
 
   <style>
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      background: radial-gradient(circle at top, #1a1a1a, #000);
       color: white;
     }
 
     .header {
       padding: 20px;
-      font-size: 24px;
-      font-weight: 800;
+      font-size: 26px;
+      font-weight: 900;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 10;
     }
 
-    video {
+    .rank {
+      font-size: 14px;
+      color: #d4af37;
+      margin-top: 6px;
+    }
+
+    video, .preview {
       width: calc(100% - 20px);
       margin: 10px;
       border-radius: 18px;
-      background: #111111;
-      max-height: 420px;
+      max-height: 380px;
       object-fit: cover;
+      background: #111;
+    }
+
+    .preview {
+      display: none;
+    }
+
+    button, select, input {
+      width: calc(100% - 20px);
+      margin: 8px 10px;
+      padding: 15px;
+      border-radius: 16px;
+      border: none;
+      font-size: 16px;
+      box-sizing: border-box;
     }
 
     button {
-      width: calc(100% - 20px);
-      margin: 10px;
-      padding: 16px;
-      border: none;
-      border-radius: 16px;
-      font-size: 16px;
       font-weight: 800;
       cursor: pointer;
     }
@@ -59,31 +70,40 @@
       border: 1px solid rgba(255,255,255,0.12);
     }
 
+    select, input {
+      background: #111;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
     .card {
       margin: 10px;
-      padding: 18px;
+      padding: 16px;
       border-radius: 18px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
     }
 
     .small {
-      color: #aaaaaa;
+      color: #aaa;
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.5;
+    }
+
+    .gold {
+      color: #d4af37;
+      font-weight: 800;
+    }
+
+    .sighting-img {
+      width: 100%;
+      border-radius: 14px;
+      margin-top: 10px;
     }
 
     canvas {
       display: none;
     }
-
-    .preview {
-      width: calc(100% - 20px);
-      margin: 10px;
-      border-radius: 18px;
-      display: none;
-    }
-
   </style>
 </head>
 
@@ -91,128 +111,237 @@
 
   <div class="header">
     🚢 YachtSpotter
+    <div class="rank" id="rankText">⚓ Crew</div>
   </div>
 
   <video id="video" autoplay playsinline></video>
 
-  <button class="primary" onclick="capture()">
-    🎯 Spot Yacht
-  </button>
-
-  <button class="secondary" id="hotButton" onclick="hotYacht()" style="display:none;">
-    🔥 Hot Yacht
-  </button>
-
-  <button class="secondary" onclick="installApp()">
-    📲 Install YachtSpotter
-  </button>
+  <button class="primary" onclick="spotYacht()">🎯 Spot Yacht</button>
 
   <canvas id="canvas"></canvas>
-
   <img id="preview" class="preview" alt="Yacht preview">
+
+  <input id="searchBox" placeholder="Search yacht name..." oninput="filterYachts()">
+
+  <select id="yachtSelect" onchange="showYachtInfo()">
+    <option value="">Choose yacht...</option>
+  </select>
+
+  <div id="yachtInfo"></div>
+
+  <button class="primary" onclick="gotYacht()">🚢 Got Yacht</button>
+
+  <button class="secondary" onclick="installApp()">📲 Install YachtSpotter</button>
 
   <div id="results"></div>
 
-  <script>
+  <script src="data.js"></script>
 
+  <script>
     const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const preview = document.getElementById("preview");
+    const yachtSelect = document.getElementById("yachtSelect");
+
+    let capturedImage = null;
 
     navigator.mediaDevices.getUserMedia({
-
-      video: {
-        facingMode: "environment"
-      }
-
+      video: { facingMode: "environment" }
     })
-
     .then(function(stream) {
-
       video.srcObject = stream;
-
     })
-
     .catch(function() {
-
-      navigator.mediaDevices.getUserMedia({
-
-        video: true
-
-      })
-
+      navigator.mediaDevices.getUserMedia({ video: true })
       .then(function(stream) {
-
         video.srcObject = stream;
-
       })
-
       .catch(function() {
-
         alert("Camera access denied or unavailable.");
-
       });
-
     });
 
-    function capture() {
+    function loadYachts(list = yachts) {
+      yachtSelect.innerHTML = '<option value="">Choose yacht...</option>';
 
-      const canvas = document.getElementById("canvas");
+      list.forEach(function(yacht) {
+        const option = document.createElement("option");
+        option.value = yachts.indexOf(yacht);
+        option.textContent = yacht.name;
+        yachtSelect.appendChild(option);
+      });
+    }
 
+    function filterYachts() {
+      const q = document.getElementById("searchBox").value.toLowerCase();
+
+      const filtered = yachts.filter(function(yacht) {
+        return yacht.name.toLowerCase().includes(q) ||
+               yacht.owner.toLowerCase().includes(q);
+      });
+
+      loadYachts(filtered);
+    }
+
+    function spotYacht() {
       const ctx = canvas.getContext("2d");
 
-      const preview = document.getElementById("preview");
-
       canvas.width = video.videoWidth;
-
       canvas.height = video.videoHeight;
 
       ctx.drawImage(video, 0, 0);
 
-      preview.src = canvas.toDataURL("image/jpeg", 0.9);
+      capturedImage = canvas.toDataURL("image/jpeg", 0.75);
 
+      preview.src = capturedImage;
       preview.style.display = "block";
 
-      document.getElementById("hotButton").style.display = "block";
-
       document.getElementById("results").innerHTML = `
-
         <div class="card">
-
           <strong>Yacht spotted.</strong>
-
           <div class="small">
-
-            Tap “Hot Yacht” to search for matching yachts online.
-
+            Search and choose the yacht you think it is, then tap <span class="gold">Got Yacht</span>.
           </div>
-
         </div>
-
       `;
-
     }
 
-    function hotYacht() {
+    function showYachtInfo() {
+      const index = yachtSelect.value;
 
-      window.open("https://lens.google.com/", "_blank");
+      if (index === "") {
+        document.getElementById("yachtInfo").innerHTML = "";
+        return;
+      }
 
+      const yacht = yachts[index];
+
+      document.getElementById("yachtInfo").innerHTML = `
+        <div class="card">
+          <div class="gold">${yacht.name}</div>
+          <div class="small">
+            Owner: ${yacht.owner}<br>
+            Length: ${yacht.length}
+          </div>
+          <br>
+          <button class="secondary" onclick="openWiki('${yacht.wiki}')">
+            Public info
+          </button>
+        </div>
+      `;
+    }
+
+    function gotYacht() {
+      const index = yachtSelect.value;
+
+      if (!capturedImage) {
+        alert("Tap Spot Yacht first.");
+        return;
+      }
+
+      if (index === "") {
+        alert("Choose the yacht first.");
+        return;
+      }
+
+      const yacht = yachts[index];
+
+      const sighting = {
+        name: yacht.name,
+        owner: yacht.owner,
+        length: yacht.length,
+        wiki: yacht.wiki,
+        image: capturedImage,
+        date: new Date().toLocaleString()
+      };
+
+      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
+      sightings.unshift(sighting);
+
+      localStorage.setItem("sightings", JSON.stringify(sightings));
+
+      updateRank();
+
+      document.getElementById("results").innerHTML = `
+        <div class="card">
+          <strong class="gold">🔥 Hot Yacht!</strong>
+          <div class="small">
+            ${yacht.name} has been added to your YachtSpotter collection.
+          </div>
+        </div>
+      `;
+
+      renderSightings();
+    }
+
+    function renderSightings() {
+      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
+
+      if (sightings.length === 0) {
+        return;
+      }
+
+      let html = `
+        <div class="card">
+          <strong>Your YachtSpotter Collection</strong>
+          <div class="small">${sightings.length} sighting(s)</div>
+        </div>
+      `;
+
+      sightings.forEach(function(s) {
+        html += `
+          <div class="card">
+            <div class="gold">${s.name}</div>
+            <div class="small">
+              Owner: ${s.owner}<br>
+              Length: ${s.length}<br>
+              Spotted: ${s.date}
+            </div>
+            <button class="secondary" onclick="openWiki('${s.wiki}')">
+              Public info
+            </button>
+            <img class="sighting-img" src="${s.image}">
+          </div>
+        `;
+      });
+
+      document.getElementById("results").innerHTML += html;
+    }
+
+    function updateRank() {
+      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
+      const count = sightings.length;
+
+      let rank = "⚓ Crew";
+
+      if (count >= 20) {
+        rank = "👑 Commodore";
+      } else if (count >= 5) {
+        rank = "🚢 Captain";
+      }
+
+      document.getElementById("rankText").textContent = rank + " · " + count + " sightings";
+    }
+
+    function openWiki(url) {
+      window.open(url, "_blank");
     }
 
     function installApp() {
-
       alert(
         "To install YachtSpotter:\n\n" +
         "iPhone:\nTap Share → Add to Home Screen\n\n" +
         "Android:\nTap Menu → Install App"
       );
-
     }
 
     if ("serviceWorker" in navigator) {
-
       navigator.serviceWorker.register("service-worker.js");
-
     }
 
+    loadYachts();
+    updateRank();
+    renderSightings();
   </script>
 
 </body>
