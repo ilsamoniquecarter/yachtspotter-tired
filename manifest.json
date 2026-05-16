@@ -1,7 +1,7 @@
 {
   "name": "YachtSpotter",
   "short_name": "YachtSpotter",
-  "description": "Mediterranean yacht registry and spotting.",
+  "description": "Luxury yacht spotting.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
@@ -10,8 +10,7 @@
   "lang": "en",
   "categories": [
     "lifestyle",
-    "travel",
-    "navigation"
+    "travel"
   ],
   "icons": [
     {
