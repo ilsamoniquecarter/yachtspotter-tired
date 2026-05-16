@@ -8,7 +8,10 @@
   "background_color": "#07182f",
   "theme_color": "#07182f",
   "lang": "en",
-  "categories": ["lifestyle", "travel"],
+  "categories": [
+    "lifestyle",
+    "travel"
+  ],
   "icons": [
     {
       "src": "icon-192.png",
