@@ -1,37 +1,43 @@
-const CACHE_NAME = "yachtspotter-mallorca-v1";
+const CACHE_NAME = "yachtspotter-v3";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
   "./data.js",
-  "./manifest.json"
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
-self.addEventListener("install", function(event) {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(FILES_TO_CACHE);
     })
   );
+
+  self.skipWaiting();
 });
 
-self.addEventListener("activate", function(event) {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map(function(cacheName) {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
       );
     })
   );
+
+  self.clients.claim();
 });
 
-self.addEventListener("fetch", function(event) {
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then(function(response) {
+    caches.match(event.request).then((response) => {
       return response || fetch(event.request);
     })
   );
