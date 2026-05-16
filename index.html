@@ -13,7 +13,8 @@
       --navy: #07182f;
       --navy-dark: #020812;
       --gold: #d4af37;
-      --brass-dark: #6d5318;
+      --brass: #b9932e;
+      --brass-dark: #604915;
       --mist: #b8c3d6;
       --glass: rgba(255,255,255,0.055);
       --line: rgba(255,255,255,0.11);
@@ -33,7 +34,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
     }
 
     .brand {
@@ -72,7 +73,7 @@
       box-sizing: border-box;
       background:
         radial-gradient(circle at 30% 22%, rgba(255,255,255,0.32), transparent 16%),
-        linear-gradient(145deg, #f1cf67 0%, #b9932e 35%, #5e4714 100%);
+        linear-gradient(145deg, #f1cf67 0%, var(--brass) 42%, var(--brass-dark) 100%);
       box-shadow:
         0 20px 55px rgba(0,0,0,0.42),
         inset 0 2px 4px rgba(255,255,255,0.32),
@@ -94,13 +95,8 @@
       z-index: 3;
     }
 
-    .viewer::before {
-      left: 5px;
-    }
-
-    .viewer::after {
-      right: 5px;
-    }
+    .viewer::before { left: 5px; }
+    .viewer::after { right: 5px; }
 
     .viewer-inner {
       width: 100%;
@@ -122,9 +118,7 @@
       display: block;
     }
 
-    .preview {
-      display: none;
-    }
+    .preview { display: none; }
 
     button, input {
       width: calc(100% - 34px);
@@ -150,7 +144,7 @@
     }
 
     .primary {
-      background: linear-gradient(135deg, #e3c15a, #b9932e 55%, #7d611a);
+      background: linear-gradient(135deg, #e3c15a, var(--brass) 55%, #7d611a);
       color: #06101f;
       border: 1px solid rgba(255,255,255,0.20);
     }
@@ -208,9 +202,7 @@
       cursor: pointer;
     }
 
-    .suggestion:last-child {
-      border-bottom: none;
-    }
+    .suggestion:last-child { border-bottom: none; }
 
     .suggestion-name {
       font-family: "Cormorant Garamond", serif;
@@ -308,7 +300,7 @@
       height: 88px;
       border-radius: 50%;
       padding: 7px;
-      background: linear-gradient(145deg, #e3c15a, #b9932e 55%, #604915);
+      background: linear-gradient(145deg, #e3c15a, var(--brass) 55%, var(--brass-dark));
       box-sizing: border-box;
       box-shadow:
         inset 0 1px 2px rgba(255,255,255,0.25),
@@ -328,13 +320,8 @@
       z-index: 3;
     }
 
-    .thumb-porthole::before {
-      left: 2px;
-    }
-
-    .thumb-porthole::after {
-      right: 2px;
-    }
+    .thumb-porthole::before { left: 2px; }
+    .thumb-porthole::after { right: 2px; }
 
     .thumb-porthole img {
       width: 100%;
@@ -354,6 +341,40 @@
       line-height: 1.05;
     }
 
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(2,8,18,0.86);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+
+    .overlay-card {
+      margin: 40px auto;
+      max-width: 420px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(7,24,47,0.96), rgba(2,8,18,0.98));
+      border: 1px solid rgba(212,175,55,0.32);
+      padding: 16px;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.5);
+    }
+
+    .overlay-img {
+      width: 100%;
+      border-radius: 22px;
+      margin-top: 12px;
+      object-fit: cover;
+    }
+
+    .close-button {
+      margin-top: 16px;
+      width: 100%;
+    }
+
     .home-badge {
       margin: 26px auto 36px;
       width: fit-content;
@@ -370,7 +391,7 @@
       border-radius: 50%;
       padding: 5px;
       box-sizing: border-box;
-      background: linear-gradient(145deg, #e3c15a, #b9932e 55%, #604915);
+      background: linear-gradient(145deg, #e3c15a, var(--brass) 55%, var(--brass-dark));
       box-shadow: 0 8px 18px rgba(0,0,0,0.25);
     }
 
@@ -391,9 +412,7 @@
       letter-spacing: 0.5px;
     }
 
-    canvas {
-      display: none;
-    }
+    canvas { display: none; }
   </style>
 </head>
 
@@ -418,7 +437,7 @@
 
   <canvas id="canvas"></canvas>
 
-  <input id="searchBox" placeholder="GOT YACHT? See a stern and start typing..." oninput="showSuggestions()">
+  <input id="searchBox" placeholder="Type yacht name..." oninput="showSuggestions()">
 
   <div id="suggestions" class="suggestions"></div>
 
@@ -431,6 +450,13 @@
       <div class="home-inner"></div>
     </div>
     <div class="home-text">Save YachtSpotter to Home Screen</div>
+  </div>
+
+  <div id="overlay" class="overlay" onclick="closeOverlay(event)">
+    <div class="overlay-card" onclick="event.stopPropagation()">
+      <div id="overlayContent"></div>
+      <button class="secondary pill close-button" onclick="hideOverlay()">Close</button>
+    </div>
   </div>
 
   <script src="data.js"></script>
@@ -477,6 +503,12 @@
     function showSuggestions() {
       const q = document.getElementById("searchBox").value.toLowerCase();
       const box = document.getElementById("suggestions");
+
+      if (!capturedImage) {
+        document.getElementById("searchBox").value = "";
+        alert("First SPOT YACHT.");
+        return;
+      }
 
       selectedYacht = null;
       document.getElementById("yachtInfo").innerHTML = "";
@@ -543,7 +575,7 @@
 
     function hotYacht() {
       if (!capturedImage) {
-        alert("Tap Spot Yacht first.");
+        alert("Tap SPOT YACHT first.");
         return;
       }
 
@@ -600,7 +632,7 @@
       }
 
       let html = `
-        <div class="got-title">Got Yacht</div>
+        <div class="got-title">GOT YACHT</div>
         <div class="shelf">
       `;
 
@@ -625,26 +657,33 @@
 
       if (!s) return;
 
-      document.getElementById("results").innerHTML = `
-        <div class="card">
-          <div class="pair-grid">
-            <div>
-              <div class="pair-title">${s.name}</div>
-              <button class="secondary pill" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
-            </div>
+      document.getElementById("overlayContent").innerHTML = `
+        <div class="pair-grid">
+          <div>
+            <div class="pair-title">${s.name}</div>
+            <button class="secondary pill" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
+          </div>
 
-            <div>
-              <div class="pair-title">${s.deepPockets}</div>
-              <button class="secondary pill" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
-            </div>
+          <div>
+            <div class="pair-title">${s.deepPockets}</div>
+            <button class="secondary pill" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
           </div>
         </div>
+
+        <img class="overlay-img" src="${s.image}" alt="${s.name}">
       `;
 
-      window.scrollTo({
-        top: document.getElementById("results").offsetTop - 20,
-        behavior: "smooth"
-      });
+      document.getElementById("overlay").style.display = "block";
+    }
+
+    function hideOverlay() {
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function closeOverlay(event) {
+      if (event.target.id === "overlay") {
+        hideOverlay();
+      }
     }
 
     function updateRank() {
