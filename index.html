@@ -6,413 +6,389 @@
   <title>YachtSpotter</title>
 
   <link rel="manifest" href="manifest.json">
+
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --navy: #07182f;
-      --navy-dark: #020812;
-      --gold: #d4af37;
-      --brass: #b9932e;
-      --brass-dark: #604915;
-      --mist: #b8c3d6;
-      --glass: rgba(255,255,255,0.055);
-      --line: rgba(255,255,255,0.11);
+    :root{
+      --navy:#07182f;
+      --navy-dark:#020812;
+      --gold:#d4af37;
+      --brass:#b9932e;
+      --brass-dark:#604915;
+      --mist:#b8c3d6;
+      --glass:rgba(255,255,255,0.055);
+      --line:rgba(255,255,255,0.11);
     }
 
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: linear-gradient(180deg, var(--navy), var(--navy-dark));
-      color: white;
+    body{
+      margin:0;
+      font-family:Inter,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+      background:linear-gradient(180deg,var(--navy),var(--navy-dark));
+      color:white;
     }
 
-    .header {
-      padding: 18px 18px 12px;
-      background: rgba(7,24,47,0.92);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      position: sticky;
-      top: 0;
-      z-index: 20;
+    .header{
+      padding:18px 18px 12px;
+      background:rgba(7,24,47,0.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      position:sticky;
+      top:0;
+      z-index:20;
     }
 
-    .brand {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 34px;
-      font-weight: 600;
-      letter-spacing: 0.7px;
-      color: var(--gold);
-      line-height: 1;
+    .brand{
+      font-family:"Cormorant Garamond",serif;
+      font-size:34px;
+      font-weight:600;
+      letter-spacing:.7px;
+      color:var(--gold);
+      line-height:1;
     }
 
-    .rank {
-      margin-top: 7px;
-      color: var(--mist);
-      font-size: 12px;
-      line-height: 1.45;
+    .rank{
+      margin-top:7px;
+      color:var(--mist);
+      font-size:12px;
+      line-height:1.45;
     }
 
-    .rank strong {
-      color: white;
-      font-weight: 500;
+    .rank strong{
+      color:white;
+      font-weight:500;
     }
 
-    .next-rank {
-      color: rgba(212,175,55,0.78);
-      font-size: 11px;
+    .next-rank{
+      color:rgba(212,175,55,0.78);
+      font-size:11px;
     }
 
-    .viewer {
-      position: relative;
-      width: min(78vw, 300px);
-      height: min(78vw, 300px);
-      margin: 18px auto 12px;
-      border-radius: 50%;
-      padding: 13px;
-      box-sizing: border-box;
+    .viewer{
+      position:relative;
+      width:min(78vw,300px);
+      height:min(78vw,300px);
+      margin:18px auto 12px;
+      border-radius:50%;
+      padding:13px;
+      box-sizing:border-box;
       background:
-        radial-gradient(circle at 30% 22%, rgba(255,255,255,0.32), transparent 16%),
-        linear-gradient(145deg, #f1cf67 0%, var(--brass) 42%, var(--brass-dark) 100%);
+      radial-gradient(circle at 30% 22%,rgba(255,255,255,0.32),transparent 16%),
+      linear-gradient(145deg,#f1cf67 0%,var(--brass) 42%,var(--brass-dark) 100%);
       box-shadow:
-        0 20px 55px rgba(0,0,0,0.42),
-        inset 0 2px 4px rgba(255,255,255,0.32),
-        inset 0 -4px 6px rgba(0,0,0,0.34);
+      0 20px 55px rgba(0,0,0,0.42),
+      inset 0 2px 4px rgba(255,255,255,0.32),
+      inset 0 -4px 6px rgba(0,0,0,0.34);
     }
 
     .viewer::before,
-    .viewer::after {
-      content: "";
-      position: absolute;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #3f310f;
-      border: 1px solid rgba(255,255,255,0.20);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.22);
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 3;
+    .viewer::after{
+      content:"";
+      position:absolute;
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:#3f310f;
+      border:1px solid rgba(255,255,255,0.20);
+      top:50%;
+      transform:translateY(-50%);
+      z-index:3;
     }
 
-    .viewer::before { left: 5px; }
-    .viewer::after { right: 5px; }
+    .viewer::before{left:5px;}
+    .viewer::after{right:5px;}
 
-    .viewer-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #06101f;
-      border: 2px solid rgba(255,255,255,0.14);
-      box-shadow:
-        inset 0 0 24px rgba(0,0,0,0.55),
-        inset 0 0 0 1px rgba(255,255,255,0.08);
+    .viewer-inner{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      overflow:hidden;
+      background:#06101f;
+      border:2px solid rgba(255,255,255,0.14);
     }
 
     video,
-    .preview {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .preview{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
-    .preview { display: none; }
-
-    button, input {
-      width: calc(100% - 34px);
-      margin: 7px 17px;
-      box-sizing: border-box;
+    .preview{
+      display:none;
     }
 
-    button {
-      border: none;
-      cursor: pointer;
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.25px;
+    button,
+    input{
+      width:calc(100% - 34px);
+      margin:7px 17px;
+      box-sizing:border-box;
     }
 
-    .pill {
-      border-radius: 999px;
-      padding: 13px 18px;
+    button{
+      border:none;
+      cursor:pointer;
+      font-family:"Cormorant Garamond",serif;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:1.2px;
+    }
+
+    .pill{
+      border-radius:999px;
+      padding:13px 18px;
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.22),
-        0 10px 24px rgba(0,0,0,0.22);
+      inset 0 1px 0 rgba(255,255,255,0.22),
+      0 10px 24px rgba(0,0,0,0.22);
     }
 
-    .primary {
-      background: linear-gradient(135deg, #e3c15a, var(--brass) 55%, #7d611a);
-      color: #06101f;
-      border: 1px solid rgba(255,255,255,0.20);
+    .primary{
+      background:linear-gradient(135deg,#e3c15a,var(--brass) 55%,#7d611a);
+      color:#06101f;
+      border:1px solid rgba(255,255,255,0.20);
     }
 
-    .secondary {
-      background: rgba(6,16,31,0.72);
-      color: white;
-      border: 1px solid rgba(212,175,55,0.52);
+    .secondary{
+      background:rgba(6,16,31,0.72);
+      color:white;
+      border:1px solid rgba(212,175,55,0.52);
     }
 
-    .hero-button {
-      font-size: 23px;
-      padding: 15px 18px;
+    .hero-button{
+      font-size:23px;
+      padding:15px 18px;
     }
 
-    .button-helper {
-      display: block;
-      margin-top: 2px;
-      font-family: Inter, sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2px;
-      text-transform: none;
-      opacity: 0.76;
+    .button-helper{
+      display:block;
+      margin-top:2px;
+      font-family:Inter,sans-serif;
+      font-size:11px;
+      font-weight:500;
+      text-transform:none;
+      opacity:.76;
     }
 
-    input {
-      margin-top: 9px;
-      padding: 13px 16px;
-      border-radius: 999px;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      font-size: 15px;
-      background: rgba(2,8,18,0.76);
-      color: white;
-      border: 1px solid rgba(212,175,55,0.32);
-      outline: none;
+    input{
+      margin-top:9px;
+      padding:13px 16px;
+      border-radius:999px;
+      font-family:Inter,sans-serif;
+      font-size:15px;
+      background:rgba(2,8,18,0.76);
+      color:white;
+      border:1px solid rgba(212,175,55,0.32);
+      outline:none;
     }
 
-    input::placeholder {
-      color: rgba(184,195,214,0.72);
+    input::placeholder{
+      color:rgba(184,195,214,0.72);
     }
 
-    .suggestions {
-      margin: 0 17px 8px;
-      border-radius: 20px;
-      overflow: hidden;
-      background: rgba(2,8,18,0.92);
-      border: 1px solid rgba(212,175,55,0.24);
-      display: none;
+    .suggestions{
+      margin:0 17px 8px;
+      border-radius:20px;
+      overflow:hidden;
+      background:rgba(2,8,18,0.92);
+      border:1px solid rgba(212,175,55,0.24);
+      display:none;
     }
 
-    .suggestion {
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      cursor: pointer;
+    .suggestion{
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;
     }
 
-    .suggestion:last-child { border-bottom: none; }
-
-    .suggestion-name {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 21px;
-      color: var(--gold);
+    .suggestion:last-child{
+      border-bottom:none;
     }
 
-    .suggestion-person {
-      font-size: 12px;
-      color: var(--mist);
-      margin-top: 1px;
+    .suggestion-name{
+      font-family:"Cormorant Garamond",serif;
+      font-size:21px;
+      color:var(--gold);
     }
 
-    .card {
-      margin: 9px 17px;
-      padding: 14px;
-      border-radius: 22px;
-      background: var(--glass);
-      border: 1px solid var(--line);
+    .suggestion-person{
+      font-size:12px;
+      color:var(--mist);
+      margin-top:1px;
     }
 
-    .kicker {
-      font-family: "Cormorant Garamond", serif;
-      color: var(--gold);
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
+    .card{
+      margin:9px 17px;
+      padding:14px;
+      border-radius:22px;
+      background:var(--glass);
+      border:1px solid var(--line);
     }
 
-    .helper {
-      margin-top: 3px;
-      color: var(--mist);
-      font-size: 13px;
-      line-height: 1.45;
+    .kicker{
+      font-family:"Cormorant Garamond",serif;
+      color:var(--gold);
+      font-size:24px;
+      font-weight:600;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      text-align:center;
     }
 
-    .pair-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      text-align: center;
-      align-items: start;
+    .pair-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      text-align:center;
+      align-items:start;
     }
 
-    .pair-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 22px;
-      color: white;
-      line-height: 1.05;
+    .pair-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:22px;
+      color:white;
+      line-height:1.05;
     }
 
-    .pair-grid button {
-      width: 100%;
-      margin: 10px 0 0;
-      padding: 9px 10px;
-      font-size: 14px;
-      border-radius: 999px;
-      letter-spacing: 0.85px;
+    .pair-grid button{
+      width:100%;
+      margin:10px 0 0;
+      padding:9px 10px;
+      font-size:14px;
+      border-radius:999px;
     }
 
-    .hot-button {
-      margin: 14px 0 0;
-      width: 100%;
-      font-size: 18px;
+    .hot-button{
+      margin:14px 0 0;
+      width:100%;
+      font-size:22px;
     }
 
-    .got-title {
-      margin: 23px 17px 9px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      color: var(--gold);
-      text-transform: uppercase;
+    .got-title{
+      margin:23px 17px 9px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:22px;
+      font-weight:600;
+      letter-spacing:3px;
+      color:var(--gold);
+      text-transform:uppercase;
     }
 
-    .shelf {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 0 17px 18px;
-      scroll-snap-type: x mandatory;
+    .shelf{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      padding:0 17px 18px;
     }
 
-    .thumb {
-      min-width: 92px;
-      scroll-snap-align: start;
-      cursor: pointer;
+    .thumb{
+      min-width:92px;
+      cursor:pointer;
     }
 
-    .thumb-porthole {
-      position: relative;
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
-      padding: 7px;
-      background: linear-gradient(145deg, #e3c15a, var(--brass) 55%, var(--brass-dark));
-      box-sizing: border-box;
+    .thumb-porthole{
+      position:relative;
+      width:88px;
+      height:88px;
+      border-radius:50%;
+      padding:7px;
+      background:linear-gradient(145deg,#e3c15a,var(--brass) 55%,var(--brass-dark));
+      box-sizing:border-box;
       box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.25),
-        0 8px 18px rgba(0,0,0,0.28);
+      inset 0 1px 2px rgba(255,255,255,0.25),
+      0 8px 18px rgba(0,0,0,0.28);
     }
 
     .thumb-porthole::before,
-    .thumb-porthole::after {
-      content: "";
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #3f310f;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 3;
+    .thumb-porthole::after{
+      content:"";
+      position:absolute;
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:#3f310f;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:3;
     }
 
-    .thumb-porthole::before { left: 2px; }
-    .thumb-porthole::after { right: 2px; }
+    .thumb-porthole::before{left:2px;}
+    .thumb-porthole::after{right:2px;}
 
-    .thumb-porthole img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      display: block;
-      border: 1px solid rgba(255,255,255,0.14);
+    .thumb-porthole img{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
     }
 
-    .thumb-name {
-      margin-top: 7px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 16px;
-      color: white;
-      text-align: center;
-      line-height: 1.05;
+    .thumb-name{
+      margin-top:7px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:16px;
+      color:white;
+      text-align:center;
     }
 
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background: rgba(2,8,18,0.86);
-      backdrop-filter: blur(10px);
-      padding: 18px;
-      box-sizing: border-box;
-      overflow: auto;
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:50;
+      background:rgba(2,8,18,0.88);
+      backdrop-filter:blur(10px);
+      padding:18px;
+      box-sizing:border-box;
     }
 
-    .overlay-card {
-      margin: 40px auto;
-      max-width: 420px;
-      border-radius: 26px;
-      background: linear-gradient(180deg, rgba(7,24,47,0.96), rgba(2,8,18,0.98));
-      border: 1px solid rgba(212,175,55,0.32);
-      padding: 16px;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.5);
+    .overlay-card{
+      margin:40px auto;
+      max-width:420px;
+      border-radius:26px;
+      background:linear-gradient(180deg,rgba(7,24,47,0.96),rgba(2,8,18,0.98));
+      border:1px solid rgba(212,175,55,0.32);
+      padding:16px;
     }
 
-    .overlay-img {
-      width: 100%;
-      border-radius: 22px;
-      margin-top: 12px;
-      object-fit: cover;
+    .overlay-img{
+      width:100%;
+      border-radius:22px;
+      margin-top:12px;
+      object-fit:cover;
     }
 
-    .close-button {
-      margin-top: 16px;
-      width: 100%;
+    .close-button{
+      margin-top:16px;
+      width:100%;
     }
 
-    .home-badge {
-      margin: 26px auto 36px;
-      width: fit-content;
-      max-width: calc(100% - 40px);
-      text-align: center;
-      color: rgba(212,175,55,0.86);
-      cursor: pointer;
+    .home-badge{
+      margin:26px auto 36px;
+      width:fit-content;
+      max-width:calc(100% - 40px);
+      text-align:center;
+      color:rgba(212,175,55,0.86);
+      cursor:pointer;
     }
 
-    .home-porthole {
-      width: 50px;
-      height: 50px;
-      margin: 0 auto 8px;
-      border-radius: 50%;
-      padding: 5px;
-      box-sizing: border-box;
-      background: linear-gradient(145deg, #e3c15a, var(--brass) 55%, var(--brass-dark));
-      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    .home-icon{
+      width:54px;
+      height:54px;
+      display:block;
+      margin:0 auto 8px;
+      border-radius:50%;
+      box-shadow:0 8px 18px rgba(0,0,0,0.28);
     }
 
-    .home-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background:
-        linear-gradient(90deg, transparent 0 42%, rgba(212,175,55,0.85) 42% 47%, transparent 47%),
-        radial-gradient(circle at 55% 40%, rgba(212,175,55,0.35), transparent 32%),
-        #06101f;
-      border: 1px solid rgba(255,255,255,0.14);
+    .home-text{
+      font-family:"Cormorant Garamond",serif;
+      font-size:17px;
     }
 
-    .home-text {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 17px;
-      letter-spacing: 0.5px;
+    canvas{
+      display:none;
     }
-
-    canvas { display: none; }
   </style>
 </head>
 
@@ -446,9 +422,7 @@
   <div id="gotYachtShelf"></div>
 
   <div class="home-badge" onclick="installApp()">
-    <div class="home-porthole">
-      <div class="home-inner"></div>
-    </div>
+    <img src="icon-192.png" class="home-icon" alt="YachtSpotter Icon">
     <div class="home-text">Save YachtSpotter to Home Screen</div>
   </div>
 
@@ -462,273 +436,295 @@
   <script src="data.js"></script>
 
   <script>
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
-    const preview = document.getElementById("preview");
+    const video=document.getElementById("video");
+    const canvas=document.getElementById("canvas");
+    const preview=document.getElementById("preview");
 
-    let capturedImage = null;
-    let selectedYacht = null;
+    let capturedImage=null;
+    let selectedYacht=null;
 
     navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" }
+      video:{facingMode:"environment"}
     })
-    .then(function(stream) {
-      video.srcObject = stream;
-    })
-    .catch(function() {
-      navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function(stream) {
-        video.srcObject = stream;
-      })
-      .catch(function() {
-        alert("Camera access denied or unavailable.");
-      });
+    .then(function(stream){
+      video.srcObject=stream;
     });
 
-    function spotYacht() {
-      const ctx = canvas.getContext("2d");
+    function spotYacht(){
+      const ctx=canvas.getContext("2d");
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      canvas.width=video.videoWidth;
+      canvas.height=video.videoHeight;
 
-      ctx.drawImage(video, 0, 0);
+      ctx.drawImage(video,0,0);
 
-      capturedImage = canvas.toDataURL("image/jpeg", 0.75);
+      capturedImage=canvas.toDataURL("image/jpeg",0.75);
 
-      preview.src = capturedImage;
-      preview.style.display = "block";
-      video.style.display = "none";
+      preview.src=capturedImage;
+      preview.style.display="block";
+      video.style.display="none";
     }
 
-    function showSuggestions() {
-      const q = document.getElementById("searchBox").value.toLowerCase();
-      const box = document.getElementById("suggestions");
+    function showSuggestions(){
 
-      if (!capturedImage) {
-        document.getElementById("searchBox").value = "";
+      if(!capturedImage){
+        document.getElementById("searchBox").value="";
         alert("First SPOT YACHT.");
         return;
       }
 
-      selectedYacht = null;
-      document.getElementById("yachtInfo").innerHTML = "";
+      const q=document.getElementById("searchBox").value.toLowerCase();
+      const box=document.getElementById("suggestions");
 
-      if (!q) {
-        box.style.display = "none";
-        box.innerHTML = "";
+      selectedYacht=null;
+      document.getElementById("yachtInfo").innerHTML="";
+
+      if(!q){
+        box.style.display="none";
+        box.innerHTML="";
         return;
       }
 
-      const matches = yachts.filter(function(yacht) {
+      const matches=yachts.filter(function(yacht){
         return yacht.name.toLowerCase().includes(q) ||
-               yacht.deepPockets.toLowerCase().includes(q);
-      }).slice(0, 8);
+        yacht.deepPockets.toLowerCase().includes(q);
+      }).slice(0,8);
 
-      if (matches.length === 0) {
-        box.style.display = "none";
-        box.innerHTML = "";
-        return;
-      }
+      box.innerHTML="";
 
-      box.innerHTML = "";
+      matches.forEach(function(yacht){
 
-      matches.forEach(function(yacht) {
-        const item = document.createElement("div");
-        item.className = "suggestion";
-        item.innerHTML = `
+        const item=document.createElement("div");
+
+        item.className="suggestion";
+
+        item.innerHTML=`
           <div class="suggestion-name">${yacht.name}</div>
           <div class="suggestion-person">${yacht.deepPockets}</div>
         `;
-        item.onclick = function() {
+
+        item.onclick=function(){
           selectYacht(yacht);
         };
+
         box.appendChild(item);
+
       });
 
-      box.style.display = "block";
+      box.style.display="block";
     }
 
-    function selectYacht(yacht) {
-      selectedYacht = yacht;
+    function selectYacht(yacht){
 
-      document.getElementById("searchBox").value = yacht.name;
-      document.getElementById("suggestions").style.display = "none";
+      selectedYacht=yacht;
 
-      document.getElementById("yachtInfo").innerHTML = `
+      document.getElementById("searchBox").value=yacht.name;
+
+      document.getElementById("suggestions").style.display="none";
+
+      document.getElementById("yachtInfo").innerHTML=`
         <div class="card">
+
           <div class="pair-grid">
+
             <div>
               <div class="pair-title">${yacht.name}</div>
-              <button class="secondary pill" onclick="openLink('${yacht.yachtLink}')">BELOW DECK</button>
+              <button class="secondary pill" onclick="openLink('${yacht.yachtLink}')">
+                BELOW DECK
+              </button>
             </div>
 
             <div>
               <div class="pair-title">${yacht.deepPockets}</div>
-              <button class="secondary pill" onclick="openLink('${yacht.ownerLink}')">DEEP POCKETS</button>
+              <button class="secondary pill" onclick="openLink('${yacht.ownerLink}')">
+                DEEP POCKETS
+              </button>
             </div>
+
           </div>
 
-          <button class="primary pill hot-button" onclick="hotYacht()">HOT YACHT</button>
+          <button class="primary pill hot-button" onclick="hotYacht()">
+            HOT YACHT
+          </button>
+
         </div>
       `;
     }
 
-    function hotYacht() {
-      if (!capturedImage) {
+    function hotYacht(){
+
+      if(!capturedImage){
         alert("Tap SPOT YACHT first.");
         return;
       }
 
-      if (!selectedYacht) {
+      if(!selectedYacht){
         alert("Choose your yacht first.");
         return;
       }
 
-      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
+      const sightings=JSON.parse(localStorage.getItem("sightings") || "[]");
 
-      const sighting = {
-        name: selectedYacht.name,
-        deepPockets: selectedYacht.deepPockets,
-        ownerLink: selectedYacht.ownerLink,
-        yachtLink: selectedYacht.yachtLink,
-        image: capturedImage,
-        date: new Date().toLocaleString()
-      };
+      sightings.unshift({
+        name:selectedYacht.name,
+        deepPockets:selectedYacht.deepPockets,
+        ownerLink:selectedYacht.ownerLink,
+        yachtLink:selectedYacht.yachtLink,
+        image:capturedImage
+      });
 
-      sightings.unshift(sighting);
-      localStorage.setItem("sightings", JSON.stringify(sightings));
+      localStorage.setItem("sightings",JSON.stringify(sightings));
 
-      updateRank();
-
-      document.getElementById("results").innerHTML = `
+      document.getElementById("results").innerHTML=`
         <div class="card">
           <div class="kicker">HOT YACHT</div>
-          <div class="helper">${selectedYacht.name}</div>
         </div>
       `;
 
-      document.getElementById("searchBox").value = "";
-      document.getElementById("yachtInfo").innerHTML = "";
-      document.getElementById("suggestions").innerHTML = "";
-      document.getElementById("suggestions").style.display = "none";
+      document.getElementById("searchBox").value="";
+      document.getElementById("yachtInfo").innerHTML="";
+      document.getElementById("suggestions").innerHTML="";
+      document.getElementById("suggestions").style.display="none";
 
-      selectedYacht = null;
-      capturedImage = null;
+      selectedYacht=null;
+      capturedImage=null;
 
-      preview.src = "";
-      preview.style.display = "none";
-      video.style.display = "block";
+      preview.src="";
+      preview.style.display="none";
+      video.style.display="block";
 
+      updateRank();
       renderGotYachtShelf();
     }
 
-    function renderGotYachtShelf() {
-      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
-      const area = document.getElementById("gotYachtShelf");
+    function renderGotYachtShelf(){
 
-      if (sightings.length === 0) {
-        area.innerHTML = "";
+      const sightings=JSON.parse(localStorage.getItem("sightings") || "[]");
+
+      const area=document.getElementById("gotYachtShelf");
+
+      if(sightings.length===0){
+        area.innerHTML="";
         return;
       }
 
-      let html = `
+      let html=`
         <div class="got-title">GOT YACHT</div>
         <div class="shelf">
       `;
 
-      sightings.forEach(function(s, index) {
-        html += `
+      sightings.forEach(function(s,index){
+
+        html+=`
           <div class="thumb" onclick="openSavedYacht(${index})">
+
             <div class="thumb-porthole">
-              <img src="${s.image}" alt="${s.name}">
+              <img src="${s.image}">
             </div>
-            <div class="thumb-name">${s.name}</div>
+
+            <div class="thumb-name">
+              ${s.name}
+            </div>
+
           </div>
         `;
       });
 
-      html += `</div>`;
-      area.innerHTML = html;
+      html+=`</div>`;
+
+      area.innerHTML=html;
     }
 
-    function openSavedYacht(index) {
-      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
-      const s = sightings[index];
+    function openSavedYacht(index){
 
-      if (!s) return;
+      const sightings=JSON.parse(localStorage.getItem("sightings") || "[]");
 
-      document.getElementById("overlayContent").innerHTML = `
+      const s=sightings[index];
+
+      document.getElementById("overlayContent").innerHTML=`
+
         <div class="pair-grid">
+
           <div>
             <div class="pair-title">${s.name}</div>
-            <button class="secondary pill" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
+            <button class="secondary pill" onclick="openLink('${s.yachtLink}')">
+              BELOW DECK
+            </button>
           </div>
 
           <div>
             <div class="pair-title">${s.deepPockets}</div>
-            <button class="secondary pill" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
+            <button class="secondary pill" onclick="openLink('${s.ownerLink}')">
+              DEEP POCKETS
+            </button>
           </div>
+
         </div>
 
-        <img class="overlay-img" src="${s.image}" alt="${s.name}">
+        <img class="overlay-img" src="${s.image}">
       `;
 
-      document.getElementById("overlay").style.display = "block";
+      document.getElementById("overlay").style.display="block";
     }
 
-    function hideOverlay() {
-      document.getElementById("overlay").style.display = "none";
+    function hideOverlay(){
+      document.getElementById("overlay").style.display="none";
     }
 
-    function closeOverlay(event) {
-      if (event.target.id === "overlay") {
+    function closeOverlay(event){
+      if(event.target.id==="overlay"){
         hideOverlay();
       }
     }
 
-    function updateRank() {
-      const sightings = JSON.parse(localStorage.getItem("sightings") || "[]");
-      const count = sightings.length;
+    function updateRank(){
 
-      let rank = "Crew";
-      let nextLine = "";
+      const sightings=JSON.parse(localStorage.getItem("sightings") || "[]");
 
-      if (count >= 30) {
-        rank = "Commodore";
-        nextLine = "Commodore insignia attained";
-      } else if (count >= 15) {
-        rank = "Captain";
-        nextLine = "+" + (30 - count) + " attains Commodore insignia";
-      } else {
-        rank = "Crew";
-        nextLine = "+" + (15 - count) + " attains Captain insignia";
+      const count=sightings.length;
+
+      let rank="Crew";
+      let nextLine="";
+
+      if(count>=30){
+        rank="Commodore";
+        nextLine="Commodore insignia attained";
+      }
+      else if(count>=15){
+        rank="Captain";
+        nextLine="+"+(30-count)+" attains Commodore insignia";
+      }
+      else{
+        nextLine="+"+(15-count)+" attains Captain insignia";
       }
 
-      document.getElementById("rankText").innerHTML = `
+      document.getElementById("rankText").innerHTML=`
         <strong>Your Rank: ${rank}</strong><br>
         Yachts Logged: ${count}<br>
         <span class="next-rank">${nextLine}</span>
       `;
     }
 
-    function openLink(url) {
-      window.open(url, "_blank");
+    function openLink(url){
+      window.open(url,"_blank");
     }
 
-    function installApp() {
+    function installApp(){
+
       alert(
-        "To save YachtSpotter to your phone:\n\n" +
-        "iPhone:\nTap Share → Add to Home Screen\n\n" +
+        "To save YachtSpotter to your phone:\n\n"+
+        "iPhone:\nTap Share → Add to Home Screen\n\n"+
         "Android:\nTap Menu → Add to Home Screen"
       );
     }
 
-    if ("serviceWorker" in navigator) {
+    if("serviceWorker" in navigator){
       navigator.serviceWorker.register("service-worker.js");
     }
 
     updateRank();
     renderGotYachtShelf();
+
   </script>
 
 </body>
