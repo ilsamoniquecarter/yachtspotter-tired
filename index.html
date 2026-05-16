@@ -13,9 +13,9 @@
       --navy: #07182f;
       --navy-dark: #020812;
       --gold: #d4af37;
-      --soft-gold: #b9932e;
+      --brass-dark: #6d5318;
       --mist: #b8c3d6;
-      --glass: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.055);
       --line: rgba(255,255,255,0.11);
     }
 
@@ -28,7 +28,7 @@
 
     .header {
       padding: 18px 18px 12px;
-      background: rgba(7,24,47,0.9);
+      background: rgba(7,24,47,0.92);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,0.06);
       position: sticky;
@@ -63,16 +63,43 @@
     }
 
     .viewer {
-      width: min(86vw, 340px);
-      height: min(86vw, 340px);
-      margin: 18px auto 10px;
+      position: relative;
+      width: min(78vw, 300px);
+      height: min(78vw, 300px);
+      margin: 18px auto 12px;
       border-radius: 50%;
-      padding: 8px;
-      background:
-        radial-gradient(circle at 35% 25%, rgba(255,255,255,0.35), transparent 18%),
-        linear-gradient(135deg, #d4af37, #7d611a);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      padding: 13px;
       box-sizing: border-box;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255,255,255,0.32), transparent 16%),
+        linear-gradient(145deg, #f1cf67 0%, #b9932e 35%, #5e4714 100%);
+      box-shadow:
+        0 20px 55px rgba(0,0,0,0.42),
+        inset 0 2px 4px rgba(255,255,255,0.32),
+        inset 0 -4px 6px rgba(0,0,0,0.34);
+    }
+
+    .viewer::before,
+    .viewer::after {
+      content: "";
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3f310f;
+      border: 1px solid rgba(255,255,255,0.20);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.22);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+
+    .viewer::before {
+      left: 5px;
+    }
+
+    .viewer::after {
+      right: 5px;
     }
 
     .viewer-inner {
@@ -81,7 +108,10 @@
       border-radius: 50%;
       overflow: hidden;
       background: #06101f;
-      border: 1px solid rgba(255,255,255,0.14);
+      border: 2px solid rgba(255,255,255,0.14);
+      box-shadow:
+        inset 0 0 24px rgba(0,0,0,0.55),
+        inset 0 0 0 1px rgba(255,255,255,0.08);
     }
 
     video,
@@ -97,30 +127,43 @@
     }
 
     button, input {
-      width: calc(100% - 28px);
-      margin: 7px 14px;
-      padding: 13px 14px;
-      border-radius: 999px;
-      border: none;
+      width: calc(100% - 34px);
+      margin: 7px 17px;
       box-sizing: border-box;
     }
 
     button {
+      border: none;
+      cursor: pointer;
       font-family: "Cormorant Garamond", serif;
       font-weight: 700;
-      letter-spacing: 1.1px;
       text-transform: uppercase;
-      cursor: pointer;
+      letter-spacing: 1.25px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 13px 18px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        0 10px 24px rgba(0,0,0,0.22);
     }
 
     .primary {
-      background: linear-gradient(135deg, var(--gold), var(--soft-gold));
+      background: linear-gradient(135deg, #e3c15a, #b9932e 55%, #7d611a);
       color: #06101f;
+      border: 1px solid rgba(255,255,255,0.20);
+    }
+
+    .secondary {
+      background: rgba(6,16,31,0.72);
+      color: white;
+      border: 1px solid rgba(212,175,55,0.52);
     }
 
     .hero-button {
       font-size: 23px;
-      padding: 15px 14px;
+      padding: 15px 18px;
     }
 
     .button-helper {
@@ -131,21 +174,18 @@
       font-weight: 500;
       letter-spacing: 0.2px;
       text-transform: none;
-      opacity: 0.75;
-    }
-
-    .secondary {
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.13);
+      opacity: 0.76;
     }
 
     input {
+      margin-top: 9px;
+      padding: 13px 16px;
+      border-radius: 999px;
       font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
       font-size: 15px;
       background: rgba(2,8,18,0.76);
       color: white;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(212,175,55,0.32);
       outline: none;
     }
 
@@ -154,11 +194,11 @@
     }
 
     .suggestions {
-      margin: 0 14px 8px;
-      border-radius: 18px;
+      margin: 0 17px 8px;
+      border-radius: 20px;
       overflow: hidden;
-      background: rgba(2,8,18,0.9);
-      border: 1px solid rgba(255,255,255,0.11);
+      background: rgba(2,8,18,0.92);
+      border: 1px solid rgba(212,175,55,0.24);
       display: none;
     }
 
@@ -185,7 +225,7 @@
     }
 
     .card {
-      margin: 9px 14px;
+      margin: 9px 17px;
       padding: 14px;
       border-radius: 22px;
       background: var(--glass);
@@ -201,7 +241,7 @@
       text-transform: uppercase;
     }
 
-    .helper, .small {
+    .helper {
       margin-top: 3px;
       color: var(--mist);
       font-size: 13px;
@@ -226,21 +266,22 @@
     .pair-grid button {
       width: 100%;
       margin: 10px 0 0;
-      padding: 9px;
+      padding: 9px 10px;
       font-size: 14px;
       border-radius: 999px;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.85px;
     }
 
     .hot-button {
       margin: 14px 0 0;
       width: 100%;
+      font-size: 18px;
     }
 
     .got-title {
-      margin: 22px 14px 9px;
+      margin: 23px 17px 9px;
       font-family: "Cormorant Garamond", serif;
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 600;
       letter-spacing: 3px;
       color: var(--gold);
@@ -249,25 +290,50 @@
 
     .shelf {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       overflow-x: auto;
-      padding: 0 14px 18px;
+      padding: 0 17px 18px;
       scroll-snap-type: x mandatory;
     }
 
     .thumb {
-      min-width: 112px;
+      min-width: 92px;
       scroll-snap-align: start;
       cursor: pointer;
     }
 
     .thumb-porthole {
-      width: 104px;
-      height: 104px;
+      position: relative;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
-      padding: 5px;
-      background: linear-gradient(135deg, #d4af37, #7d611a);
+      padding: 7px;
+      background: linear-gradient(145deg, #e3c15a, #b9932e 55%, #604915);
       box-sizing: border-box;
+      box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.25),
+        0 8px 18px rgba(0,0,0,0.28);
+    }
+
+    .thumb-porthole::before,
+    .thumb-porthole::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #3f310f;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+
+    .thumb-porthole::before {
+      left: 2px;
+    }
+
+    .thumb-porthole::after {
+      right: 2px;
     }
 
     .thumb-porthole img {
@@ -276,26 +342,53 @@
       border-radius: 50%;
       object-fit: cover;
       display: block;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
     }
 
     .thumb-name {
       margin-top: 7px;
       font-family: "Cormorant Garamond", serif;
-      font-size: 17px;
+      font-size: 16px;
       color: white;
       text-align: center;
       line-height: 1.05;
     }
 
-    .footer {
-      margin: 24px 10px 34px;
-      font-family: "Cormorant Garamond", serif;
-      color: rgba(212,175,55,0.78);
-      font-size: 17px;
+    .home-badge {
+      margin: 26px auto 36px;
+      width: fit-content;
+      max-width: calc(100% - 40px);
       text-align: center;
-      letter-spacing: 0.5px;
+      color: rgba(212,175,55,0.86);
       cursor: pointer;
+    }
+
+    .home-porthole {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      padding: 5px;
+      box-sizing: border-box;
+      background: linear-gradient(145deg, #e3c15a, #b9932e 55%, #604915);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    }
+
+    .home-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background:
+        linear-gradient(90deg, transparent 0 42%, rgba(212,175,55,0.85) 42% 47%, transparent 47%),
+        radial-gradient(circle at 55% 40%, rgba(212,175,55,0.35), transparent 32%),
+        #06101f;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .home-text {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+      letter-spacing: 0.5px;
     }
 
     canvas {
@@ -318,7 +411,7 @@
     </div>
   </div>
 
-  <button class="primary hero-button" onclick="spotYacht()">
+  <button class="primary pill hero-button" onclick="spotYacht()">
     SPOT YACHT
     <span class="button-helper">Tap to scan.</span>
   </button>
@@ -333,8 +426,11 @@
   <div id="results"></div>
   <div id="gotYachtShelf"></div>
 
-  <div class="footer" onclick="installApp()">
-    Save YachtSpotter to Home Screen
+  <div class="home-badge" onclick="installApp()">
+    <div class="home-porthole">
+      <div class="home-inner"></div>
+    </div>
+    <div class="home-text">Save YachtSpotter to Home Screen</div>
   </div>
 
   <script src="data.js"></script>
@@ -431,16 +527,16 @@
           <div class="pair-grid">
             <div>
               <div class="pair-title">${yacht.name}</div>
-              <button class="secondary" onclick="openLink('${yacht.yachtLink}')">BELOW DECK</button>
+              <button class="secondary pill" onclick="openLink('${yacht.yachtLink}')">BELOW DECK</button>
             </div>
 
             <div>
               <div class="pair-title">${yacht.deepPockets}</div>
-              <button class="secondary" onclick="openLink('${yacht.ownerLink}')">DEEP POCKETS</button>
+              <button class="secondary pill" onclick="openLink('${yacht.ownerLink}')">DEEP POCKETS</button>
             </div>
           </div>
 
-          <button class="primary hot-button" onclick="hotYacht()">HOT YACHT</button>
+          <button class="primary pill hot-button" onclick="hotYacht()">HOT YACHT</button>
         </div>
       `;
     }
@@ -534,18 +630,21 @@
           <div class="pair-grid">
             <div>
               <div class="pair-title">${s.name}</div>
-              <button class="secondary" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
+              <button class="secondary pill" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
             </div>
 
             <div>
               <div class="pair-title">${s.deepPockets}</div>
-              <button class="secondary" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
+              <button class="secondary pill" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
             </div>
           </div>
         </div>
       `;
 
-      window.scrollTo({ top: document.getElementById("results").offsetTop - 20, behavior: "smooth" });
+      window.scrollTo({
+        top: document.getElementById("results").offsetTop - 20,
+        behavior: "smooth"
+      });
     }
 
     function updateRank() {
