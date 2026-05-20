@@ -1,359 +1,570 @@
 const yachts = [
   {
-    name: "Azzam",
-    deepPockets: "UAE Royal Family",
-    ownerLink: "https://en.wikipedia.org/wiki/House_of_Al_Nahyan",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Azzam+yacht",
-    blurb: "One of the largest private yachts in the world."
-  },
-  {
-    name: "Eclipse",
-    deepPockets: "Roman Abramovich",
-    ownerLink: "https://en.wikipedia.org/wiki/Roman_Abramovich",
-    yachtLink: "https://en.wikipedia.org/wiki/Eclipse_(yacht)",
-    blurb: "A legendary giga-yacht associated with Mediterranean summers."
-  },
-  {
-    name: "Dilbar",
-    deepPockets: "Alisher Usmanov",
-    ownerLink: "https://en.wikipedia.org/wiki/Alisher_Usmanov",
-    yachtLink: "https://en.wikipedia.org/wiki/Dilbar_(yacht)",
-    blurb: "Known for immense volume and ultra-luxury scale."
-  },
-  {
-    name: "Flying Fox",
-    deepPockets: "Reportedly Dmitry Kamenshchik",
-    ownerLink: "https://en.wikipedia.org/wiki/Dmitry_Kamenshchik",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Flying+Fox+yacht",
-    blurb: "A major charter superyacht often seen in the Balearic circuit."
-  },
-  {
-    name: "Kaos",
-    deepPockets: "Nancy Walton Laurie",
-    ownerLink: "https://en.wikipedia.org/wiki/Nancy_Walton_Laurie",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Kaos+yacht",
-    blurb: "Formerly Jubilee, one of the most recognisable Oceanco yachts."
-  },
-  {
-    name: "Savannah",
-    deepPockets: "Lundin Family",
-    ownerLink: "https://en.wikipedia.org/wiki/Lundin_family",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Savannah+Feadship+yacht",
-    blurb: "A hybrid Feadship with a distinctive metallic green hull."
-  },
-  {
-    name: "Aviva",
-    deepPockets: "Joe Lewis",
-    ownerLink: "https://en.wikipedia.org/wiki/Joe_Lewis_(British_businessman)",
-    yachtLink: "https://en.wikipedia.org/wiki/Aviva_(yacht)",
-    blurb: "Famous for its indoor padel tennis court."
-  },
-  {
-    name: "Kismet",
-    deepPockets: "Shahid Khan",
-    ownerLink: "https://en.wikipedia.org/wiki/Shahid_Khan",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Kismet+yacht",
-    blurb: "A dramatic Lürssen superyacht linked to NFL billionaire Shahid Khan."
-  },
-  {
-    name: "Seven Seas",
-    deepPockets: "Steven Spielberg",
-    ownerLink: "https://en.wikipedia.org/wiki/Steven_Spielberg",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Seven+Seas+Spielberg+yacht",
-    blurb: "A cinematic Oceanco yacht built for long private cruising."
-  },
-  {
-    name: "Lady Moura",
-    deepPockets: "Nasser Al-Rashid",
-    ownerLink: "https://en.wikipedia.org/wiki/Nasser_Al-Rashid",
-    yachtLink: "https://en.wikipedia.org/wiki/Lady_Moura",
-    blurb: "A classic Mediterranean icon with unmistakable gold lettering."
-  },
-  {
-    name: "Carinthia VII",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Carinthia+VII+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Carinthia+VII+yacht",
-    blurb: "A famous Lürssen yacht with strong Palma presence."
-  },
-  {
-    name: "Madsummer",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Madsummer+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Madsummer+yacht",
-    blurb: "A large modern yacht often associated with Mediterranean seasons."
-  },
-  {
-    name: "Elements",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Elements+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Elements+yacht",
-    blurb: "A modern charter-friendly yacht with strong visual presence."
-  },
-  {
-    name: "Serene",
-    deepPockets: "Saudi-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Mohammed_bin_Salman",
-    yachtLink: "https://en.wikipedia.org/wiki/Serene_(yacht)",
-    blurb: "One of the largest yachts ever built in Italy."
-  },
-  {
-    name: "Nord",
-    deepPockets: "Alexey Mordashov",
-    ownerLink: "https://en.wikipedia.org/wiki/Alexey_Mordashov",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Nord+yacht",
-    blurb: "A massive explorer-style yacht with a sharp modern profile."
-  },
-  {
-    name: "Black Pearl",
-    deepPockets: "Oleg Burlakov Estate",
-    ownerLink: "https://en.wikipedia.org/wiki/Oleg_Burlakov",
-    yachtLink: "https://en.wikipedia.org/wiki/Black_Pearl_(yacht)",
-    blurb: "One of the most extraordinary sailing yachts ever built."
-  },
-  {
-    name: "Sailing Yacht A",
-    deepPockets: "Andrey Melnichenko",
-    ownerLink: "https://en.wikipedia.org/wiki/Andrey_Melnichenko",
-    yachtLink: "https://en.wikipedia.org/wiki/Sailing_Yacht_A",
-    blurb: "A radical futuristic sailing yacht unlike almost anything else afloat."
+    name: "Limitless",
+    deepPockets: "Les Wexner",
+    rarity: "ICONIC",
+    thumb: "images/limitless.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/limitless/",
+    ownerLink: "https://en.wikipedia.org/wiki/Les_Wexner"
   },
   {
     name: "Koru",
     deepPockets: "Jeff Bezos",
-    ownerLink: "https://en.wikipedia.org/wiki/Jeff_Bezos",
-    yachtLink: "https://en.wikipedia.org/wiki/Koru_(yacht)",
-    blurb: "A giant sailing yacht often accompanied by a support vessel."
+    rarity: "MYTHIC",
+    thumb: "images/koru.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/koru/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jeff_Bezos"
+  },
+  {
+    name: "Abeona",
+    deepPockets: "Jeff Bezos",
+    rarity: "ICONIC",
+    thumb: "images/abeona.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/abeona/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jeff_Bezos"
   },
   {
     name: "Rising Sun",
     deepPockets: "David Geffen",
-    ownerLink: "https://en.wikipedia.org/wiki/David_Geffen",
-    yachtLink: "https://en.wikipedia.org/wiki/Rising_Sun_(yacht)",
-    blurb: "A famous entertainment-world superyacht."
+    rarity: "MYTHIC",
+    thumb: "images/rising-sun.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/rising-sun/",
+    ownerLink: "https://en.wikipedia.org/wiki/David_Geffen"
   },
   {
-    name: "Octopus",
-    deepPockets: "Paul Allen Estate",
-    ownerLink: "https://en.wikipedia.org/wiki/Paul_Allen",
-    yachtLink: "https://en.wikipedia.org/wiki/Octopus_(yacht)",
-    blurb: "A legendary explorer yacht with expedition capability."
+    name: "Launchpad",
+    deepPockets: "Mark Zuckerberg",
+    rarity: "MYTHIC",
+    thumb: "images/launchpad.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/launchpad/",
+    ownerLink: "https://en.wikipedia.org/wiki/Mark_Zuckerberg"
   },
   {
-    name: "Faith",
-    deepPockets: "Michael Latifi",
-    ownerLink: "https://en.wikipedia.org/wiki/Michael_Latifi",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Faith+yacht",
-    blurb: "A resort-like Feadship with refined luxury credentials."
+    name: "Venus",
+    deepPockets: "Laurene Powell Jobs",
+    rarity: "ICONIC",
+    thumb: "images/venus.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/venus/",
+    ownerLink: "https://en.wikipedia.org/wiki/Laurene_Powell_Jobs"
   },
   {
-    name: "Bravo Eugenia",
-    deepPockets: "Jerry Jones",
-    ownerLink: "https://en.wikipedia.org/wiki/Jerry_Jones",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Bravo+Eugenia+yacht",
-    blurb: "A sleek Oceanco yacht named after Jerry Jones’s wife."
-  },
-  {
-    name: "Al Lusail",
-    deepPockets: "Qatar Royal Family",
-    ownerLink: "https://en.wikipedia.org/wiki/House_of_Thani",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Al+Lusail+yacht",
-    blurb: "A monumental royal yacht with state-level scale."
-  },
-  {
-    name: "Opera",
-    deepPockets: "Abdullah bin Zayed Al Nahyan",
-    ownerLink: "https://en.wikipedia.org/wiki/Abdullah_bin_Zayed_Al_Nahyan",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Opera+Lurssen+yacht",
-    blurb: "A newer ultra-large Lürssen yacht in the Mediterranean circuit."
-  },
-  {
-    name: "Luna",
-    deepPockets: "Farkhad Akhmedov",
-    ownerLink: "https://en.wikipedia.org/wiki/Farkhad_Akhmedov",
-    yachtLink: "https://en.wikipedia.org/wiki/Luna_(yacht)",
-    blurb: "An explorer-style yacht with extensive exterior deck space."
-  },
-  {
-    name: "Solaris",
+    name: "Eclipse",
     deepPockets: "Roman Abramovich",
-    ownerLink: "https://en.wikipedia.org/wiki/Roman_Abramovich",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Solaris+yacht",
-    blurb: "A modern explorer-style giga-yacht."
+    rarity: "MYTHIC",
+    thumb: "images/eclipse.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/eclipse/",
+    ownerLink: "https://en.wikipedia.org/wiki/Roman_Abramovich"
   },
   {
-    name: "Vava II",
-    deepPockets: "Ernesto Bertarelli",
-    ownerLink: "https://en.wikipedia.org/wiki/Ernesto_Bertarelli",
-    yachtLink: "https://en.wikipedia.org/wiki/Vava_II",
-    blurb: "A large private yacht associated with Swiss billionaire wealth."
+    name: "A",
+    deepPockets: "Andrey Melnichenko",
+    rarity: "MYTHIC",
+    thumb: "images/a.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/a/",
+    ownerLink: "https://en.wikipedia.org/wiki/Andrey_Melnichenko"
   },
   {
-    name: "Ocean Victory",
-    deepPockets: "Viktor Rashnikov-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Viktor_Rashnikov",
-    yachtLink: "https://en.wikipedia.org/wiki/Ocean_Victory",
-    blurb: "A vast Fincantieri yacht with serious Mediterranean presence."
+    name: "Sailing Yacht A",
+    deepPockets: "Andrey Melnichenko",
+    rarity: "MYTHIC",
+    thumb: "images/sailing-yacht-a.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/sailing-yacht-a/",
+    ownerLink: "https://en.wikipedia.org/wiki/Andrey_Melnichenko"
   },
   {
-    name: "Mayan Queen IV",
-    deepPockets: "Baillères Estate",
-    ownerLink: "https://en.wikipedia.org/wiki/Alberto_Baill%C3%A8res",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Mayan+Queen+IV+yacht",
-    blurb: "A distinctive large yacht linked to Mexican industrial wealth."
-  },
-  {
-    name: "Alfa Nero",
-    deepPockets: "Andrey Guryev-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Andrey_Guryev_(businessman)",
-    yachtLink: "https://en.wikipedia.org/wiki/Alfa_Nero",
-    blurb: "Known for its dramatic aft pool and bold exterior styling."
-  },
-  {
-    name: "Project X",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Project+X+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Project+X+yacht",
-    blurb: "A sharp modern yacht with strong charter appeal."
-  },
-  {
-    name: "Aquijo",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Aquijo+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Aquijo+yacht",
-    blurb: "One of the world’s largest high-performance sailing yachts."
-  },
-  {
-    name: "Nero",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Nero+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Nero+yacht",
-    blurb: "A classic-inspired yacht with dramatic black styling."
-  },
-  {
-    name: "Cloud 9",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Cloud+9+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Cloud+9+yacht",
-    blurb: "A modern charter yacht often seen around elite Mediterranean destinations."
-  },
-  {
-    name: "Ulysses",
-    deepPockets: "Graeme Hart-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Graeme_Hart",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Ulysses+yacht",
-    blurb: "A rugged explorer yacht built for long-range cruising."
-  },
-  {
-    name: "Hampshire II",
-    deepPockets: "Jim Ratcliffe-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Jim_Ratcliffe",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Hampshire+II+yacht",
-    blurb: "A classic-styled yacht associated with British industrial wealth."
-  },
-  {
-    name: "Lionheart",
-    deepPockets: "Sir Philip Green",
-    ownerLink: "https://en.wikipedia.org/wiki/Philip_Green",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Lionheart+yacht",
-    blurb: "A well-known Benetti yacht in the Mediterranean circuit."
-  },
-  {
-    name: "Lady S",
-    deepPockets: "Dan Snyder-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Daniel_Snyder",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Lady+S+yacht",
-    blurb: "A large yacht with cinema and entertainment-focused luxury."
-  },
-  {
-    name: "Tranquility",
-    deepPockets: "Private / Charter",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Tranquility+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Tranquility+yacht",
-    blurb: "A charter-friendly yacht with spa-like luxury styling."
-  },
-  {
-    name: "Radiant",
-    deepPockets: "Abdulla Al Futtaim",
-    ownerLink: "https://en.wikipedia.org/wiki/Abdulla_Al_Futtaim",
-    yachtLink: "https://en.wikipedia.org/wiki/Radiant_(yacht)",
-    blurb: "A large Lürssen yacht with strong security profile."
+    name: "Dilbar",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "MYTHIC",
+    thumb: "images/dilbar.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/dilbar/",
+    ownerLink: "https://en.wikipedia.org/wiki/Dilbar_(yacht)"
   },
   {
     name: "Symphony",
     deepPockets: "Bernard Arnault",
-    ownerLink: "https://en.wikipedia.org/wiki/Bernard_Arnault",
-    yachtLink: "https://en.wikipedia.org/wiki/Symphony_(yacht)",
-    blurb: "A Feadship yacht linked to the LVMH luxury empire."
+    rarity: "MYTHIC",
+    thumb: "images/symphony.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/symphony/",
+    ownerLink: "https://en.wikipedia.org/wiki/Bernard_Arnault"
   },
   {
-    name: "Anna",
-    deepPockets: "Dmitry Rybolovlev-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Dmitry_Rybolovlev",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Anna+yacht",
-    blurb: "A large explorer-style yacht with substantial range."
+    name: "Octopus",
+    deepPockets: "Paul Allen",
+    rarity: "MYTHIC",
+    thumb: "images/octopus.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/octopus/",
+    ownerLink: "https://en.wikipedia.org/wiki/Paul_Allen"
   },
   {
-    name: "Phoenix 2",
-    deepPockets: "Jan Kulczyk Estate",
-    ownerLink: "https://en.wikipedia.org/wiki/Jan_Kulczyk",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Phoenix+2+yacht",
-    blurb: "A Lürssen yacht known for art deco influence."
+    name: "Azzam",
+    deepPockets: "Al Nahyan family",
+    rarity: "MYTHIC",
+    thumb: "images/azzam.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/azzam/",
+    ownerLink: "https://en.wikipedia.org/wiki/Al_Nahyan_family"
   },
   {
-    name: "Boadicea",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Boadicea+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Boadicea+yacht",
-    blurb: "A classic large yacht from the older luxury generation."
+    name: "Dubai",
+    deepPockets: "Dubai royal family",
+    rarity: "MYTHIC",
+    thumb: "images/dubai.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/dubai/",
+    ownerLink: "https://en.wikipedia.org/wiki/Mohammed_bin_Rashid_Al_Maktoum"
+  },
+  {
+    name: "Al Said",
+    deepPockets: "Omani royal family",
+    rarity: "MYTHIC",
+    thumb: "images/al-said.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/al-said/",
+    ownerLink: "https://en.wikipedia.org/wiki/House_of_Al_Busaid"
+  },
+  {
+    name: "Prince Abdulaziz",
+    deepPockets: "Saudi royal family",
+    rarity: "MYTHIC",
+    thumb: "images/prince-abdulaziz.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/prince-abdulaziz/",
+    ownerLink: "https://en.wikipedia.org/wiki/House_of_Saud"
+  },
+  {
+    name: "Black Pearl",
+    deepPockets: "Oleg Burlakov estate",
+    rarity: "MYTHIC",
+    thumb: "images/black-pearl.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/black-pearl/",
+    ownerLink: "https://en.wikipedia.org/wiki/Black_Pearl_(yacht)"
+  },
+  {
+    name: "Maltese Falcon",
+    deepPockets: "Elena Ambrosiadou",
+    rarity: "MYTHIC",
+    thumb: "images/maltese-falcon.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/maltese-falcon/",
+    ownerLink: "https://en.wikipedia.org/wiki/Elena_Ambrosiadou"
   },
   {
     name: "Christina O",
-    deepPockets: "Private / Charter",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Christina+O+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Christina_O",
-    blurb: "The legendary Aristotle Onassis yacht, still iconic."
+    deepPockets: "Historic Onassis yacht",
+    rarity: "MYTHIC",
+    thumb: "images/christina-o.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/christina-o/",
+    ownerLink: "https://en.wikipedia.org/wiki/Christina_O"
   },
   {
-    name: "Nautilus",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Nautilus+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Nautilus+yacht",
-    blurb: "Explorer-style yacht suited to rugged cruising."
+    name: "Sea Cloud",
+    deepPockets: "Historic charter vessel",
+    rarity: "MYTHIC",
+    thumb: "images/sea-cloud.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/sea-cloud/",
+    ownerLink: "https://en.wikipedia.org/wiki/Sea_Cloud"
   },
   {
-    name: "Dragon",
-    deepPockets: "Private",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Dragon+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Dragon+yacht",
-    blurb: "A sleek modern yacht often noted in the Med."
+    name: "Faith",
+    deepPockets: "Michael Latifi",
+    rarity: "ICONIC",
+    thumb: "images/faith.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/faith/",
+    ownerLink: "https://en.wikipedia.org/wiki/Michael_Latifi"
+  },
+  {
+    name: "Lady Moura",
+    deepPockets: "Nasser Al-Rashid",
+    rarity: "ICONIC",
+    thumb: "images/lady-moura.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/lady-moura/",
+    ownerLink: "https://en.wikipedia.org/wiki/Nasser_Al-Rashid"
+  },
+  {
+    name: "Aviva",
+    deepPockets: "Joe Lewis",
+    rarity: "ICONIC",
+    thumb: "images/aviva.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/aviva/",
+    ownerLink: "https://en.wikipedia.org/wiki/Joe_Lewis_(British_businessman)"
+  },
+  {
+    name: "Hampshire II",
+    deepPockets: "Jim Ratcliffe",
+    rarity: "ICONIC",
+    thumb: "images/hampshire-ii.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/hampshire-ii/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jim_Ratcliffe"
+  },
+  {
+    name: "Lionheart",
+    deepPockets: "Philip Green",
+    rarity: "ICONIC",
+    thumb: "images/lionheart.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/lionheart/",
+    ownerLink: "https://en.wikipedia.org/wiki/Philip_Green"
+  },
+  {
+    name: "Musashi",
+    deepPockets: "Larry Ellison",
+    rarity: "ICONIC",
+    thumb: "images/musashi.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/musashi/",
+    ownerLink: "https://en.wikipedia.org/wiki/Larry_Ellison"
+  },
+  {
+    name: "Seven Seas",
+    deepPockets: "Steven Spielberg",
+    rarity: "ICONIC",
+    thumb: "images/seven-seas.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/seven-seas/",
+    ownerLink: "https://en.wikipedia.org/wiki/Steven_Spielberg"
+  },
+  {
+    name: "Flying Fox",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/flying-fox.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/flying-fox/",
+    ownerLink: "https://en.wikipedia.org/wiki/Flying_Fox_(yacht)"
+  },
+  {
+    name: "Luna",
+    deepPockets: "Roman Abramovich",
+    rarity: "ICONIC",
+    thumb: "images/luna.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/luna/",
+    ownerLink: "https://en.wikipedia.org/wiki/Roman_Abramovich"
+  },
+  {
+    name: "Kismet",
+    deepPockets: "Shahid Khan",
+    rarity: "ICONIC",
+    thumb: "images/kismet.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/kismet/",
+    ownerLink: "https://en.wikipedia.org/wiki/Shahid_Khan"
   },
   {
     name: "Moonrise",
     deepPockets: "Jan Koum",
-    ownerLink: "https://en.wikipedia.org/wiki/Jan_Koum",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Moonrise+yacht",
-    blurb: "A large Feadship linked to tech wealth."
+    rarity: "ICONIC",
+    thumb: "images/moonrise.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/moonrise/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jan_Koum"
+  },
+  {
+    name: "IJE",
+    deepPockets: "James Packer",
+    rarity: "ICONIC",
+    thumb: "images/ije.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/ije/",
+    ownerLink: "https://en.wikipedia.org/wiki/James_Packer"
+  },
+  {
+    name: "Kaos",
+    deepPockets: "Nancy Walton Laurie",
+    rarity: "ICONIC",
+    thumb: "images/kaos.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/kaos/",
+    ownerLink: "https://en.wikipedia.org/wiki/Nancy_Walton_Laurie"
+  },
+  {
+    name: "Anna",
+    deepPockets: "Dmitry Rybolovlev",
+    rarity: "ICONIC",
+    thumb: "images/anna.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/anna/",
+    ownerLink: "https://en.wikipedia.org/wiki/Dmitry_Rybolovlev"
+  },
+  {
+    name: "Infinity",
+    deepPockets: "Eric Smidt",
+    rarity: "ICONIC",
+    thumb: "images/infinity.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/infinity/",
+    ownerLink: "https://en.wikipedia.org/wiki/Eric_Smidt"
+  },
+  {
+    name: "Radiant",
+    deepPockets: "Abdulla Al Futtaim",
+    rarity: "ICONIC",
+    thumb: "images/radiant.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/radiant/",
+    ownerLink: "https://en.wikipedia.org/wiki/Al-Futtaim_Group"
+  },
+  {
+    name: "Nord",
+    deepPockets: "Alexei Mordashov",
+    rarity: "ICONIC",
+    thumb: "images/nord.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/nord/",
+    ownerLink: "https://en.wikipedia.org/wiki/Alexey_Mordashov"
+  },
+  {
+    name: "Scheherazade",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/scheherazade.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/scheherazade/",
+    ownerLink: "https://en.wikipedia.org/wiki/Scheherazade_(yacht)"
+  },
+  {
+    name: "Ahpo",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/ahpo.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/ahpo/",
+    ownerLink: "https://en.wikipedia.org/wiki/Ahpo_(yacht)"
+  },
+  {
+    name: "Opera",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/opera.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/opera/",
+    ownerLink: "https://en.wikipedia.org/wiki/Opera_(yacht)"
+  },
+  {
+    name: "Pelorus",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/pelorus.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/pelorus/",
+    ownerLink: "https://en.wikipedia.org/wiki/Pelorus_(yacht)"
   },
   {
     name: "Amadea",
-    deepPockets: "Suleiman Kerimov-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Suleyman_Kerimov",
-    yachtLink: "https://en.wikipedia.org/wiki/Amadea_(yacht)",
-    blurb: "A highly discussed large yacht with legal and ownership controversy."
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/amadea.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/amadea/",
+    ownerLink: "https://en.wikipedia.org/wiki/Amadea_(yacht)"
+  },
+  {
+    name: "Here Comes The Sun",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/here-comes-the-sun.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/here-comes-the-sun/",
+    ownerLink: "https://en.wikipedia.org/wiki/Here_Comes_the_Sun_(yacht)"
+  },
+  {
+    name: "Yas",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/yas.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/yas/",
+    ownerLink: "https://en.wikipedia.org/wiki/Yas_(yacht)"
+  },
+  {
+    name: "Maryah",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "ICONIC",
+    thumb: "images/maryah.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/maryah/",
+    ownerLink: "https://en.wikipedia.org/wiki/Maryah_(yacht)"
+  },
+  {
+    name: "Mayan Queen IV",
+    deepPockets: "Alberto Baillères estate",
+    rarity: "ICONIC",
+    thumb: "images/mayan-queen-iv.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/mayan-queen-iv/",
+    ownerLink: "https://en.wikipedia.org/wiki/Alberto_Baill%C3%A8res"
+  },
+  {
+    name: "Ulysses",
+    deepPockets: "Graeme Hart",
+    rarity: "ICONIC",
+    thumb: "images/ulysses.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/ulysses/",
+    ownerLink: "https://en.wikipedia.org/wiki/Graeme_Hart"
+  },
+  {
+    name: "Madsummer",
+    deepPockets: "Jeffrey Soffer",
+    rarity: "ICONIC",
+    thumb: "images/madsummer.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/madsummer/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jeffrey_Soffer"
+  },
+  {
+    name: "Lady S",
+    deepPockets: "Dan Snyder",
+    rarity: "ICONIC",
+    thumb: "images/lady-s.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/lady-s/",
+    ownerLink: "https://en.wikipedia.org/wiki/Daniel_Snyder"
+  },
+  {
+    name: "Bravo Eugenia",
+    deepPockets: "Jerry Jones",
+    rarity: "ICONIC",
+    thumb: "images/bravo-eugenia.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/bravo-eugenia/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jerry_Jones"
+  },
+  {
+    name: "Boardwalk",
+    deepPockets: "Tilman Fertitta",
+    rarity: "ICONIC",
+    thumb: "images/boardwalk.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/boardwalk/",
+    ownerLink: "https://en.wikipedia.org/wiki/Tilman_Fertitta"
+  },
+  {
+    name: "Whisper",
+    deepPockets: "Eric Schmidt",
+    rarity: "ICONIC",
+    thumb: "images/whisper.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/whisper/",
+    ownerLink: "https://en.wikipedia.org/wiki/Eric_Schmidt"
+  },
+  {
+    name: "Eos",
+    deepPockets: "Barry Diller",
+    rarity: "ICONIC",
+    thumb: "images/eos.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/eos/",
+    ownerLink: "https://en.wikipedia.org/wiki/Barry_Diller"
+  },
+  {
+    name: "Athena",
+    deepPockets: "Jim Clark",
+    rarity: "ICONIC",
+    thumb: "images/athena.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/athena/",
+    ownerLink: "https://en.wikipedia.org/wiki/James_H._Clark"
+  },
+  {
+    name: "Norn",
+    deepPockets: "Charles Simonyi",
+    rarity: "ICONIC",
+    thumb: "images/norn.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/norn/",
+    ownerLink: "https://en.wikipedia.org/wiki/Charles_Simonyi"
+  },
+  {
+    name: "Odessa II",
+    deepPockets: "Len Blavatnik",
+    rarity: "ICONIC",
+    thumb: "images/odessa-ii.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/odessa-ii/",
+    ownerLink: "https://en.wikipedia.org/wiki/Len_Blavatnik"
+  },
+  {
+    name: "Drizzle",
+    deepPockets: "Amancio Ortega",
+    rarity: "ICONIC",
+    thumb: "images/drizzle.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/drizzle/",
+    ownerLink: "https://en.wikipedia.org/wiki/Amancio_Ortega"
+  },
+  {
+    name: "Ostar",
+    deepPockets: "Carlos Slim",
+    rarity: "ICONIC",
+    thumb: "images/ostar.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/ostar/",
+    ownerLink: "https://en.wikipedia.org/wiki/Carlos_Slim"
+  },
+  {
+    name: "Aquarius",
+    deepPockets: "Steve Wynn",
+    rarity: "ICONIC",
+    thumb: "images/aquarius.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/aquarius/",
+    ownerLink: "https://en.wikipedia.org/wiki/Steve_Wynn"
+  },
+  {
+    name: "Viva",
+    deepPockets: "Frank Fertitta III",
+    rarity: "ICONIC",
+    thumb: "images/viva.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/viva/",
+    ownerLink: "https://en.wikipedia.org/wiki/Frank_Fertitta_III"
+  },
+  {
+    name: "Artefact",
+    deepPockets: "Mike Lazaridis",
+    rarity: "ICONIC",
+    thumb: "images/artefact.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/artefact/",
+    ownerLink: "https://en.wikipedia.org/wiki/Mike_Lazaridis"
+  },
+  {
+    name: "Serene",
+    deepPockets: "Mohammed bin Salman",
+    rarity: "ICONIC",
+    thumb: "images/serene.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/serene/",
+    ownerLink: "https://en.wikipedia.org/wiki/Mohammed_bin_Salman"
   },
   {
     name: "Solandge",
-    deepPockets: "Private / Charter",
-    ownerLink: "https://en.wikipedia.org/wiki/Special:Search?search=Solandge+yacht+owner",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Solandge+yacht",
-    blurb: "A well-known charter yacht in the Mediterranean luxury market."
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "CLASSIC",
+    thumb: "images/solandge.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/solandge/",
+    ownerLink: "https://en.wikipedia.org/wiki/Solandge"
   },
   {
-    name: "Lady Lara",
-    deepPockets: "Alexander Machkevitch-linked",
-    ownerLink: "https://en.wikipedia.org/wiki/Alexander_Machkevitch",
-    yachtLink: "https://en.wikipedia.org/wiki/Special:Search?search=Lady+Lara+yacht",
-    blurb: "A sleek Lürssen yacht with classic superyacht elegance."
+    name: "Nero",
+    deepPockets: "Classic yacht",
+    rarity: "CLASSIC",
+    thumb: "images/nero.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/nero/",
+    ownerLink: "https://en.wikipedia.org/wiki/Nero_(yacht)"
+  },
+  {
+    name: "Talitha",
+    deepPockets: "Getty family",
+    rarity: "CLASSIC",
+    thumb: "images/talitha.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/talitha/",
+    ownerLink: "https://en.wikipedia.org/wiki/Getty_family"
+  },
+  {
+    name: "Nahlin",
+    deepPockets: "James Dyson",
+    rarity: "CLASSIC",
+    thumb: "images/nahlin.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/nahlin/",
+    ownerLink: "https://en.wikipedia.org/wiki/James_Dyson"
+  },
+  {
+    name: "Savannah",
+    deepPockets: "Lukas Lundin estate",
+    rarity: "CLASSIC",
+    thumb: "images/savannah.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/savannah/",
+    ownerLink: "https://en.wikipedia.org/wiki/Lukas_Lundin"
+  },
+  {
+    name: "Phoenix 2",
+    deepPockets: "Jan Kulczyk estate",
+    rarity: "CLASSIC",
+    thumb: "images/phoenix-2.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/phoenix-2/",
+    ownerLink: "https://en.wikipedia.org/wiki/Jan_Kulczyk"
+  },
+  {
+    name: "Aquijo",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "CLASSIC",
+    thumb: "images/aquijo.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/aquijo/",
+    ownerLink: "https://en.wikipedia.org/wiki/Aquijo"
+  },
+  {
+    name: "Twizzle",
+    deepPockets: "OWNERSHIP DISPUTED",
+    rarity: "CLASSIC",
+    thumb: "images/twizzle.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/twizzle/",
+    ownerLink: "https://en.wikipedia.org/wiki/Twizzle"
+  },
+  {
+    name: "Bold",
+    deepPockets: "Guido Krass",
+    rarity: "CLASSIC",
+    thumb: "images/bold.jpg",
+    yachtLink: "https://www.superyachtfan.com/yacht/bold/",
+    ownerLink: "https://en.wikipedia.org/wiki/Guido_Krass"
   }
 ];
