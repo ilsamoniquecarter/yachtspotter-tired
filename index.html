@@ -3,33 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <title>YachtSpotter Majorca</title>
 
 <link rel="manifest" href="manifest.json" />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
   --navy:#07182f;
   --navy-dark:#020812;
   --gold:#d4af37;
   --brass:#b9932e;
   --mist:#b8c3d6;
-  --glass:rgba(255,255,255,.05);
-  --line:rgba(255,255,255,.1);
+  --glass:rgba(255,255,255,.055);
+  --line:rgba(255,255,255,.11);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
   margin:0;
   font-family:Inter,sans-serif;
-  background:
-    radial-gradient(circle at top, #102748 0%, #020812 75%);
+  background:radial-gradient(circle at top,#102748 0%,#020812 75%);
   color:white;
 }
 
@@ -43,7 +38,6 @@ body{
   font-size:42px;
   color:var(--gold);
   line-height:1;
-  letter-spacing:.5px;
 }
 
 .edition{
@@ -74,12 +68,9 @@ body{
   border-radius:50%;
   padding:14px;
   background:
-    radial-gradient(circle at 30% 22%, rgba(255,255,255,.32), transparent 16%),
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.32),transparent 16%),
     linear-gradient(145deg,#f0d36f,var(--gold) 30%,var(--brass) 65%,#5e4614);
-  box-shadow:
-    0 22px 50px rgba(0,0,0,.45),
-    inset 0 2px 4px rgba(255,255,255,.35),
-    inset 0 -4px 7px rgba(0,0,0,.35);
+  box-shadow:0 22px 50px rgba(0,0,0,.45);
 }
 
 .scope-inner{
@@ -89,20 +80,16 @@ body{
   overflow:hidden;
   background:#06101f;
   border:2px solid rgba(255,255,255,.14);
-  position:relative;
 }
 
-video,
-.preview{
+video,.preview{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
 }
 
-.preview{
-  display:none;
-}
+.preview{display:none;}
 
 #diagramViewer{
   width:100%;
@@ -110,9 +97,13 @@ video,
   display:flex;
   align-items:center;
   justify-content:center;
-  background:
-    radial-gradient(circle at center, rgba(212,175,55,.08), transparent 55%),
-    #06101f;
+  background:#06101f;
+}
+
+#diagramViewer img{
+  width:88%;
+  height:88%;
+  object-fit:contain;
 }
 
 button{
@@ -127,15 +118,10 @@ button{
   margin-top:12px;
   padding:14px 22px;
   border-radius:999px;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.18),transparent 22%),
-    linear-gradient(145deg,#f0d36f,var(--gold) 35%,var(--brass) 68%,#674d17);
+  background:linear-gradient(145deg,#f0d36f,var(--gold) 35%,var(--brass) 68%,#674d17);
   color:#05101d;
   font-size:22px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.32),
-    inset 0 -3px 6px rgba(0,0,0,.22),
-    0 10px 24px rgba(0,0,0,.25);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
 
 .search{
@@ -150,10 +136,6 @@ button{
   font-size:15px;
 }
 
-.search::placeholder{
-  color:rgba(184,195,214,.75);
-}
-
 .info-card{
   width:min(92vw,720px);
   margin:12px auto;
@@ -161,7 +143,6 @@ button{
   border-radius:24px;
   background:var(--glass);
   border:1px solid var(--line);
-  display:none;
 }
 
 .info-grid{
@@ -175,13 +156,6 @@ button{
   font-size:26px;
   color:var(--gold);
   text-align:center;
-}
-
-.info-sub{
-  text-align:center;
-  color:var(--mist);
-  font-size:13px;
-  margin-top:4px;
 }
 
 .secondary{
@@ -218,18 +192,14 @@ button{
   padding:0 14px 28px;
 }
 
-.fleet-card{
-  min-width:110px;
-}
+.fleet-card{min-width:110px;}
 
 .fleet-porthole{
   width:100px;
   height:100px;
   border-radius:50%;
   padding:7px;
-  background:
-    radial-gradient(circle at 30% 22%, rgba(255,255,255,.3), transparent 16%),
-    linear-gradient(145deg,#f0d36f,var(--gold) 35%,var(--brass) 68%,#674d17);
+  background:linear-gradient(145deg,#f0d36f,var(--gold),var(--brass),#674d17);
 }
 
 .fleet-porthole img{
@@ -279,9 +249,7 @@ button{
   align-items:center;
   justify-content:center;
   border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 22%, rgba(255,255,255,.32), transparent 16%),
-    linear-gradient(145deg,#f0d36f,var(--gold) 35%,var(--brass) 68%,#674d17);
+  background:linear-gradient(145deg,#f0d36f,var(--gold),var(--brass),#674d17);
   font-size:28px;
 }
 
@@ -289,17 +257,10 @@ button{
   text-align:center;
   color:var(--mist);
   font-size:13px;
+  margin-bottom:34px;
 }
 
-svg{
-  width:82%;
-  height:82%;
-}
-
-canvas{
-  display:none;
-}
-
+canvas{display:none;}
 </style>
 </head>
 
@@ -311,62 +272,38 @@ canvas{
 </div>
 
 <div class="binocular-wrap">
-
   <div class="scope-column">
-
     <div class="scope">
       <div class="scope-inner">
         <video id="video" autoplay playsinline muted></video>
         <img id="preview" class="preview">
       </div>
     </div>
-
-    <button class="pill" onclick="spotYacht()">
-      SPOT YACHT
-    </button>
-
+    <button class="pill" onclick="spotYacht()">SPOT YACHT</button>
   </div>
 
   <div class="scope-column">
-
     <div class="scope">
       <div class="scope-inner">
         <div id="diagramViewer"></div>
       </div>
     </div>
-
-    <button class="pill" onclick="nextYacht()">
-      SWIPE FLEET
-    </button>
-
+    <button class="pill" onclick="nextYacht()">SWIPE FLEET</button>
   </div>
-
 </div>
 
-<input
-  id="searchBox"
-  class="search"
-  placeholder="Type yacht name..."
-  oninput="searchYacht()"
-/>
+<input id="searchBox" class="search" placeholder="Type yacht name..." oninput="searchYacht()" />
 
 <div id="infoCard" class="info-card"></div>
-
 <div id="fleetArea"></div>
 
 <div class="lighthouse">⚓</div>
-
-<div class="install-text">
-  Add YachtSpotter to your Home Screen
-</div>
+<div class="install-text">Add YachtSpotter to your Home Screen</div>
 
 <div id="overlay" class="overlay" onclick="closeOverlay(event)">
   <div class="overlay-card" onclick="event.stopPropagation()">
     <div id="overlayContent"></div>
-
-    <button class="secondary" onclick="hideOverlay()">
-      Close
-    </button>
+    <button class="secondary" onclick="hideOverlay()">Close</button>
   </div>
 </div>
 
@@ -375,7 +312,6 @@ canvas{
 <script src="data.js"></script>
 
 <script>
-
 const video = document.getElementById("video");
 const preview = document.getElementById("preview");
 const canvas = document.getElementById("canvas");
@@ -385,191 +321,82 @@ let selectedYacht = yachts[0];
 let capturedImage = null;
 
 navigator.mediaDevices.getUserMedia({
-  video:{
-    facingMode:{ ideal:"environment" }
-  },
+  video:{facingMode:{ideal:"environment"}},
   audio:false
 })
-.then(stream=>{
-  video.srcObject = stream;
-})
-.catch(()=>{
-  alert("Camera unavailable.");
-});
-
-function yachtSVG(){
-
-  return `
-  <svg viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
-
-    <line x1="28" y1="123" x2="462" y2="123"
-      stroke="#d4af37"
-      stroke-width="1"
-      opacity=".45"/>
-
-    <path
-      d="M46 112 L385 112 L450 88 L422 126 L82 130 Z"
-      fill="none"
-      stroke="#f4e3a0"
-      stroke-width="3"/>
-
-    <path
-      d="M120 95 C160 68 245 68 300 92 L362 92"
-      fill="none"
-      stroke="#e8d699"
-      stroke-width="3"/>
-
-    <line
-      x1="250"
-      y1="31"
-      x2="250"
-      y2="72"
-      stroke="#f4e3a0"
-      stroke-width="3"/>
-
-    <circle
-      cx="268"
-      cy="48"
-      r="8"
-      fill="none"
-      stroke="#f4e3a0"
-      stroke-width="2"/>
-
-  </svg>
-  `;
-}
+.then(stream=>{video.srcObject=stream;})
+.catch(()=>{alert("Camera unavailable.");});
 
 function renderDiagram(){
-
-  document.getElementById("diagramViewer").innerHTML =
-    yachtSVG();
-
+  document.getElementById("diagramViewer").innerHTML = `
+    <img src="${selectedYacht.thumb}" alt="${selectedYacht.name}">
+  `;
   renderInfo();
 }
 
 function renderInfo(){
-
-  const card = document.getElementById("infoCard");
-
-  card.style.display = "block";
-
-  card.innerHTML = `
-
+  document.getElementById("infoCard").innerHTML = `
     <div class="info-grid">
-
       <div>
-        <div class="info-title">
-          ${selectedYacht.name}
-        </div>
-
-        <button
-          class="secondary"
-          onclick="openLink('${selectedYacht.yachtLink}')">
-          BELOW DECK
-        </button>
+        <div class="info-title">${selectedYacht.name}</div>
+        <button class="secondary" onclick="openLink('${selectedYacht.yachtLink}')">BELOW DECK</button>
       </div>
-
       <div>
-        <div class="info-title">
-          ${selectedYacht.deepPockets}
-        </div>
-
-        <button
-          class="secondary"
-          onclick="openLink('${selectedYacht.ownerLink}')">
-          DEEP POCKETS
-        </button>
+        <div class="info-title">${selectedYacht.deepPockets}</div>
+        <button class="secondary" onclick="openLink('${selectedYacht.ownerLink}')">DEEP POCKETS</button>
       </div>
-
     </div>
-
-    <button
-      class="pill log-button"
-      onclick="logYacht()">
-      LOG YACHT
-    </button>
-
+    <button class="pill log-button" onclick="logYacht()">LOG YACHT</button>
   `;
 }
 
 function nextYacht(){
-
-  currentIndex++;
-
-  if(currentIndex >= yachts.length){
-    currentIndex = 0;
-  }
-
+  currentIndex = (currentIndex + 1) % yachts.length;
   selectedYacht = yachts[currentIndex];
-
+  document.getElementById("searchBox").value = selectedYacht.name;
   renderDiagram();
-
-  document.getElementById("searchBox").value =
-    selectedYacht.name;
 }
 
 function searchYacht(){
+  const q = document.getElementById("searchBox").value.toLowerCase().trim();
+  if(!q) return;
 
-  const q =
-    document.getElementById("searchBox")
-      .value
-      .toLowerCase()
-      .trim();
-
-  const found = yachts.find(y=>
-    y.name.toLowerCase().includes(q)
+  const index = yachts.findIndex(y =>
+    y.name.toLowerCase().includes(q) ||
+    y.deepPockets.toLowerCase().includes(q)
   );
 
-  if(found){
-
-    selectedYacht = found;
-
-    currentIndex =
-      yachts.findIndex(y=>y.name===found.name);
-
+  if(index >= 0){
+    currentIndex = index;
+    selectedYacht = yachts[index];
     renderDiagram();
   }
 }
 
 function spotYacht(){
-
   if(!video.videoWidth){
     alert("Camera loading.");
     return;
   }
 
   const ctx = canvas.getContext("2d");
-
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
 
-  ctx.drawImage(
-    video,
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  capturedImage =
-    canvas.toDataURL("image/jpeg",0.7);
-
+  capturedImage = canvas.toDataURL("image/jpeg",0.7);
   preview.src = capturedImage;
-
   preview.style.display = "block";
-
   video.style.display = "none";
 }
 
 function logYacht(){
-
   if(!capturedImage){
     alert("Capture yacht photo first.");
     return;
   }
 
-  const sightings =
-    JSON.parse(localStorage.getItem("fleet") || "[]");
+  const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
 
   sightings.unshift({
     name:selectedYacht.name,
@@ -579,113 +406,60 @@ function logYacht(){
     image:capturedImage
   });
 
-  localStorage.setItem(
-    "fleet",
-    JSON.stringify(sightings)
-  );
-
+  localStorage.setItem("fleet",JSON.stringify(sightings));
   renderFleet();
 }
 
 function renderFleet(){
-
-  const sightings =
-    JSON.parse(localStorage.getItem("fleet") || "[]");
+  const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
 
   if(!sightings.length){
     document.getElementById("fleetArea").innerHTML = "";
     return;
   }
 
-  let html = `
-    <div class="fleet-title">
-      FLEET
-    </div>
-
-    <div class="fleet-row">
-  `;
+  let html = `<div class="fleet-title">FLEET</div><div class="fleet-row">`;
 
   sightings.forEach((s,index)=>{
-
     html += `
-      <div
-        class="fleet-card"
-        onclick="openFleet(${index})">
-
-        <div class="fleet-porthole">
-          <img src="${s.image}">
-        </div>
-
-        <div class="fleet-name">
-          ${s.name}
-        </div>
-
+      <div class="fleet-card" onclick="openFleet(${index})">
+        <div class="fleet-porthole"><img src="${s.image}"></div>
+        <div class="fleet-name">${s.name}</div>
       </div>
     `;
   });
 
   html += `</div>`;
-
-  document.getElementById("fleetArea").innerHTML =
-    html;
+  document.getElementById("fleetArea").innerHTML = html;
 }
 
 function openFleet(index){
-
-  const sightings =
-    JSON.parse(localStorage.getItem("fleet") || "[]");
-
+  const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
   const s = sightings[index];
 
   document.getElementById("overlayContent").innerHTML = `
-
     <div class="info-grid">
-
       <div>
-        <div class="info-title">
-          ${s.name}
-        </div>
-
-        <button
-          class="secondary"
-          onclick="openLink('${s.yachtLink}')">
-          BELOW DECK
-        </button>
+        <div class="info-title">${s.name}</div>
+        <button class="secondary" onclick="openLink('${s.yachtLink}')">BELOW DECK</button>
       </div>
-
       <div>
-        <div class="info-title">
-          ${s.deepPockets}
-        </div>
-
-        <button
-          class="secondary"
-          onclick="openLink('${s.ownerLink}')">
-          DEEP POCKETS
-        </button>
+        <div class="info-title">${s.deepPockets}</div>
+        <button class="secondary" onclick="openLink('${s.ownerLink}')">DEEP POCKETS</button>
       </div>
-
     </div>
-
-    <img
-      class="overlay-img"
-      src="${s.image}">
+    <img class="overlay-img" src="${s.image}">
   `;
 
-  document.getElementById("overlay").style.display =
-    "block";
+  document.getElementById("overlay").style.display = "block";
 }
 
 function hideOverlay(){
-  document.getElementById("overlay").style.display =
-    "none";
+  document.getElementById("overlay").style.display = "none";
 }
 
 function closeOverlay(e){
-
-  if(e.target.id==="overlay"){
-    hideOverlay();
-  }
+  if(e.target.id === "overlay") hideOverlay();
 }
 
 function openLink(url){
@@ -694,7 +468,6 @@ function openLink(url){
 
 renderDiagram();
 renderFleet();
-
 </script>
 
 </body>
