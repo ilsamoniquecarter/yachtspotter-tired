@@ -11,7 +11,6 @@
 <style>
 :root{
   --navy:#07182f;
-  --navy-dark:#020812;
   --gold:#d4af37;
   --brass:#b9932e;
   --mist:#b8c3d6;
@@ -28,73 +27,37 @@ body{
   color:white;
 }
 
-.binocular-shell{
+.instrument{
+  width:min(96vw,780px);
+  margin:22px auto 8px;
   position:relative;
-  width:min(94vw,760px);
-  margin:28px auto 8px;
-  display:flex;
-  justify-content:center;
-  gap:0;
-  align-items:flex-start;
 }
 
-.binocular-shell::before{
-  content:"";
-  position:absolute;
-  width:122px;
-  height:64px;
-  border-radius:999px;
-  background:
-    radial-gradient(circle at 28% 20%,rgba(255,255,255,.45),transparent 20%),
-    linear-gradient(145deg,#f7dc7b,#d4af37 35%,#9b7624 70%,#4f3b12);
-  top:calc(min(42vw,310px) / 2);
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index:0;
-  box-shadow:
-    0 18px 34px rgba(0,0,0,.5),
-    inset 0 4px 7px rgba(255,255,255,.38),
-    inset 0 -8px 12px rgba(0,0,0,.48);
-}
-
-.scope-column{
-  position:relative;
-  z-index:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:min(45vw,335px);
-}
-
-.scope{
-  width:min(42vw,310px);
-  height:min(42vw,310px);
-  border-radius:50%;
-  padding:15px;
-  background:
-    radial-gradient(circle at 26% 17%,rgba(255,255,255,.55),transparent 13%),
-    radial-gradient(circle at 72% 80%,rgba(0,0,0,.34),transparent 30%),
-    linear-gradient(145deg,#ffe58a 0%,#d4af37 30%,#a98125 58%,#4b350e 100%);
-  box-shadow:
-    0 30px 60px rgba(0,0,0,.55),
-    inset 0 5px 9px rgba(255,255,255,.45),
-    inset 0 -10px 15px rgba(0,0,0,.48);
-}
-
-.scope-inner{
+.binocular-svg{
   width:100%;
-  height:100%;
+  display:block;
+  filter:drop-shadow(0 28px 34px rgba(0,0,0,.55));
+}
+
+.lens-content{
+  position:absolute;
+  top:18.5%;
+  width:34.5%;
+  aspect-ratio:1/1;
   border-radius:50%;
   overflow:hidden;
   background:#06101f;
   border:2px solid rgba(255,255,255,.14);
+  box-shadow:
+    inset 0 0 34px rgba(0,0,0,.85),
+    inset 0 0 8px rgba(212,175,55,.5);
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:
-    inset 0 0 34px rgba(0,0,0,.82),
-    inset 0 0 7px rgba(212,175,55,.5);
 }
+
+.left-lens{left:9.4%;}
+.right-lens{right:9.4%;}
 
 video,.preview{
   width:100%;
@@ -117,12 +80,21 @@ video,.preview{
 }
 
 .fallback-yacht{
-  width:84%;
-  height:84%;
+  width:82%;
+  height:82%;
+}
+
+.controls{
+  width:min(88vw,520px);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  align-items:start;
 }
 
 .camera-button{
-  margin-top:10px;
+  margin:0 auto;
   width:42px;
   height:42px;
   border-radius:50%;
@@ -140,8 +112,7 @@ video,.preview{
 }
 
 .search{
-  width:min(38vw,280px);
-  margin-top:10px;
+  width:100%;
   padding:9px 13px;
   border-radius:999px;
   border:1px solid rgba(212,175,55,.28);
@@ -154,9 +125,17 @@ video,.preview{
 
 .search::placeholder{color:rgba(184,195,214,.72);}
 
+.retake{
+  margin-top:7px;
+  color:var(--mist);
+  font-size:12px;
+  cursor:pointer;
+  text-align:center;
+}
+
 .info-card{
   width:min(88vw,520px);
-  margin:12px auto;
+  margin:13px auto;
   padding:13px;
   border-radius:22px;
   background:var(--glass);
@@ -289,59 +268,20 @@ video,.preview{
   letter-spacing:.6px;
 }
 
-.mini-binocular{
-  position:relative;
-  width:78px;
-  height:48px;
-  margin:0 auto 8px;
-  filter:drop-shadow(0 12px 18px rgba(0,0,0,.38));
-}
-
-.mini-binocular::before,
-.mini-binocular::after{
-  content:"";
-  position:absolute;
-  top:6px;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 28% 18%,rgba(255,255,255,.48),transparent 14%),
-    radial-gradient(circle at 74% 78%,rgba(0,0,0,.3),transparent 28%),
-    linear-gradient(145deg,#f8df83 0%,#d4af37 30%,#b9932e 58%,#563f12 100%);
-  box-shadow:
-    inset 0 3px 5px rgba(255,255,255,.35),
-    inset 0 -6px 9px rgba(0,0,0,.42);
-}
-
-.mini-binocular::before{left:0;}
-.mini-binocular::after{right:0;}
-
-.mini-bridge{
-  position:absolute;
-  width:26px;
-  height:16px;
-  border-radius:999px;
-  background:linear-gradient(145deg,#f0d36f,#d4af37,#8a681e);
-  left:26px;
-  top:17px;
-  z-index:2;
-}
-
-.retake{
-  margin-top:7px;
-  color:var(--mist);
-  font-size:12px;
-  cursor:pointer;
+.mini-binocular-svg{
+  width:92px;
+  margin:0 auto 6px;
+  display:block;
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.45));
 }
 
 canvas{display:none;}
 
 @media(max-width:560px){
-  .binocular-shell{gap:0;}
-  .scope{padding:10px;}
+  .instrument{margin-top:18px;}
+  .controls{gap:12px;}
   .camera-button{width:39px;height:39px;font-size:17px;}
-  .search{width:min(40vw,180px);font-size:11px;padding:8px 10px;}
+  .search{font-size:11px;padding:8px 10px;}
   .info-main{font-size:18px;}
 }
 </style>
@@ -349,46 +289,102 @@ canvas{display:none;}
 
 <body>
 
-<div class="binocular-shell">
-  <div class="scope-column">
-    <div class="scope">
-      <div class="scope-inner">
-        <video id="video" autoplay playsinline muted></video>
-        <img id="preview" class="preview" alt="Captured yacht">
-      </div>
-    </div>
+<div class="instrument">
 
+  <svg class="binocular-svg" viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <radialGradient id="shine" cx="30%" cy="20%" r="70%">
+        <stop offset="0%" stop-color="#fff3ad"/>
+        <stop offset="28%" stop-color="#d4af37"/>
+        <stop offset="62%" stop-color="#9b7624"/>
+        <stop offset="100%" stop-color="#3f2d0c"/>
+      </radialGradient>
+      <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffe58a"/>
+        <stop offset="35%" stop-color="#d4af37"/>
+        <stop offset="70%" stop-color="#8d6a1f"/>
+        <stop offset="100%" stop-color="#3f2d0c"/>
+      </linearGradient>
+    </defs>
+
+    <path d="M332 164 C360 118 540 118 568 164 L606 260 C620 306 585 350 535 350 L365 350 C315 350 280 306 294 260 Z"
+      fill="url(#rim)" opacity=".96"/>
+    <ellipse cx="450" cy="218" rx="76" ry="58" fill="#705219" opacity=".75"/>
+    <ellipse cx="450" cy="205" rx="48" ry="34" fill="#d4af37" opacity=".9"/>
+
+    <circle cx="285" cy="215" r="180" fill="url(#shine)"/>
+    <circle cx="615" cy="215" r="180" fill="url(#shine)"/>
+
+    <circle cx="285" cy="215" r="142" fill="#06101f" opacity=".92"/>
+    <circle cx="615" cy="215" r="142" fill="#06101f" opacity=".92"/>
+
+    <circle cx="226" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
+    <circle cx="556" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
+
+    <circle cx="285" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
+    <circle cx="615" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
+    <circle cx="285" cy="215" r="153" fill="none" stroke="#3b2a0b" stroke-width="14" opacity=".55"/>
+    <circle cx="615" cy="215" r="153" fill="none" stroke="#3b2a0b" stroke-width="14" opacity=".55"/>
+  </svg>
+
+  <div class="lens-content left-lens">
+    <video id="video" autoplay playsinline muted></video>
+    <img id="preview" class="preview" alt="Captured yacht">
+  </div>
+
+  <div class="lens-content right-lens">
+    <div id="diagramViewer"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div>
     <button class="camera-button" onclick="spotYacht()">📷</button>
     <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Retake</div>
   </div>
 
-  <div class="scope-column">
-    <div class="scope">
-      <div class="scope-inner">
-        <div id="diagramViewer"></div>
-      </div>
-    </div>
-
-    <input
-      id="searchBox"
-      class="search"
-      placeholder="Type yacht name..."
-      oninput="searchYacht()"
-      autocorrect="off"
-      autocapitalize="none"
-      spellcheck="false"
-      autocomplete="off"
-    />
-  </div>
+  <input
+    id="searchBox"
+    class="search"
+    placeholder="Type yacht name..."
+    oninput="searchYacht()"
+    autocorrect="off"
+    autocapitalize="none"
+    spellcheck="false"
+    autocomplete="off"
+  />
 </div>
 
 <div id="infoCard" class="info-card"></div>
 <div id="fleetArea"></div>
 
 <div class="install">
-  <div class="mini-binocular">
-    <div class="mini-bridge"></div>
-  </div>
+  <svg class="mini-binocular-svg" viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <radialGradient id="miniShine" cx="30%" cy="20%" r="70%">
+        <stop offset="0%" stop-color="#fff3ad"/>
+        <stop offset="28%" stop-color="#d4af37"/>
+        <stop offset="62%" stop-color="#9b7624"/>
+        <stop offset="100%" stop-color="#3f2d0c"/>
+      </radialGradient>
+      <linearGradient id="miniRim" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffe58a"/>
+        <stop offset="35%" stop-color="#d4af37"/>
+        <stop offset="70%" stop-color="#8d6a1f"/>
+        <stop offset="100%" stop-color="#3f2d0c"/>
+      </linearGradient>
+    </defs>
+    <path d="M332 164 C360 118 540 118 568 164 L606 260 C620 306 585 350 535 350 L365 350 C315 350 280 306 294 260 Z" fill="url(#miniRim)"/>
+    <ellipse cx="450" cy="218" rx="76" ry="58" fill="#705219" opacity=".75"/>
+    <circle cx="285" cy="215" r="180" fill="url(#miniShine)"/>
+    <circle cx="615" cy="215" r="180" fill="url(#miniShine)"/>
+    <circle cx="285" cy="215" r="142" fill="#06101f" opacity=".92"/>
+    <circle cx="615" cy="215" r="142" fill="#06101f" opacity=".92"/>
+    <circle cx="226" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
+    <circle cx="556" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
+    <circle cx="285" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
+    <circle cx="615" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
+  </svg>
   Add to Home Screen
 </div>
 
@@ -401,7 +397,7 @@ canvas{display:none;}
 
 <canvas id="canvas"></canvas>
 
-<script src="data.js?v=19"></script>
+<script src="data.js?v=20"></script>
 
 <script>
 const video = document.getElementById("video");
