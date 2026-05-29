@@ -11,6 +11,7 @@
 <style>
 :root{
   --navy:#07182f;
+  --navy-dark:#020812;
   --gold:#d4af37;
   --brass:#b9932e;
   --mist:#b8c3d6;
@@ -22,42 +23,83 @@
 
 body{
   margin:0;
+  min-height:100vh;
   font-family:Inter,sans-serif;
-  background:radial-gradient(circle at top,#102748 0%,#020812 75%);
+  background:
+    radial-gradient(circle at top,#12305a 0%,#07182f 36%,#020812 100%);
   color:white;
 }
 
-.instrument{
-  width:min(96vw,780px);
-  margin:22px auto 8px;
+/* MAIN BINOCULARS */
+
+.binocular-stage{
+  width:min(96vw,760px);
+  margin:28px auto 0;
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.binoculars{
+  width:min(94vw,720px);
+  height:min(48vw,330px);
   position:relative;
 }
 
-.binocular-svg{
-  width:100%;
-  display:block;
-  filter:drop-shadow(0 28px 34px rgba(0,0,0,.55));
+.bridge{
+  position:absolute;
+  left:50%;
+  top:44%;
+  width:18%;
+  height:22%;
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  background:
+    radial-gradient(circle at 28% 24%,rgba(255,255,255,.42),transparent 22%),
+    linear-gradient(145deg,#f8df83 0%,#d4af37 34%,#9d7624 70%,#47320c 100%);
+  box-shadow:
+    0 16px 32px rgba(0,0,0,.48),
+    inset 0 4px 7px rgba(255,255,255,.36),
+    inset 0 -8px 13px rgba(0,0,0,.45);
+  z-index:1;
 }
 
-.lens-content{
+.barrel{
   position:absolute;
-  top:18.5%;
-  width:34.5%;
-  aspect-ratio:1/1;
+  top:0;
+  width:48%;
+  height:100%;
+  border-radius:50%;
+  padding:3.3%;
+  background:
+    radial-gradient(circle at 27% 17%,rgba(255,255,255,.55),transparent 13%),
+    radial-gradient(circle at 72% 82%,rgba(0,0,0,.36),transparent 30%),
+    linear-gradient(145deg,#ffe990 0%,#d4af37 30%,#a57b23 58%,#47320c 100%);
+  box-shadow:
+    0 28px 60px rgba(0,0,0,.54),
+    inset 0 5px 9px rgba(255,255,255,.44),
+    inset 0 -11px 16px rgba(0,0,0,.48);
+  z-index:2;
+}
+
+.barrel-left{left:1.5%;}
+.barrel-right{right:1.5%;}
+
+.lens{
+  width:100%;
+  height:100%;
   border-radius:50%;
   overflow:hidden;
   background:#06101f;
-  border:2px solid rgba(255,255,255,.14);
-  box-shadow:
-    inset 0 0 34px rgba(0,0,0,.85),
-    inset 0 0 8px rgba(212,175,55,.5);
+  border:2px solid rgba(255,255,255,.15);
   display:flex;
   align-items:center;
   justify-content:center;
+  box-shadow:
+    inset 0 0 36px rgba(0,0,0,.86),
+    inset 0 0 7px rgba(212,175,55,.48);
 }
-
-.left-lens{left:9.4%;}
-.right-lens{right:9.4%;}
 
 video,.preview{
   width:100%;
@@ -79,24 +121,38 @@ video,.preview{
     #06101f;
 }
 
-.fallback-yacht{
-  width:82%;
-  height:82%;
+#diagramViewer img{
+  width:86%;
+  height:86%;
+  object-fit:contain;
 }
 
-.controls{
-  width:min(88vw,520px);
-  margin:0 auto;
+.fallback-yacht{
+  width:84%;
+  height:84%;
+}
+
+/* CONTROLS */
+
+.control-row{
+  width:min(86vw,560px);
+  margin:14px auto 24px;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:18px;
   align-items:start;
 }
 
+.control-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+}
+
 .camera-button{
-  margin:0 auto;
-  width:42px;
-  height:42px;
+  width:44px;
+  height:44px;
   border-radius:50%;
   border:none;
   display:flex;
@@ -107,35 +163,44 @@ video,.preview{
     linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
   color:#06101f;
   font-size:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,.28);
+  box-shadow:
+    0 9px 18px rgba(0,0,0,.28),
+    inset 0 2px 4px rgba(255,255,255,.28),
+    inset 0 -4px 7px rgba(0,0,0,.25);
   cursor:pointer;
 }
 
 .search{
   width:100%;
-  padding:9px 13px;
+  max-width:220px;
+  height:44px;
+  padding:0 15px;
   border-radius:999px;
-  border:1px solid rgba(212,175,55,.28);
-  background:rgba(2,8,18,.76);
+  border:1px solid rgba(212,175,55,.32);
+  background:rgba(2,8,18,.78);
   color:white;
   font-size:12px;
   outline:none;
   text-align:center;
 }
 
-.search::placeholder{color:rgba(184,195,214,.72);}
+.search::placeholder{
+  color:rgba(184,195,214,.72);
+}
 
 .retake{
-  margin-top:7px;
+  margin-top:8px;
   color:var(--mist);
   font-size:12px;
   cursor:pointer;
   text-align:center;
 }
 
+/* INFO */
+
 .info-card{
   width:min(88vw,520px);
-  margin:13px auto;
+  margin:0 auto 28px;
   padding:13px;
   border-radius:22px;
   background:var(--glass);
@@ -169,11 +234,12 @@ video,.preview{
 
 .got-button{
   width:100%;
-  margin-top:12px;
+  margin-top:13px;
   padding:10px;
   border-radius:999px;
   border:none;
-  background:linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
+  background:
+    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
   color:#06101f;
   font-family:"Cormorant Garamond",serif;
   font-weight:700;
@@ -183,9 +249,11 @@ video,.preview{
   cursor:pointer;
 }
 
+/* FLEET */
+
 .fleet-title{
   width:min(88vw,520px);
-  margin:22px auto 9px;
+  margin:30px auto 9px;
   font-family:"Cormorant Garamond",serif;
   font-size:21px;
   letter-spacing:3px;
@@ -196,17 +264,20 @@ video,.preview{
   display:flex;
   gap:11px;
   overflow-x:auto;
-  padding:0 14px 24px;
+  padding:0 14px 32px;
 }
 
-.fleet-card{min-width:96px;}
+.fleet-card{
+  min-width:96px;
+}
 
 .fleet-porthole{
   width:86px;
   height:86px;
   border-radius:50%;
   padding:6px;
-  background:linear-gradient(145deg,#f0d36f,#d4af37,#b9932e,#674d17);
+  background:
+    linear-gradient(145deg,#f0d36f,#d4af37,#b9932e,#674d17);
 }
 
 .fleet-porthole img{
@@ -222,6 +293,8 @@ video,.preview{
   font-family:"Cormorant Garamond",serif;
   font-size:15px;
 }
+
+/* OVERLAY */
 
 .overlay{
   position:fixed;
@@ -259,132 +332,166 @@ video,.preview{
   font-size:12px;
 }
 
+/* ADD TO HOME */
+
 .install{
   text-align:center;
-  margin:18px auto 32px;
+  margin:44px auto 36px;
   color:var(--mist);
   font-family:"Cormorant Garamond",serif;
   font-size:16px;
   letter-spacing:.6px;
 }
 
-.mini-binocular-svg{
+.mini-binoculars{
   width:92px;
-  margin:0 auto 6px;
-  display:block;
-  filter:drop-shadow(0 12px 14px rgba(0,0,0,.45));
+  height:44px;
+  margin:0 auto 10px;
+  position:relative;
+}
+
+.mini-binoculars .mini-bridge{
+  position:absolute;
+  left:50%;
+  top:46%;
+  width:26px;
+  height:14px;
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  background:
+    linear-gradient(145deg,#f0d36f,#d4af37,#8a681e);
+  box-shadow:
+    0 7px 14px rgba(0,0,0,.38),
+    inset 0 2px 3px rgba(255,255,255,.35),
+    inset 0 -4px 6px rgba(0,0,0,.35);
+  z-index:1;
+}
+
+.mini-binoculars .mini-lens{
+  position:absolute;
+  top:0;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  padding:5px;
+  background:
+    radial-gradient(circle at 28% 17%,rgba(255,255,255,.5),transparent 14%),
+    radial-gradient(circle at 72% 82%,rgba(0,0,0,.32),transparent 30%),
+    linear-gradient(145deg,#ffe58a 0%,#d4af37 30%,#a98125 58%,#4b350e 100%);
+  box-shadow:
+    0 11px 18px rgba(0,0,0,.42),
+    inset 0 3px 5px rgba(255,255,255,.38),
+    inset 0 -6px 9px rgba(0,0,0,.42);
+  z-index:2;
+}
+
+.mini-binoculars .mini-left{left:0;}
+.mini-binoculars .mini-right{right:0;}
+
+.mini-binoculars .mini-inner{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:#06101f;
+  box-shadow:
+    inset 0 0 12px rgba(0,0,0,.85),
+    inset 0 0 3px rgba(212,175,55,.42);
 }
 
 canvas{display:none;}
 
 @media(max-width:560px){
-  .instrument{margin-top:18px;}
-  .controls{gap:12px;}
-  .camera-button{width:39px;height:39px;font-size:17px;}
-  .search{font-size:11px;padding:8px 10px;}
-  .info-main{font-size:18px;}
+  .binocular-stage{
+    margin-top:22px;
+  }
+
+  .binoculars{
+    height:min(49vw,230px);
+  }
+
+  .barrel{
+    padding:2.8%;
+  }
+
+  .control-row{
+    width:min(88vw,520px);
+    gap:14px;
+    margin-top:12px;
+    margin-bottom:28px;
+  }
+
+  .camera-button{
+    width:42px;
+    height:42px;
+  }
+
+  .search{
+    max-width:190px;
+    height:42px;
+    font-size:11px;
+  }
+
+  .info-main{
+    font-size:18px;
+  }
+
+  .install{
+    margin-top:48px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="instrument">
+<div class="binocular-stage">
+  <div class="binoculars">
+    <div class="bridge"></div>
 
-  <svg class="binocular-svg" viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <radialGradient id="shine" cx="30%" cy="20%" r="70%">
-        <stop offset="0%" stop-color="#fff3ad"/>
-        <stop offset="28%" stop-color="#d4af37"/>
-        <stop offset="62%" stop-color="#9b7624"/>
-        <stop offset="100%" stop-color="#3f2d0c"/>
-      </radialGradient>
-      <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#ffe58a"/>
-        <stop offset="35%" stop-color="#d4af37"/>
-        <stop offset="70%" stop-color="#8d6a1f"/>
-        <stop offset="100%" stop-color="#3f2d0c"/>
-      </linearGradient>
-    </defs>
+    <div class="barrel barrel-left">
+      <div class="lens">
+        <video id="video" autoplay playsinline muted></video>
+        <img id="preview" class="preview" alt="Captured yacht">
+      </div>
+    </div>
 
-    <path d="M332 164 C360 118 540 118 568 164 L606 260 C620 306 585 350 535 350 L365 350 C315 350 280 306 294 260 Z"
-      fill="url(#rim)" opacity=".96"/>
-    <ellipse cx="450" cy="218" rx="76" ry="58" fill="#705219" opacity=".75"/>
-    <ellipse cx="450" cy="205" rx="48" ry="34" fill="#d4af37" opacity=".9"/>
-
-    <circle cx="285" cy="215" r="180" fill="url(#shine)"/>
-    <circle cx="615" cy="215" r="180" fill="url(#shine)"/>
-
-    <circle cx="285" cy="215" r="142" fill="#06101f" opacity=".92"/>
-    <circle cx="615" cy="215" r="142" fill="#06101f" opacity=".92"/>
-
-    <circle cx="226" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
-    <circle cx="556" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
-
-    <circle cx="285" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
-    <circle cx="615" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
-    <circle cx="285" cy="215" r="153" fill="none" stroke="#3b2a0b" stroke-width="14" opacity=".55"/>
-    <circle cx="615" cy="215" r="153" fill="none" stroke="#3b2a0b" stroke-width="14" opacity=".55"/>
-  </svg>
-
-  <div class="lens-content left-lens">
-    <video id="video" autoplay playsinline muted></video>
-    <img id="preview" class="preview" alt="Captured yacht">
-  </div>
-
-  <div class="lens-content right-lens">
-    <div id="diagramViewer"></div>
+    <div class="barrel barrel-right">
+      <div class="lens">
+        <div id="diagramViewer"></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="controls">
-  <div>
+<div class="control-row">
+  <div class="control-cell">
     <button class="camera-button" onclick="spotYacht()">📷</button>
     <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Retake</div>
   </div>
 
-  <input
-    id="searchBox"
-    class="search"
-    placeholder="Type yacht name..."
-    oninput="searchYacht()"
-    autocorrect="off"
-    autocapitalize="none"
-    spellcheck="false"
-    autocomplete="off"
-  />
+  <div class="control-cell">
+    <input
+      id="searchBox"
+      class="search"
+      placeholder="Vessel name"
+      oninput="searchYacht()"
+      autocorrect="off"
+      autocapitalize="none"
+      spellcheck="false"
+      autocomplete="off"
+    />
+  </div>
 </div>
 
 <div id="infoCard" class="info-card"></div>
 <div id="fleetArea"></div>
 
 <div class="install">
-  <svg class="mini-binocular-svg" viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <radialGradient id="miniShine" cx="30%" cy="20%" r="70%">
-        <stop offset="0%" stop-color="#fff3ad"/>
-        <stop offset="28%" stop-color="#d4af37"/>
-        <stop offset="62%" stop-color="#9b7624"/>
-        <stop offset="100%" stop-color="#3f2d0c"/>
-      </radialGradient>
-      <linearGradient id="miniRim" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#ffe58a"/>
-        <stop offset="35%" stop-color="#d4af37"/>
-        <stop offset="70%" stop-color="#8d6a1f"/>
-        <stop offset="100%" stop-color="#3f2d0c"/>
-      </linearGradient>
-    </defs>
-    <path d="M332 164 C360 118 540 118 568 164 L606 260 C620 306 585 350 535 350 L365 350 C315 350 280 306 294 260 Z" fill="url(#miniRim)"/>
-    <ellipse cx="450" cy="218" rx="76" ry="58" fill="#705219" opacity=".75"/>
-    <circle cx="285" cy="215" r="180" fill="url(#miniShine)"/>
-    <circle cx="615" cy="215" r="180" fill="url(#miniShine)"/>
-    <circle cx="285" cy="215" r="142" fill="#06101f" opacity=".92"/>
-    <circle cx="615" cy="215" r="142" fill="#06101f" opacity=".92"/>
-    <circle cx="226" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
-    <circle cx="556" cy="134" r="34" fill="rgba(255,255,255,.35)"/>
-    <circle cx="285" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
-    <circle cx="615" cy="215" r="178" fill="none" stroke="#f6d978" stroke-width="10" opacity=".75"/>
-  </svg>
+  <div class="mini-binoculars">
+    <div class="mini-bridge"></div>
+    <div class="mini-lens mini-left"><div class="mini-inner"></div></div>
+    <div class="mini-lens mini-right"><div class="mini-inner"></div></div>
+  </div>
   Add to Home Screen
 </div>
 
@@ -397,7 +504,7 @@ canvas{display:none;}
 
 <canvas id="canvas"></canvas>
 
-<script src="data.js?v=20"></script>
+<script src="data.js?v=21"></script>
 
 <script>
 const video = document.getElementById("video");
@@ -433,6 +540,8 @@ function renderDiagram(){
 }
 
 function renderInfo(){
+  if(!selectedYacht) return;
+
   document.getElementById("infoCard").innerHTML = `
     <div class="info-links">
       <a class="info-link" href="${selectedYacht.yachtLink}" target="_blank">
