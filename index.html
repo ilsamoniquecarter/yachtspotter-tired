@@ -29,7 +29,8 @@ body{
   font-family:Inter,sans-serif;
   background:radial-gradient(circle at top,#112746 0%,#051122 60%,#01050a 100%);
   color:white;
-  padding-bottom: 60px;
+  padding-bottom: 100px; /* Increased padding to ensure no overlaps with footer */
+  position: relative;
 }
 
 /* MAIN BINOCULARS STAGE */
@@ -127,10 +128,10 @@ video,.preview{
   height:90%;
 }
 
-/* HIGH-DELINEATION MARINE QUARTZ TELEMETRY CONSOLE */
+/* HIGH-DELINEATION TELEMETRY GLASS CONSOLE */
 .telemetry-dashboard {
   width: min(92vw, 560px);
-  margin: 35px auto 10px; /* Heavy spacing separation gap beneath binoculars */
+  margin: 35px auto 10px;
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -169,7 +170,7 @@ video,.preview{
 
 .gauge-link {
   text-decoration: none;
-  color: #ffcc33; /* Quartz Amber Glow */
+  color: #ffcc33;
   font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   display: -webkit-box;
@@ -191,7 +192,7 @@ video,.preview{
   color: #e6d39a;
 }
 
-/* INSTRUMENT PANEL / MAIN SHIP DASHBOARD */
+/* MAIN SHIP DASHBOARD CONSOLE */
 .dashboard-console{
   width:min(92vw,560px);
   margin:15px auto;
@@ -204,7 +205,6 @@ video,.preview{
   position: relative;
 }
 
-/* Alignment Spatial Grid: Maps controls tightly to their matching viewport modules above */
 .dial-grid{
   display:flex;
   justify-content:space-between;
@@ -385,7 +385,7 @@ video,.preview{
   width:86px;
 }
 
-/* POPUP MODULE OVERLAYS (Used for alerts and image view sheets) */
+/* POPUP MODULE OVERLAYS */
 .overlay{
   position:fixed;
   inset:0;
@@ -465,23 +465,27 @@ video,.preview{
   margin-bottom: 20px;
 }
 
-/* FIX: Lighthouse permanently mounted at bottom of screen */
+/* FIX: Absolute baseline placement guarantees visibility across all viewports */
 .install{
+  position: relative;
   text-align:center;
-  margin:40px auto 20px;
+  margin: 50px auto 30px;
   color:var(--mist);
   font-family:"Cormorant Garamond",serif;
   font-size:15px;
   letter-spacing:1px;
   cursor:pointer;
-  display: block !important; /* Force render bypassing PWA blocks */
-  width:fit-content;
+  width:180px;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10;
 }
 
 .lighthouse-img-icon{
-  width:46px;
-  height:46px;
-  object-fit:contain;
+  width:48px !important;
+  height:48px !important;
+  display: inline-block !important;
   margin-bottom:6px;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
 }
@@ -626,10 +630,10 @@ const preview = document.getElementById("preview");
 const canvas = document.getElementById("canvas");
 
 let currentIndex = 0;
-let selectedYacht = yachts[0];
+let selectedYacht = null;
 let capturedImage = null;
 
-// Camera Hardware Stream Mounting Pipeline
+// Hardware Camera Initialization 
 navigator.mediaDevices.getUserMedia({
   video:{facingMode:{ideal:"environment"}},
   audio:false
@@ -639,7 +643,7 @@ navigator.mediaDevices.getUserMedia({
   video.setAttribute("playsinline", true);
   video.play();
 })
-.catch(()=>{/* Mirror bypass fallback */});
+.catch(()=>{});
 
 function generateYachtSVG(name, length = 120) {
   const normalized = name ? name.toUpperCase().trim() : "UNKNOWN";
@@ -653,7 +657,7 @@ function generateYachtSVG(name, length = 120) {
   `;
   let details = `
     <rect x="175" y="90" width="130" height="8" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.7"/>
-    <circle cx="95" cy="120" r="1.5" fill="none" stroke="#d4af37"/><circle cx="115" cy="120" r="1.5" fill="none" stroke="#d4af37"/>
+    <circle cx="95" cy="120" r="1.5" fill="none" stroke="#d4af37"/>
   `;
 
   if (normalized === "A" || normalized.includes("MOTOR YACHT A ")) {
@@ -688,19 +692,18 @@ function generateYachtSVG(name, length = 120) {
   `;
 }
 
-/* FIX: Standardized sync pipeline updates graphics and telemetry instantly in tandem */
-function renderDiagram(){
-  if (selectedYacht) {
-    document.getElementById("diagramViewer").innerHTML = generateYachtSVG(selectedYacht.name, selectedYacht.length);
-  } else {
-    document.getElementById("diagramViewer").innerHTML = generateYachtSVG("", 120);
+/* FIX: Synchronized render pipeline triggers database reads simultaneously */
+function refreshDashboard() {
+  if (typeof yachts !== 'undefined' && yachts.length > 0) {
+    selectedYacht = yachts[currentIndex];
   }
-  renderInfo();
-}
+  
+  if (!selectedYacht) return;
 
-function renderInfo(){
-  if(!selectedYacht) return;
-
+  // 1. Force reload vector canvas view frame
+  document.getElementById("diagramViewer").innerHTML = generateYachtSVG(selectedYacht.name, selectedYacht.length);
+  
+  // 2. Refresh active digital telemetry outputs
   document.getElementById("vesselGaugeContent").innerHTML = `
     <a class="gauge-link vessel-name-text" href="${selectedYacht.yachtLink}" target="_blank">
       ${selectedYacht.name}
@@ -716,7 +719,7 @@ function renderInfo(){
 
 function searchYacht(){
   const q = document.getElementById("searchBox").value.toLowerCase().trim();
-  if(!q) return;
+  if(!q || typeof yachts === 'undefined') return;
 
   let index = yachts.findIndex(y => y.name.toLowerCase() === q);
   if(index < 0){
@@ -731,9 +734,18 @@ function searchYacht(){
 
   if(index >= 0){
     currentIndex = index;
-    selectedYacht = yachts[index];
-    renderDiagram();
+    refreshDashboard();
   }
+}
+
+/* FIX: Increments array loop pointers safely and commands an immediate unified refresh */
+function browseDatabaseNext(){
+  if (typeof yachts === 'undefined' || yachts.length === 0) return;
+  
+  currentIndex = (currentIndex + 1) % yachts.length;
+  document.getElementById("searchBox").value = yachts[currentIndex].name;
+  
+  refreshDashboard(); 
 }
 
 function captureLivePhoto() {
@@ -754,18 +766,7 @@ function captureLivePhoto() {
   video.style.display = "none";
   document.getElementById("retakeButton").style.display = "block";
 
-  // Light up the armed indicator system beacon
-  document.getElementById("statusLight").classMoped = "";
-  document.getElementById("statusLight").classList.add("dial-status-light", "armed");
-}
-
-/* Fixes the decoupled indexing loop so everything switches together perfectly */
-function browseDatabaseNext(){
-  currentIndex = (currentIndex + 1) % yachts.length;
-  selectedYacht = yachts[currentIndex];
-  
-  document.getElementById("searchBox").value = selectedYacht.name;
-  renderDiagram(); // Single unified call updates everything on the console face
+  document.getElementById("statusLight").className = "dial-status-light armed";
 }
 
 function retakePhoto(){
@@ -778,15 +779,16 @@ function retakePhoto(){
   document.getElementById("statusLight").className = "dial-status-light";
 }
 
-/* Custom Modal Warning Handlers replace plain text line tickers */
 function triggerLogValidation() {
-  // 1. Missing Photo Validation Prompt
+  if (!selectedYacht) return;
+
+  // 1. Missing Photo Alert Prompt
   if (!capturedImage) {
     triggerConsoleAlert("📷 CAPTURE REQUIRED", "Photo capture required! Please snap a picture using the Camera Shutter dial before logging this craft.");
     return;
   }
 
-  // 2. Duplicate Check Guard
+  // 2. Duplicate Processing Scan
   const currentFleet = JSON.parse(localStorage.getItem("fleet") || "[]");
   const alreadyLogged = currentFleet.some(item => item.name.toLowerCase() === selectedYacht.name.toLowerCase());
 
@@ -814,12 +816,11 @@ function commitFleetEntry(){
     deepPockets: selectedYacht.deepPockets,
     yachtLink: selectedYacht.yachtLink,
     ownerLink: selectedYacht.ownerLink,
-    asset: capturedImage // Strictly forces photo asset mapping
+    asset: capturedImage
   });
 
   localStorage.setItem("fleet", JSON.stringify(sightings));
   renderFleet();
-  
   retakePhoto();
 }
 
@@ -890,8 +891,11 @@ function closeHomeHelp(e){
   if(e.target.id === "homeOverlay") hideHomeHelp();
 }
 
-renderDiagram();
-renderFleet();
+// Initial Boot Sequence Execution
+window.addEventListener("DOMContentLoaded", () => {
+  refreshDashboard();
+  renderFleet();
+});
 </script>
 
 </body>
