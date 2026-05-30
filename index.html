@@ -29,13 +29,13 @@ body{
   font-family:Inter,sans-serif;
   background:radial-gradient(circle at top,#112746 0%,#051122 60%,#01050a 100%);
   color:white;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
 }
 
-/* MAIN BINOCULARS */
+/* MAIN BINOCULARS STAGE */
 .binocular-stage{
   width:min(96vw,760px);
-  margin:40px auto 0;
+  margin:30px auto 0;
   position:relative;
   display:flex;
   justify-content:center;
@@ -127,38 +127,34 @@ video,.preview{
   height:90%;
 }
 
-/* TWIN TELEMETRY GAUGES (Replaces old text bars) */
+/* HIGH-DELINEATION MARINE QUARTZ TELEMETRY CONSOLE */
 .telemetry-dashboard {
   width: min(92vw, 560px);
-  margin: 24px auto 0;
+  margin: 35px auto 10px; /* Heavy spacing separation gap beneath binoculars */
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
+  background: linear-gradient(180deg, #040d1a 0%, #01050d 100%);
+  border: 2px solid var(--panel-border);
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
 }
 
 .round-gauge {
   flex: 1;
-  background: radial-gradient(circle at center, #0a1b35 0%, #030a14 100%);
-  border: 4px solid var(--brass);
-  border-radius: 50%;
-  aspect-ratio: 1 / 1;
+  background: radial-gradient(circle at center, rgba(14, 34, 61, 0.4) 0%, rgba(5, 15, 28, 0.9) 100%);
+  border: 3px solid var(--brass);
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.8);
+  padding: 12px 10px;
+  min-height: 85px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
   position: relative;
   text-align: center;
-}
-
-.round-gauge::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  border: 1px dashed rgba(212, 175, 55, 0.25);
-  pointer-events: none;
 }
 
 .gauge-title {
@@ -167,13 +163,13 @@ video,.preview{
   color: var(--mist);
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 4px;
-  opacity: 0.7;
+  margin-bottom: 6px;
+  opacity: 0.6;
 }
 
 .gauge-link {
   text-decoration: none;
-  color: var(--gold);
+  color: #ffcc33; /* Quartz Amber Glow */
   font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   display: -webkit-box;
@@ -181,58 +177,53 @@ video,.preview{
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.1;
+  line-height: 1.15;
+  text-shadow: 0 0 4px rgba(255, 204, 51, 0.4);
 }
 
 .gauge-link.vessel-name-text {
-  font-size: 20px;
+  font-size: 21px;
   letter-spacing: 0.5px;
 }
 
 .gauge-link.owner-name-text {
   font-size: 16px;
-  color: #e0cf9b;
+  color: #e6d39a;
 }
 
-/* INSTRUMENT PANEL / SHIP DASHBOARD */
+/* INSTRUMENT PANEL / MAIN SHIP DASHBOARD */
 .dashboard-console{
   width:min(92vw,560px);
-  margin:24px auto;
+  margin:15px auto;
   background:linear-gradient(180deg, var(--panel-bg) 0%, #050d1a 100%);
   border:3px solid var(--panel-border);
   border-radius:24px;
   padding:24px;
   box-shadow:0 20px 45px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
   text-align:center;
+  position: relative;
 }
 
-.console-heading{
-  font-family:monospace;
-  font-size:11px;
-  color:var(--panel-border);
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-bottom:20px;
-}
-
+/* Alignment Spatial Grid: Maps controls tightly to their matching viewport modules above */
 .dial-grid{
   display:flex;
-  justify-content:space-around;
-  align-items:center;
+  justify-content:space-between;
+  align-items:flex-start;
   gap:10px;
-  margin-bottom:25px;
+  margin-bottom:20px;
 }
 
 .dial-wrapper{
   display:flex;
   flex-direction:column;
   align-items:center;
+  flex: 1;
 }
 
 /* Round Dial Interface Elements */
 .nautical-dial{
-  width:76px;
-  height:76px;
+  width:78px;
+  height:78px;
   border-radius:50%;
   border:4px solid var(--brass);
   background:radial-gradient(circle at center, #0e223d 0%, #050f1c 100%);
@@ -245,8 +236,8 @@ video,.preview{
   transition:transform 0.1s ease, border-color 0.2s;
 }
 
-.nautical-dial:not(.locked-dial):active{
-  transform:scale(0.95);
+.nautical-dial:active{
+  transform:scale(0.94);
 }
 
 .nautical-dial::before {
@@ -257,13 +248,13 @@ video,.preview{
   border:1px dashed rgba(212, 175, 55, 0.3);
 }
 
-/* System Arm Status Node Indicator light */
+/* Status Indicator Beacon */
 .dial-status-light {
   position: absolute;
-  top: 4px;
-  right: 12px;
-  width: 7px;
-  height: 7px;
+  top: 5px;
+  right: 14px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: var(--error);
   box-shadow: 0 0 6px var(--error);
@@ -272,13 +263,7 @@ video,.preview{
 
 .dial-status-light.armed {
   background-color: var(--success);
-  box-shadow: 0 0 8px var(--success);
-}
-
-.locked-dial {
-  border-color: #4a3b1a;
-  cursor: not-allowed;
-  opacity: 0.7;
+  box-shadow: 0 0 10px var(--success);
 }
 
 .dial-icon{
@@ -295,7 +280,8 @@ video,.preview{
   text-transform:uppercase;
   font-weight:bold;
   text-align: center;
-  width: 90px;
+  max-width: 95px;
+  line-height: 1.2;
 }
 
 .search-field-wrapper {
@@ -335,27 +321,10 @@ video,.preview{
   cursor:pointer;
 }
 
-/* CONSOLE NOTIFICATION TELEPROMPTER banner */
-.console-ticker {
-  background: #030812;
-  border: 1px solid var(--panel-border);
-  padding: 6px;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 11px;
-  color: #4cd964;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  min-height: 28px;
-}
-.console-ticker.error-alert {
-  color: #ff3b30;
-}
-
 /* STORAGE PORTEHOLES ROW */
 .spotted-section{
   width:min(92vw,560px);
-  margin:30px auto;
+  margin:25px auto;
   display:none;
   background:rgba(4, 11, 22, 0.4);
   border:1px dashed var(--panel-border);
@@ -416,25 +385,39 @@ video,.preview{
   width:86px;
 }
 
-/* POPUP VIEWER OVERLAYS */
+/* POPUP MODULE OVERLAYS (Used for alerts and image view sheets) */
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(2,8,18,.92);
+  background:rgba(2,8,18,.94);
   backdrop-filter:blur(10px);
   display:none;
-  z-index:50;
+  z-index:100;
   padding:18px;
 }
 
 .overlay-card{
   max-width:420px;
-  margin:40px auto;
+  margin:60px auto;
   border-radius:26px;
   background:linear-gradient(180deg,#0a1d37,#020812);
-  border:1px solid rgba(212,175,55,.3);
-  padding:20px;
+  border:2px solid var(--brass);
+  padding:24px;
   text-align:center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+
+.alert-icon-header {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.alert-message-text {
+  font-size: 16px;
+  color: var(--mist);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-family: sans-serif;
 }
 
 .overlay-img-frame{
@@ -454,7 +437,6 @@ video,.preview{
 .overlay-close,
 .home-close{
   width:100%;
-  margin-top:20px;
   padding:12px;
   border-radius:999px;
   background:linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
@@ -465,6 +447,7 @@ video,.preview{
   font-size:18px;
   letter-spacing:1px;
   cursor:pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .home-title{
@@ -479,25 +462,27 @@ video,.preview{
   color:var(--mist);
   font-size:15px;
   line-height:1.8;
+  margin-bottom: 20px;
 }
 
-/* SHIPS LIGHTHOUSE ANCHOR FOOTER */
+/* FIX: Lighthouse permanently mounted at bottom of screen */
 .install{
   text-align:center;
-  margin:50px auto 20px;
+  margin:40px auto 20px;
   color:var(--mist);
   font-family:"Cormorant Garamond",serif;
-  font-size:16px;
+  font-size:15px;
   letter-spacing:1px;
   cursor:pointer;
+  display: block !important; /* Force render bypassing PWA blocks */
   width:fit-content;
 }
 
 .lighthouse-img-icon{
-  width:50px;
-  height:50px;
+  width:46px;
+  height:46px;
   object-fit:contain;
-  margin-bottom:8px;
+  margin-bottom:6px;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
 }
 
@@ -506,15 +491,25 @@ canvas{display:none;}
 @media (max-width: 480px) {
   .telemetry-dashboard {
     gap: 10px;
-  }
-  .round-gauge {
     padding: 8px;
   }
+  .round-gauge {
+    padding: 10px 6px;
+    min-height: 75px;
+  }
   .gauge-link.vessel-name-text {
-    font-size: 15px;
+    font-size: 17px;
   }
   .gauge-link.owner-name-text {
-    font-size: 12px;
+    font-size: 13px;
+  }
+  .nautical-dial {
+    width: 68px;
+    height: 68px;
+  }
+  .dial-label {
+    font-size: 9px;
+    width: 80px;
   }
 }
 </style>
@@ -543,7 +538,7 @@ canvas{display:none;}
 
 <div class="telemetry-dashboard">
   <div class="round-gauge">
-    <div class="gauge-title">Target Vessel</div>
+    <div class="gauge-title">Target Ship</div>
     <div id="vesselGaugeContent"></div>
   </div>
   <div class="round-gauge">
@@ -553,11 +548,8 @@ canvas{display:none;}
 </div>
 
 <div class="dashboard-console">
-  <div class="console-heading">Bridge Control Console</div>
-  
-  <div id="consoleTicker" class="console-ticker">System Armed: Photo Required to Log</div>
-
   <div class="dial-grid">
+    
     <div class="dial-wrapper">
       <div class="nautical-dial" onclick="captureLivePhoto()">
         <span class="dial-icon">📷</span>
@@ -573,19 +565,20 @@ canvas{display:none;}
     </div>
 
     <div class="dial-wrapper">
-      <div id="logDial" class="nautical-dial locked-dial" onclick="triggerLogCommit()">
+      <div class="nautical-dial" onclick="triggerLogValidation()">
         <div id="statusLight" class="dial-status-light"></div>
         <span class="dial-icon">⚓</span>
       </div>
-      <div class="dial-label">Log Vessel</div>
+      <div class="dial-label">Log Craft</div>
     </div>
+
   </div>
 
   <div class="search-field-wrapper">
     <input
       id="searchBox"
       class="search"
-      placeholder="SYS REGISTRY SEARCH..."
+      placeholder="STERN SEARCH..."
       oninput="searchYacht()"
       autocorrect="off"
       autocapitalize="none"
@@ -606,7 +599,7 @@ canvas{display:none;}
 <div id="overlay" class="overlay" onclick="closeOverlay(event)">
   <div class="overlay-card" onclick="event.stopPropagation()">
     <div id="overlayContent"></div>
-    <button class="overlay-close" onclick="hideOverlay()">Close Sheet</button>
+    <button class="overlay-close" onclick="hideOverlay()" style="margin-top:20px;">Close Sheet</button>
   </div>
 </div>
 
@@ -636,7 +629,7 @@ let currentIndex = 0;
 let selectedYacht = yachts[0];
 let capturedImage = null;
 
-// Clean stream acquisition initializer 
+// Camera Hardware Stream Mounting Pipeline
 navigator.mediaDevices.getUserMedia({
   video:{facingMode:{ideal:"environment"}},
   audio:false
@@ -646,7 +639,7 @@ navigator.mediaDevices.getUserMedia({
   video.setAttribute("playsinline", true);
   video.play();
 })
-.catch(()=>{/* Standby state if hardware blocks */});
+.catch(()=>{/* Mirror bypass fallback */});
 
 function generateYachtSVG(name, length = 120) {
   const normalized = name ? name.toUpperCase().trim() : "UNKNOWN";
@@ -695,6 +688,7 @@ function generateYachtSVG(name, length = 120) {
   `;
 }
 
+/* FIX: Standardized sync pipeline updates graphics and telemetry instantly in tandem */
 function renderDiagram(){
   if (selectedYacht) {
     document.getElementById("diagramViewer").innerHTML = generateYachtSVG(selectedYacht.name, selectedYacht.length);
@@ -704,7 +698,6 @@ function renderDiagram(){
   renderInfo();
 }
 
-/* Formats live database profiles cleanly inside the circular telemetry gauges */
 function renderInfo(){
   if(!selectedYacht) return;
 
@@ -743,10 +736,8 @@ function searchYacht(){
   }
 }
 
-/* Captures photo from left eye lens viewport and unlocks logging hardware */
 function captureLivePhoto() {
   if(!video.videoWidth || !video.videoHeight){
-    updateTicker("Camera initializing...", true);
     return;
   }
   
@@ -763,21 +754,18 @@ function captureLivePhoto() {
   video.style.display = "none";
   document.getElementById("retakeButton").style.display = "block";
 
-  // UNLOCK MECHANISM: Arm the Log Dial status configuration
-  const logDial = document.getElementById("logDial");
-  const light = document.getElementById("statusLight");
-  logDial.classList.remove("locked-dial");
-  light.classList.add("armed");
-  
-  updateTicker("Photo Captured. Log Dial Armed.");
+  // Light up the armed indicator system beacon
+  document.getElementById("statusLight").classMoped = "";
+  document.getElementById("statusLight").classList.add("dial-status-light", "armed");
 }
 
+/* Fixes the decoupled indexing loop so everything switches together perfectly */
 function browseDatabaseNext(){
   currentIndex = (currentIndex + 1) % yachts.length;
   selectedYacht = yachts[currentIndex];
   
   document.getElementById("searchBox").value = selectedYacht.name;
-  renderDiagram();
+  renderDiagram(); // Single unified call updates everything on the console face
 }
 
 function retakePhoto(){
@@ -787,61 +775,51 @@ function retakePhoto(){
   video.style.display = "block";
   document.getElementById("retakeButton").style.display = "none";
 
-  // LOCK MECHANISM: Return log system to safe default state
-  const logDial = document.getElementById("logDial");
-  const light = document.getElementById("statusLight");
-  logDial.classList.add("locked-dial");
-  light.classList.remove("armed");
-  
-  updateTicker("System Armed: Photo Required to Log");
+  document.getElementById("statusLight").className = "dial-status-light";
 }
 
-function updateTicker(msg, isError = false) {
-  const ticker = document.getElementById("consoleTicker");
-  ticker.innerText = msg;
-  if(isError) {
-    ticker.classList.add("error-alert");
-  } else {
-    ticker.classList.remove("error-alert");
-  }
-}
-
-/* Execution validation pipeline handles duplicate filtering and hardware blocks */
-function triggerLogCommit() {
-  // 1. Strict Enforce: Block action if no active photo frame exists
+/* Custom Modal Warning Handlers replace plain text line tickers */
+function triggerLogValidation() {
+  // 1. Missing Photo Validation Prompt
   if (!capturedImage) {
-    updateTicker("Capture Locked: Take photo first!", true);
+    triggerConsoleAlert("📷 CAPTURE REQUIRED", "Photo capture required! Please snap a picture using the Camera Shutter dial before logging this craft.");
     return;
   }
 
-  // 2. Strict Enforce: Query localStorage array to block double logging
+  // 2. Duplicate Check Guard
   const currentFleet = JSON.parse(localStorage.getItem("fleet") || "[]");
   const alreadyLogged = currentFleet.some(item => item.name.toLowerCase() === selectedYacht.name.toLowerCase());
 
   if (alreadyLogged) {
-    updateTicker(`Rejected: ${selectedYacht.name} is already logged!`, true);
+    triggerConsoleAlert("⚓ CRAFT RECORDED", `Operation Aborted: <strong>${selectedYacht.name}</strong> is already anchored in your fleet data bank.`);
     return;
   }
 
-  // If validation rules clear, run native logging sequence
-  gotYacht();
+  commitFleetEntry();
 }
 
-function gotYacht(){
+function triggerConsoleAlert(header, message) {
+  document.getElementById("overlayContent").innerHTML = `
+    <div class="alert-icon-header">⚠️</div>
+    <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:var(--gold); margin-bottom:10px;">${header}</div>
+    <div class="alert-message-text">${message}</div>
+  `;
+  document.getElementById("overlay").style.display = "block";
+}
+
+function commitFleetEntry(){
   const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
   sightings.unshift({
     name: selectedYacht.name,
     deepPockets: selectedYacht.deepPockets,
     yachtLink: selectedYacht.yachtLink,
     ownerLink: selectedYacht.ownerLink,
-    asset: capturedImage // Enforced live camera snapshot frame exclusively
+    asset: capturedImage // Strictly forces photo asset mapping
   });
 
   localStorage.setItem("fleet", JSON.stringify(sightings));
   renderFleet();
-  updateTicker(`Success: ${selectedYacht.name} logged into fleet.`);
   
-  // Clear camera state for next tracking match automatically
   retakePhoto();
 }
 
@@ -858,20 +836,18 @@ function renderFleet(){
   area.style.display = "block";
 
   let html = `<div class="fleet-row">`;
-
   sightings.forEach((s,index)=>{
     html += `
       <div class="fleet-card" onclick="openFleet(${index})">
         <div class="fleet-porthole">
           <div class="porthole-asset-frame">
-             <img src="${s.asset}" alt="Vessel snapshot photo">
+             <img src="${s.asset}" alt="Craft Photo">
           </div>
         </div>
         <div class="fleet-name">${s.name}</div>
       </div>
     `;
   });
-
   html += `</div>`;
   area.innerHTML = html;
 }
@@ -888,10 +864,9 @@ function openFleet(index){
       Owner: ${s.deepPockets}
     </div>
     <div class="overlay-img-frame">
-       <img src="${s.asset}" alt="Logged vessel snapshot image">
+       <img src="${s.asset}" alt="Craft Snapshot">
     </div>
   `;
-
   document.getElementById("overlay").style.display = "block";
 }
 
@@ -915,20 +890,8 @@ function closeHomeHelp(e){
   if(e.target.id === "homeOverlay") hideHomeHelp();
 }
 
-function updateInstallFooter(){
-  const standalone =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true;
-
-  const footer = document.getElementById("installFooter");
-  if(footer){
-    footer.style.display = standalone ? "none" : "block";
-  }
-}
-
 renderDiagram();
 renderFleet();
-updateInstallFooter();
 </script>
 
 </body>
