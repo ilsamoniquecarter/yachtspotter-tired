@@ -1,896 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>YachtSpotter Majorca</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>YachtSpotter // Tactical Instrumentation Console</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --panel-bg: #0d1117;
+      --panel-border: #30363d;
+      --neon-gold: #f0d36f;
+      --dark-gold: #d4af37;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --crt-glow: rgba(240, 211, 111, 0.03);
+      --mist: #b8c3d6;
+      --hull-stroke: #f0d36f;
+    }
 
-<link rel="manifest" href="manifest.json" />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght=600;700&family=Inter:wght=400;500;600&display=swap" rel="stylesheet">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
 
-<style>
-:root{
-  --navy:#051122;
-  --navy-dark:#02070f;
-  --gold:#d4af37;
-  --brass:#b9932e;
-  --mist:#b8c3d6;
-  --panel-bg:#0a192f;
-  --panel-border:#1e3557;
-  --error:#ff3b30;
-  --success:#00ff66;
-}
+    body {
+      background-color: #040608;
+      font-family: 'Courier New', Courier, monospace;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      padding-bottom: 120px;
+      overflow-x: hidden;
+    }
 
-*{box-sizing:border-box;}
+    .console-container {
+      width: 100%;
+      max-width: 740px;
+      background-color: var(--panel-bg);
+      border: 2px solid var(--panel-border);
+      border-radius: 14px;
+      padding: 35px;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 30px var(--crt-glow);
+      position: relative;
+    }
 
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Inter,sans-serif;
-  background:radial-gradient(circle at top,#112746 0%,#051122 60%,#01050a 100%);
-  color:white;
-  padding-bottom: 100px;
-  position: relative;
-}
+    .console-container::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      z-index: 10;
+      background-size: 100% 4px, 6px 100%;
+      pointer-events: none;
+      opacity: 0.35;
+    }
 
-/* MAIN BINOCULARS STAGE */
-.binocular-stage{
-  width:min(96vw,760px);
-  margin:30px auto 0;
-  position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    .console-header {
+      border-bottom: 1px dashed var(--panel-border);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.binoculars{
-  width:min(94vw,720px);
-  height:min(48vw,330px);
-  position:relative;
-}
+    .system-title {
+      color: var(--neon-gold);
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
 
-.bridge{
-  position:absolute;
-  left:50%;
-  top:44%;
-  width:18%;
-  height:22%;
-  transform:translate(-50%,-50%);
-  border-radius:999px;
-  background:
-    radial-gradient(circle at 28% 24%,rgba(255,255,255,.42),transparent 22%),
-    linear-gradient(145deg,#f8df83 0%,#d4af37 34%,#9d7624 70%,#47320c 100%);
-  box-shadow:
-    0 16px 32px rgba(0,0,0,.48),
-    inset 0 4px 7px rgba(255,255,255,.36),
-    inset 0 -8px 13px rgba(0,0,0,.45);
-  z-index:1;
-}
+    .telemetry-counter {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: bold;
+      background-color: #161b22;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--panel-border);
+      letter-spacing: 1px;
+    }
 
-.barrel{
-  position:absolute;
-  top:0;
-  width:48%;
-  height:100%;
-  border-radius:50%;
-  padding:3.3%;
-  background:
-    radial-gradient(circle at 27% 17%,rgba(255,255,255,.55),transparent 13%),
-    radial-gradient(circle at 72% 82%,rgba(0,0,0,.36),transparent 30%),
-    linear-gradient(145deg,#ffe990 0%,#d4af37 30%,#a57b23 58%,#47320c 100%);
-  box-shadow:
-    0 28px 60px rgba(0,0,0,.54),
-    inset 0 5px 9px rgba(255,255,255,.44),
-    inset 0 -11px 16px rgba(0,0,0,.48);
-  z-index:2;
-}
+    .viewport-lens {
+      width: 100%;
+      height: 260px;
+      background-color: #080b0f;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
 
-.barrel-left{left:1.5%;}
-.barrel-right{right:1.5%;}
+    .dynamic-yacht-svg {
+      width: 100%;
+      height: 100%;
+      max-height: 210px;
+    }
 
-.lens{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  overflow:hidden;
-  background:#06101f;
-  border:2px solid rgba(255,255,255,.15);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:
-    inset 0 0 36px rgba(0,0,0,.86),
-    inset 0 0 7px rgba(212,175,55,.48);
-}
+    .viewport-lens::before {
+      content: ''; position: absolute; top: 15px; left: 15px; width: 14px; height: 14px;
+      border-top: 2px solid var(--dark-gold); border-left: 2px solid var(--dark-gold);
+    }
+    .viewport-lens::after {
+      content: ''; position: absolute; top: 15px; right: 15px; width: 14px; height: 14px;
+      border-top: 2px solid var(--dark-gold); border-right: 2px solid var(--dark-gold);
+    }
+    .lens-bottom-left {
+      position: absolute; bottom: 15px; left: 15px; width: 14px; height: 14px;
+      border-bottom: 2px solid var(--dark-gold); border-left: 2px solid var(--dark-gold);
+    }
+    .lens-bottom-right {
+      position: absolute; bottom: 15px; right: 15px; width: 14px; height: 14px;
+      border-bottom: 2px solid var(--dark-gold); border-right: 2px solid var(--dark-gold);
+    }
 
-video,.preview{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
+    .data-matrix {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 35px;
+    }
 
-.preview{display:none;}
+    .data-row {
+      display: flex;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.4);
+      padding-bottom: 10px;
+    }
 
-#diagramViewer{
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:
-    radial-gradient(circle at center,rgba(212,175,55,.08),transparent 55%),
-    #06101f;
-}
+    .data-label {
+      width: 180px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: bold;
+    }
 
-.dynamic-yacht-svg{
-  width:90%;
-  height:90%;
-}
+    .data-value {
+      flex-grow: 1;
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
 
-/* HIGH-DELINEATION TELEMETRY GLASS CONSOLE */
-.telemetry-dashboard {
-  width: min(92vw, 560px);
-  margin: 35px auto 10px;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  background: linear-gradient(180deg, #040d1a 0%, #01050d 100%);
-  border: 2px solid var(--panel-border);
-  padding: 12px;
-  border-radius: 16px;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
-}
+    .data-value a {
+      color: var(--neon-gold);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--dark-gold);
+    }
 
-.round-gauge {
-  flex: 1;
-  background: radial-gradient(circle at center, rgba(14, 34, 61, 0.4) 0%, rgba(5, 15, 28, 0.9) 100%);
-  border: 3px solid var(--brass);
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 10px;
-  min-height: 85px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  position: relative;
-  text-align: center;
-}
+    .data-value a:hover {
+      color: #ffffff;
+      border-bottom: 1px solid #ffffff;
+    }
 
-.gauge-title {
-  font-family: monospace;
-  font-size: 9px;
-  color: var(--mist);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  opacity: 0.6;
-}
+    .control-deck {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
 
-.gauge-link {
-  text-decoration: none;
-  color: #ffcc33;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 700;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.15;
-  text-shadow: 0 0 4px rgba(255, 204, 51, 0.4);
-}
+    .nav-btn {
+      background-color: #161b22;
+      color: var(--neon-gold);
+      border: 1px solid var(--panel-border);
+      padding: 18px 28px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      letter-spacing: 1.5px;
+    }
 
-.gauge-link.vessel-name-text {
-  font-size: 21px;
-  letter-spacing: 0.5px;
-}
+    .nav-btn:hover {
+      background-color: #21262d;
+      border-color: var(--neon-gold);
+      box-shadow: 0 0 16px rgba(240, 211, 111, 0.2);
+    }
 
-.gauge-link.owner-name-text {
-  font-size: 16px;
-  color: #e6d39a;
-}
+    .nav-btn:active {
+      background-color: var(--dark-gold);
+      color: #000;
+      transform: scale(0.97);
+    }
 
-/* MAIN SHIP DASHBOARD CONSOLE */
-.dashboard-console{
-  width:min(92vw,560px);
-  margin:15px auto;
-  background:linear-gradient(180deg, var(--panel-bg) 0%, #050d1a 100%);
-  border:3px solid var(--panel-border);
-  border-radius:24px;
-  padding:24px;
-  box-shadow:0 20px 45px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-  text-align:center;
-  position: relative;
-}
+    .install {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: var(--mist);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+      width: 280px;
+      z-index: 60;
+    }
 
-.dial-grid{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-  margin-bottom:20px;
-}
+    .install:hover {
+      color: var(--neon-gold);
+    }
 
-.dial-wrapper{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  flex: 1;
-}
+    .lighthouse-img-icon {
+      width: 46px;
+      height: 46px;
+      display: inline-block;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.65));
+      transition: transform 0.3s ease;
+    }
 
-/* Round Dial Interface Elements */
-.nautical-dial{
-  width:78px;
-  height:78px;
-  border-radius:50%;
-  border:4px solid var(--brass);
-  background:radial-gradient(circle at center, #0e223d 0%, #050f1c 100%);
-  box-shadow:0 8px 16px rgba(0,0,0,0.4), inset 0 4px 8px rgba(0,0,0,0.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-  transition:transform 0.1s ease, border-color 0.2s;
-}
+    .install:hover .lighthouse-img-icon {
+      transform: translateY(-3px);
+    }
 
-.nautical-dial:active{
-  transform:scale(0.94);
-}
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 8, 18, 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: none;
+      z-index: 120;
+      padding: 20px;
+    }
 
-.nautical-dial::before {
-  content:'';
-  position:absolute;
-  inset:2px;
-  border-radius:50%;
-  border:1px dashed rgba(212, 175, 55, 0.3);
-}
+    .overlay-card {
+      max-width: 450px;
+      margin: 110px auto;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #0a1d37, #020812);
+      border: 2px solid var(--dark-gold);
+      padding: 35px;
+      text-align: center;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
+    }
 
-/* Status Indicator Beacon */
-.dial-status-light {
-  position: absolute;
-  top: 5px;
-  right: 14px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--error);
-  box-shadow: 0 0 6px var(--error);
-  transition: background-color 0.2s, box-shadow 0.2s;
-}
+    .home-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--neon-gold);
+      margin-top: 15px;
+      margin-bottom: 22px;
+      letter-spacing: 1px;
+    }
 
-.dial-status-light.armed {
-  background-color: var(--success);
-  box-shadow: 0 0 10px var(--success);
-}
+    .home-steps {
+      color: var(--mist);
+      font-size: 16px;
+      line-height: 2;
+      margin-bottom: 30px;
+      text-align: left;
+    }
 
-.dial-icon{
-  font-size:24px;
-  line-height:1;
-}
-
-.dial-label{
-  font-family:monospace;
-  font-size:10px;
-  color:var(--gold);
-  letter-spacing:1px;
-  margin-top:10px;
-  text-transform:uppercase;
-  font-weight:bold;
-  text-align: center;
-  max-width: 95px;
-  line-height: 1.2;
-}
-
-.search-field-wrapper {
-  position:relative;
-  width:100%;
-}
-
-.search{
-  width:100%;
-  height:44px;
-  padding:0 15px;
-  border-radius:8px;
-  border:2px solid var(--panel-border);
-  background:#030812;
-  color:white;
-  font-family:monospace;
-  font-size:13px;
-  outline:none;
-  text-align:center;
-  letter-spacing:1px;
-}
-
-.search:focus{
-  border-color:var(--gold);
-}
-
-.search::placeholder{
-  color:rgba(184,195,214,0.4);
-}
-
-.retake{
-  margin-top:12px;
-  color:var(--mist);
-  font-family:monospace;
-  font-size:11px;
-  text-decoration:underline;
-  cursor:pointer;
-}
-
-/* STORAGE PORTEHOLES ROW */
-.spotted-section{
-  width:min(92vw,560px);
-  margin:25px auto;
-  display:none;
-  background:rgba(4, 11, 22, 0.4);
-  border:1px dashed var(--panel-border);
-  border-radius:16px;
-  padding:16px;
-}
-
-.fleet-row{
-  display:flex;
-  gap:16px;
-  overflow-x:auto;
-  padding-bottom:6px;
-}
-
-.fleet-card{
-  min-width:90px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  cursor:pointer;
-}
-
-.fleet-porthole{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  padding:5px;
-  background:linear-gradient(145deg,#f0d36f,#d4af37,#674d17);
-  box-shadow:0 6px 12px rgba(0,0,0,0.4);
-}
-
-.fleet-porthole .porthole-asset-frame {
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background:#06101f;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.fleet-porthole img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.fleet-name{
-  margin-top:6px;
-  text-align:center;
-  font-family:"Cormorant Garamond",serif;
-  font-size:14px;
-  color:var(--mist);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  width:86px;
-}
-
-/* POPUP MODULE OVERLAYS */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(2,8,18,.94);
-  backdrop-filter:blur(10px);
-  display:none;
-  z-index:100;
-  padding:18px;
-}
-
-.overlay-card{
-  max-width:420px;
-  margin:60px auto;
-  border-radius:26px;
-  background:linear-gradient(180deg,#0a1d37,#020812);
-  border:2px solid var(--brass);
-  padding:24px;
-  text-align:center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-}
-
-.alert-icon-header {
-  font-size: 40px;
-  margin-bottom: 12px;
-}
-
-.alert-message-text {
-  font-size: 16px;
-  color: var(--mist);
-  line-height: 1.5;
-  margin-bottom: 20px;
-  font-family: sans-serif;
-}
-
-.overlay-img-frame{
-  width:100%;
-  border-radius:16px;
-  margin-top:15px;
-  overflow:hidden;
-  background:#06101f;
-  border:1px solid var(--panel-border);
-}
-
-.overlay-img-frame img{
-  width:100%;
-  display:block;
-}
-
-.overlay-close,
-.home-close{
-  width:100%;
-  padding:12px;
-  border-radius:999px;
-  background:linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
-  color:#06101f;
-  border:none;
-  font-family:"Cormorant Garamond",serif;
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:1px;
-  cursor:pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.home-title{
-  font-family:"Cormorant Garamond",serif;
-  font-size:28px;
-  color:var(--gold);
-  margin-top:10px;
-  margin-bottom:16px;
-}
-
-.home-steps{
-  color:var(--mist);
-  font-size:15px;
-  line-height:1.8;
-  margin-bottom: 20px;
-}
-
-/* FIXED LIGHTHOUSE MOUNT */
-.install{
-  position: relative;
-  text-align:center;
-  margin: 50px auto 30px;
-  color:var(--mist);
-  font-family:"Cormorant Garamond",serif;
-  font-size:15px;
-  letter-spacing:1px;
-  cursor:pointer;
-  width:180px;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  z-index: 10;
-}
-
-.lighthouse-img-icon{
-  width:48px !important;
-  height:48px !important;
-  display: inline-block !important;
-  margin-bottom:6px;
-  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-}
-
-canvas{display:none;}
-
-@media (max-width: 480px) {
-  .telemetry-dashboard {
-    gap: 10px;
-    padding: 8px;
-  }
-  .round-gauge {
-    padding: 10px 6px;
-    min-height: 75px;
-  }
-  .gauge-link.vessel-name-text {
-    font-size: 17px;
-  }
-  .gauge-link.owner-name-text {
-    font-size: 13px;
-  }
-  .nautical-dial {
-    width: 68px;
-    height: 68px;
-  }
-  .dial-label {
-    font-size: 9px;
-    width: 80px;
-  }
-}
-</style>
+    .home-close {
+      width: 100%;
+      padding: 16px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #f0d36f, #d4af37);
+      color: #06101f;
+      border: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="binocular-stage">
-  <div class="binoculars">
-    <div class="bridge"></div>
+  <div class="console-container">
+    <div class="console-header">
+      <div class="system-title">YachtSpotter // Lens v2.4</div>
+      <div class="telemetry-counter" id="indexReadout">CORE: LOAD</div>
+    </div>
 
-    <div class="barrel barrel-left">
-      <div class="lens">
-        <video id="video" autoplay playsinline muted></video>
-        <img id="preview" class="preview" alt="Captured viewport frame">
+    <div class="viewport-lens" id="diagramViewer">
+      <div class="lens-bottom-left"></div>
+      <div class="lens-bottom-right"></div>
+    </div>
+
+    <div class="data-matrix">
+      <div class="data-row">
+        <div class="data-label">Vessel Registry:</div>
+        <div class="data-value" id="shipName">INITIALIZING MODULE...</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Beneficiary / Owner:</div>
+        <div class="data-value" id="shipOwner">INITIALIZING MODULE...</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Intel Repository:</div>
+        <div class="data-value" id="yachtLinkContainer">---</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Asset Dossier:</div>
+        <div class="data-value" id="ownerLinkContainer">---</div>
       </div>
     </div>
 
-    <div class="barrel barrel-right">
-      <div class="lens">
-        <div id="diagramViewer"></div>
+    <div class="control-deck">
+      <button class="nav-btn" id="prevBtn">« Prev Vessel</button>
+      <button class="nav-btn" id="nextBtn">Next Vessel »</button>
+    </div>
+  </div>
+
+  <div id="installFooter" class="install" onclick="showHomeHelp()">
+    <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse Core"><br>
+    ADD TO HOME SCREEN
+  </div>
+
+  <div id="homeOverlay" class="overlay" onclick="closeHomeHelp(event)">
+    <div class="overlay-card" onclick="event.stopPropagation()">
+      <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse Matrix">
+      <div class="home-title">System Installer</div>
+      <div class="home-steps">
+        1. Access the web layout browser configuration menu ⬆<br>
+        2. Select the "Add to Home Screen" action loop<br>
+        3. Approve authorization prompt parameters
       </div>
+      <button class="home-close" onclick="hideHomeHelp()">Acknowledge</button>
     </div>
   </div>
-</div>
 
-<div class="telemetry-dashboard">
-  <div class="round-gauge">
-    <div class="gauge-title">Target Ship</div>
-    <div id="vesselGaugeContent"></div>
-  </div>
-  <div class="round-gauge">
-    <div class="gauge-title">Registry Owner</div>
-    <div id="ownerGaugeContent"></div>
-  </div>
-</div>
+  <script src="data.js?v=24"></script>
 
-<div class="dashboard-console">
-  <div class="dial-grid">
-    
-    <div class="dial-wrapper">
-      <div class="nautical-dial" onclick="captureLivePhoto()">
-        <span class="dial-icon">📷</span>
-      </div>
-      <div class="dial-label">Take Photo</div>
-    </div>
+  <script>
+    let currentVesselIndex = 0;
 
-    <div class="dial-wrapper">
-      <div class="nautical-dial" onclick="browseDatabaseNext()">
-        <span class="dial-icon">🧭</span>
-      </div>
-      <div class="dial-label">Browse Boats</div>
-    </div>
+    // PROCEDURAL GENERATION DICTIONARY
+    // Matches keywords inside your data array items to generate custom vector designs layout dynamically.
+    function generateYachtSVG(vessel) {
+      const name = vessel.name ? vessel.name.toUpperCase().trim() : "UNKNOWN";
+      // Fallback fallback design classification
+      let designType = "modern"; 
 
-    <div class="dial-wrapper">
-      <div class="nautical-dial" onclick="triggerLogValidation()">
-        <div id="statusLight" class="dial-status-light"></div>
-        <span class="dial-icon">⚓</span>
-      </div>
-      <div class="dial-label">Log Craft</div>
-    </div>
+      // Scan parameters to see which blueprint shape rules should fire
+      if (name === "A" || name.includes("MOTOR YACHT A")) designType = "stealth";
+      else if (name.includes("SAILING YACHT A")) designType = "aero-sail";
+      else if (name.includes("AZZAM")) designType = "liner-speed";
+      else if (name.includes("KORU") || name.includes("ATHENA") || name.includes("EOS")) designType = "classic-clipper";
+      else if (name.includes("LAUNCHPAD") || name.includes("NORD") || name.includes("ECLIPSE") || name.includes("DILBAR") || name.includes("OPERA")) designType = "multi-deck";
+      else if (name.includes("RISING SUN")) designType = "long-window";
+      else if (name.includes("BLACK PEARL") || name.includes("MALTESE FALCON")) designType = "dynarig";
+      else if (name.includes("VENUS")) designType = "minimalist";
 
-  </div>
+      // Blueprint Shape Rule Definitions Matrix
+      let hullPath = "M 40 115 L 370 115 L 450 88 L 420 122 L 75 125 Z";
+      let superstructure = "";
+      let details = "";
 
-  <div class="search-field-wrapper">
-    <input
-      id="searchBox"
-      class="search"
-      placeholder="STERN SEARCH..."
-      oninput="searchYacht()"
-      autocorrect="off"
-      autocapitalize="none"
-      spellcheck="false"
-      autocomplete="off"
-    />
-  </div>
-  <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Clear Snapshot Frame</div>
-</div>
+      switch(designType) {
+        case "stealth":
+          hullPath = "M 45 122 L 105 78 L 340 78 L 440 112 L 455 122 L 70 124 Z";
+          superstructure = `
+            <path d="M 155 78 L 175 48 L 280 48 L 315 78 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2" />
+            <path d="M 195 48 L 205 32 L 255 32 L 265 48 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5" />
+          `;
+          details = `<path d="M 210 56 L 240 56 L 255 68 L 225 68 Z" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.8"/>`;
+          break;
 
-<div id="fleetArea" class="spotted-section"></div>
+        case "aero-sail":
+          hullPath = "M 50 124 L 80 92 L 390 92 L 445 114 L 435 126 L 70 126 Z";
+          superstructure = `<path d="M 130 92 L 150 70 L 350 70 L 370 92 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2" />`;
+          details = `
+            <line x1="245" y1="56" x2="240" y2="2" stroke="var(--hull-stroke)" stroke-width="2.5"/>
+            <line x1="185" y1="70" x2="180" y2="10" stroke="var(--hull-stroke)" stroke-width="2"/>
+            <line x1="315" y1="70" x2="310" y2="15" stroke="var(--hull-stroke)" stroke-width="2"/>
+          `;
+          break;
 
-<div id="installFooter" class="install" onclick="showHomeHelp()">
-  <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse"><br>
-  ADD TO HOME SCREEN
-</div>
+        case "liner-speed":
+          hullPath = "M 30 118 L 390 118 L 470 98 L 445 124 L 60 124 Z";
+          superstructure = `
+            <path d="M 120 118 L 135 94 L 380 94 L 395 118 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>
+            <path d="M 180 94 L 190 76 L 330 76 L 345 94 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
+          `;
+          details = `<line x1="330" y1="76" x2="340" y2="50" stroke="var(--hull-stroke)" stroke-width="1.5"/>`;
+          break;
 
-<div id="overlay" class="overlay" onclick="closeOverlay(event)">
-  <div class="overlay-card" onclick="event.stopPropagation()">
-    <div id="overlayContent"></div>
-    <button class="overlay-close" onclick="hideOverlay()" style="margin-top:20px;">Close Sheet</button>
-  </div>
-</div>
+        case "classic-clipper":
+          hullPath = "M 35 105 C 55 124, 85 128, 120 128 L 410 128 C 445 125, 460 115, 475 92 L 440 124 L 35 105 Z";
+          superstructure = `
+            <path d="M 140 110 L 160 92 L 350 92 L 370 110 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
+            <path d="M 200 92 L 210 78 L 300 78 L 315 92 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.25"/>
+          `;
+          details = `
+            <line x1="165" y1="110" x2="160" y2="5" stroke="var(--hull-stroke)" stroke-width="2"/>
+            <line x1="255" y1="92" x2="250" y2="0" stroke="var(--hull-stroke)" stroke-width="2"/>
+            <line x1="345" y1="110" x2="340" y2="10" stroke="var(--hull-stroke)" stroke-width="2"/>
+          `;
+          break;
 
-<div id="homeOverlay" class="overlay" onclick="closeHomeHelp(event)">
-  <div class="overlay-card" onclick="event.stopPropagation()">
-    <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse">
-    <div class="home-title">System Installer</div>
-    <div class="home-steps">
-      1. Open your browser options menu ⬆<br>
-      2. Tap "Add to Home Screen"<br>
-      3. Confirm profile link assignment
-    </div>
-    <button class="home-close" onclick="hideHomeHelp()">Acknowledge</button>
-  </div>
-</div>
+        case "multi-deck":
+          hullPath = "M 35 120 L 360 120 L 460 85 L 430 126 L 60 128 Z";
+          superstructure = `
+            <path d="M 95 120 L 115 72 L 355 72 L 385 120 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2"/>
+            <path d="M 140 72 L 155 48 L 320 48 L 340 72 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>
+            <path d="M 190 48 L 200 28 L 285 28 L 295 48 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
+          `;
+          details = `
+            <rect x="130" y="85" width="200" height="6" fill="none" stroke="#d4af37" stroke-width="1"/>
+            <rect x="170" y="58" width="130" height="5" fill="none" stroke="#d4af37" stroke-width="1"/>
+          `;
+          break;
 
-<canvas id="canvas"></canvas>
+        case "long-window":
+          hullPath = "M 40 122 L 380 122 L 465 92 L 435 126 L 65 126 Z";
+          superstructure = `
+            <path d="M 100 122 L 110 90 L 370 90 L 380 122 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
+            <path d="M 140 90 L 145 64 L 350 64 L 355 90 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
+          `;
+          details = `
+            <line x1="120" y1="105" x2="360" y2="105" stroke="#d4af37" stroke-width="1" stroke-dasharray="4 2"/>
+            <line x1="155" y1="78" x2="340" y2="78" stroke="#d4af37" stroke-width="1" stroke-dasharray="4 2"/>
+          `;
+          break;
 
-<script src="data.js?v=21"></script>
+        case "dynarig":
+          hullPath = "M 45 120 C 70 126, 380 126, 410 124 L 455 95 L 430 126 Z";
+          superstructure = `<path d="M 150 110 L 170 88 L 330 88 L 350 110 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>`;
+          details = `
+            <line x1="200" y1="110" x2="200" y2="5" stroke="var(--hull-stroke)" stroke-width="2.5"/>
+            <line x1="270" y1="110" x2="270" y2="0" stroke="var(--hull-stroke)" stroke-width="2.5"/>
+            <line x1="340" y1="110" x2="340" y2="15" stroke="var(--hull-stroke)" stroke-width="2.5"/>
+          `;
+          break;
 
-<script>
-const video = document.getElementById("video");
-const preview = document.getElementById("preview");
-const canvas = document.getElementById("canvas");
+        case "minimalist":
+          hullPath = "M 50 122 L 430 122 L 430 90 L 410 90 L 60 124 Z";
+          superstructure = `
+            <path d="M 160 90 L 160 62 L 380 62 L 390 90 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2"/>
+          `;
+          details = `<rect x="180" y="70" width="180" height="10" fill="none" stroke="#d4af37" stroke-width="1"/>`;
+          break;
 
-let currentIndex = 0;
-let selectedYacht = null;
-let capturedImage = null;
+        default: // Modern Standard Hull form
+          superstructure = `
+            <path d="M 110 115 L 140 82 L 340 82 L 375 115 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>
+            <path d="M 160 82 L 180 56 L 295 56 L 320 82 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
+          `;
+          details = `<circle cx="115" cy="120" r="1.5" fill="none" stroke="#d4af37"/>`;
+      }
 
-// Hardware Camera Initialization 
-navigator.mediaDevices.getUserMedia({
-  video:{facingMode:{ideal:"environment"}},
-  audio:false
-})
-.then(stream=>{
-  video.srcObject = stream;
-  video.setAttribute("playsinline", true);
-  video.play();
-})
-.catch(()=>{});
+      return `
+        <svg class="dynamic-yacht-svg" width="100%" height="100%" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
+          <line x1="15" y1="124" x2="485" y2="124" stroke="var(--hull-stroke)" stroke-width="1.25" opacity="0.6"/>
+          <g fill="none">
+            <path d="${hullPath}" stroke="var(--hull-stroke)" stroke-width="2"/>
+            ${superstructure}
+            ${details}
+          </g>
+        </svg>
+      `;
+    }
 
-function generateYachtSVG(name, length = 120) {
-  const normalized = name ? name.toUpperCase().trim() : "UNKNOWN";
-  
-  let hullPath = "M 40 115 L 370 115 L 450 88 L 420 122 L 75 125 Z";
-  let superstructure = `
-    <path d="M 110 115 L 140 82 L 340 82 L 375 115 Z" fill="none" stroke="#f0d36f" stroke-width="1.75"/>
-    <path d="M 160 82 L 180 56 L 295 56 L 320 82 Z" fill="none" stroke="#f0d36f" stroke-width="1.5"/>
-    <path d="M 200 56 L 210 38 L 265 38 L 275 56 Z" fill="none" stroke="#f0d36f" stroke-width="1.5"/>
-  `;
-  let details = `
-    <rect x="175" y="90" width="130" height="8" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.7"/>
-    <circle cx="95" cy="120" r="1.5" fill="none" stroke="#d4af37"/>
-  `;
+    function refreshDashboard() {
+      if (typeof yachts === 'undefined' || yachts.length === 0) {
+        document.getElementById("shipName").innerText = "DATALINK FAULT INTERCEPT";
+        document.getElementById("shipOwner").innerText = "DATA ARRAY RESOURCE MISSING";
+        return;
+      }
 
-  if (normalized === "A" || normalized.includes("MOTOR YACHT A ")) {
-    hullPath = "M 45 122 L 105 78 L 340 78 L 440 112 L 455 122 L 70 124 Z";
-    superstructure = `
-      <path d="M 155 78 L 175 48 L 280 48 L 315 78 Z" fill="none" stroke="#f0d36f" stroke-width="2" />
-      <path d="M 195 48 L 205 32 L 255 32 L 265 48 Z" fill="none" stroke="#f0d36f" stroke-width="1.5" />
-    `;
-    details = `
-      <path d="M 210 56 L 240 56 L 255 68 L 225 68 Z" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.8"/>
-    `;
-  }
-  else if (normalized.includes("SAILING YACHT A")) {
-    hullPath = "M 50 124 L 80 92 L 390 92 L 445 114 L 435 126 L 70 126 Z";
-    superstructure = `
-      <path d="M 130 92 L 150 70 L 350 70 L 370 92 Z" fill="none" stroke="#f0d36f" stroke-width="2" />
-    `;
-    details = `
-      <line x1="245" y1="56" x2="240" y2="2" stroke="#f0d36f" stroke-width="2.5"/>
-    `;
-  } 
+      const activeShip = yachts[currentVesselIndex];
 
-  return `
-    <svg class="dynamic-yacht-svg" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
-      <line x1="15" y1="124" x2="485" y2="124" stroke="#f0d36f" stroke-width="1.25" opacity="0.75"/>
-      <g fill="none">
-        <path d="${hullPath}" stroke="#f0d36f" stroke-width="2"/>
-        ${superstructure}
-        ${details}
-      </g>
-    </svg>
-  `;
-}
+      document.getElementById("indexReadout").innerText = `RECORD: ${currentVesselIndex + 1} / ${yachts.length}`;
+      document.getElementById("shipName").innerText = activeShip.name || "UNIDENTIFIED TARGET";
+      document.getElementById("shipOwner").innerText = activeShip.deepPockets || "CLASSIFIED FINANCES";
 
-function refreshDashboard() {
-  if (typeof yachts !== 'undefined' && yachts.length > 0) {
-    selectedYacht = yachts[currentIndex];
-  } else {
-    return;
-  }
+      if (activeShip.yachtLink) {
+        document.getElementById("yachtLinkContainer").innerHTML = `<a href="${activeShip.yachtLink}" target="_blank">Superyacht Fan Profile »</a>`;
+      } else {
+        document.getElementById("yachtLinkContainer").innerText = "NO OPEN TELEMETRY LINK";
+      }
 
-  document.getElementById("diagramViewer").innerHTML = generateYachtSVG(selectedYacht.name);
-  
-  document.getElementById("vesselGaugeContent").innerHTML = `
-    <a class="gauge-link vessel-name-text" href="${selectedYacht.yachtLink}" target="_blank">
-      ${selectedYacht.name}
-    </a>
-  `;
+      if (activeShip.ownerLink) {
+        document.getElementById("ownerLinkContainer").innerHTML = `<a href="${activeShip.ownerLink}" target="_blank">Wikipedia Dossier »</a>`;
+      } else {
+        document.getElementById("ownerLinkContainer").innerText = "SECURE DOMAIN PROFILE";
+      }
 
-  document.getElementById("ownerGaugeContent").innerHTML = `
-    <a class="gauge-link owner-name-text" href="${selectedYacht.ownerLink}" target="_blank">
-      ${selectedYacht.deepPockets}
-    </a>
-  `;
-}
+      document.getElementById("diagramViewer").innerHTML = `
+        <div class="lens-bottom-left"></div>
+        <div class="lens-bottom-right"></div>
+        ${generateYachtSVG(activeShip)}
+      `;
+    }
 
-function searchYacht(){
-  const q = document.getElementById("searchBox").value.toLowerCase().trim();
-  if(!q || typeof yachts === 'undefined') return;
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (typeof yachts !== 'undefined' && yachts.length > 0) {
+        currentVesselIndex = (currentVesselIndex + 1) % yachts.length;
+        refreshDashboard();
+      }
+    });
 
-  let index = yachts.findIndex(y => y.name.toLowerCase() === q);
-  if(index < 0){
-    index = yachts.findIndex(y => y.name.toLowerCase().startsWith(q));
-  }
-  if(index < 0){
-    index = yachts.findIndex(y =>
-      y.name.toLowerCase().includes(q) ||
-      y.deepPockets.toLowerCase().includes(q)
-    );
-  }
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (typeof yachts !== 'undefined' && yachts.length > 0) {
+        currentVesselIndex = (currentVesselIndex - 1 + yachts.length) % yachts.length;
+        refreshDashboard();
+      }
+    });
 
-  if(index >= 0){
-    currentIndex = index;
-    refreshDashboard();
-  }
-}
+    function showHomeHelp() { document.getElementById("homeOverlay").style.display = "block"; }
+    function hideHomeHelp() { document.getElementById("homeOverlay").style.display = "none"; }
+    function closeHomeHelp(e) { if(e.target.id === "homeOverlay") hideHomeHelp(); }
 
-function browseDatabaseNext(){
-  if (typeof yachts === 'undefined' || yachts.length === 0) return;
-  
-  currentIndex = (currentIndex + 1) % yachts.length;
-  selectedYacht = yachts[currentIndex];
-  
-  document.getElementById("searchBox").value = selectedYacht.name;
-  refreshDashboard(); 
-}
-
-function captureLivePhoto() {
-  if(!video.videoWidth || !video.videoHeight){
-    return;
-  }
-  
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  capturedImage = canvas.toDataURL("image/jpeg", 0.85);
-  
-  preview.src = capturedImage;
-  preview.style.display = "block";
-  video.style.display = "none";
-  document.getElementById("retakeButton").style.display = "block";
-
-  document.getElementById("statusLight").className = "dial-status-light armed";
-}
-
-function retakePhoto(){
-  capturedImage = null;
-  preview.src = "";
-  preview.style.display = "none";
-  video.style.display = "block";
-  document.getElementById("retakeButton").style.display = "none";
-
-  document.getElementById("statusLight").className = "dial-status-light";
-}
-
-function triggerLogValidation() {
-  if (!selectedYacht) return;
-
-  if (!capturedImage) {
-    triggerConsoleAlert("📷 CAPTURE REQUIRED", "Photo capture required! Please snap a picture using the Camera Shutter dial before logging this craft.");
-    return;
-  }
-
-  const currentFleet = JSON.parse(localStorage.getItem("fleet") || "[]");
-  const alreadyLogged = currentFleet.some(item => item.name.toLowerCase() === selectedYacht.name.toLowerCase());
-
-  if (alreadyLogged) {
-    triggerConsoleAlert("⚓ CRAFT RECORDED", `Operation Aborted: <strong>${selectedYacht.name}</strong> is already anchored in your fleet data bank.`);
-    return;
-  }
-
-  commitFleetEntry();
-}
-
-function triggerConsoleAlert(header, message) {
-  document.getElementById("overlayContent").innerHTML = `
-    <div class="alert-icon-header">⚠️</div>
-    <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; color:var(--gold); margin-bottom:10px;">${header}</div>
-    <div class="alert-message-text">${message}</div>
-  `;
-  document.getElementById("overlay").style.display = "block";
-}
-
-function commitFleetEntry(){
-  const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
-  sightings.unshift({
-    name: selectedYacht.name,
-    deepPockets: selectedYacht.deepPockets,
-    yachtLink: selectedYacht.yachtLink,
-    ownerLink: selectedYacht.ownerLink,
-    asset: capturedImage
-  });
-
-  localStorage.setItem("fleet", JSON.stringify(sightings));
-  renderFleet();
-  retakePhoto();
-}
-
-function renderFleet(){
-  const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
-  const area = document.getElementById("fleetArea");
-
-  if(!sightings.length){
-    area.style.display = "none";
-    area.innerHTML = "";
-    return;
-  }
-
-  area.style.display = "block";
-
-  let html = `<div class="fleet-row">`;
-  sightings.forEach((s,index)=>{
-    html += `
-      <div class="fleet-card" onclick="openFleet(${index})">
-        <div class="fleet-porthole">
-          <div class="porthole-asset-frame">
-             <img src="${s.asset}" alt="Craft Photo">
-          </div>
-        </div>
-        <div class="fleet-name">${s.name}</div>
-      </div>
-    `;
-  });
-  html += `</div>`;
-  area.innerHTML = html;
-}
-
-function openFleet(index){
-  const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
-  const s = sightings[index];
-
-  document.getElementById("overlayContent").innerHTML = `
-    <div style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--gold); margin-bottom:4px;">
-      ${s.name}
-    </div>
-    <div style="font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--mist); margin-bottom:12px;">
-      Owner: ${s.deepPockets}
-    </div>
-    <div class="overlay-img-frame">
-       <img src="${s.asset}" alt="Craft Snapshot">
-    </div>
-  `;
-  document.getElementById("overlay").style.display = "block";
-}
-
-function hideOverlay(){
-  document.getElementById("overlay").style.display = "none";
-}
-
-function closeOverlay(e){
-  if(e.target.id === "overlay") hideOverlay();
-}
-
-function showHomeHelp(){
-  document.getElementById("homeOverlay").style.display = "block";
-}
-
-function hideHomeHelp(){
-  document.getElementById("homeOverlay").style.display = "none";
-}
-
-function closeHomeHelp(e){
-  if(e.target.id === "homeOverlay") hideHomeHelp();
-}
-
-// SAFE WINDOW LOAD GATE
-window.addEventListener("load", () => {
-  refreshDashboard();
-  renderFleet();
-});
-</script>
-
+    window.addEventListener("load", () => {
+      refreshDashboard();
+    });
+  </script>
 </body>
 </html>
