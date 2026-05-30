@@ -121,9 +121,9 @@ video,.preview{
     #06101f;
 }
 
-.fallback-yacht{
-  width:84%;
-  height:84%;
+.dynamic-yacht-svg{
+  width:90%;
+  height:90%;
 }
 
 /* SPOT / SEARCH */
@@ -535,20 +535,165 @@ navigator.mediaDevices.getUserMedia({
 .then(stream=>{video.srcObject=stream;})
 .catch(()=>{alert("Camera unavailable.");});
 
-function fallbackYacht(){
+// Engine to dynamically calculate architectural vectors for all yacht varieties
+function generateYachtSVG(name) {
+  const normalized = name.toUpperCase().trim();
+  
+  // Base configuration definitions
+  let hullPath = "M 40 120 L 380 120 L 450 90 L 420 125 L 80 128 Z";
+  let superstructureHtml = `<path d="M 120 90 C 160 60 240 62 300 85 L 360 85 L 380 100 Z" fill="none" stroke="#f0d36f" stroke-width="3"/>`;
+  let accessoriesHtml = "";
+  let detailsHtml = "";
+
+  // 1. Futuristic Hull Designs (e.g., Motor Yacht "A")
+  if (normalized === "A") {
+    hullPath = "M 50 125 L 110 85 L 320 85 L 440 115 L 450 125 L 70 125 Z";
+    superstructureHtml = `
+      <path d="M 160 85 L 180 62 L 280 62 L 310 85 Z" fill="none" stroke="#f0d36f" stroke-width="3" />
+      <path d="M 200 62 L 210 48 L 260 48 L 270 62 Z" fill="none" stroke="#f0d36f" stroke-width="2" />
+    `;
+    accessoriesHtml = `<line x1="235" y1="48" x2="235" y2="30" stroke="#f0d36f" stroke-width="2"/>`;
+  }
+  
+  // 2. High-Mast Dynarig / Sailing Superyachts (Sailing Yacht A, Maltese Falcon, Black Pearl, Eos, Athena)
+  else if (normalized.includes("SAILING YACHT A")) {
+    hullPath = "M 50 125 L 80 95 L 380 95 L 440 115 L 430 128 L 70 128 Z";
+    superstructureHtml = `<path d="M 120 95 L 140 75 L 340 75 L 360 95 Z" fill="none" stroke="#f0d36f" stroke-width="3" />`;
+    accessoriesHtml = `
+      <line x1="150" y1="75" x2="135" y2="15" stroke="#f0d36f" stroke-width="3"/>
+      <line x1="240" y1="75" x2="235" y2="10" stroke="#f0d36f" stroke-width="3"/>
+      <line x1="320" y1="75" x2="315" y2="15" stroke="#f0d36f" stroke-width="3"/>
+    `;
+  } 
+  else if (normalized.includes("MALTESE FALCON") || normalized.includes("BLACK PEARL")) {
+    hullPath = "M 45 120 L 60 100 L 400 100 L 450 85 L 410 125 Z";
+    superstructureHtml = `<path d="M 150 100 L 170 85 L 330 85 L 350 100 Z" fill="none" stroke="#f0d36f" stroke-width="2"/>`;
+    accessoriesHtml = `
+      <g stroke="#f0d36f" stroke-width="2">
+        <line x1="140" y1="100" x2="140" y2="25" />
+        <line x1="240" y1="85" x2="240" y2="15" />
+        <line x1="340" y1="100" x2="340" y2="25" />
+        <!-- Horizontal Yardarms mapping -->
+        <line x1="110" y1="45" x2="170" y2="45" opacity="0.7"/><line x1="115" y1="70" x2="165" y2="70" opacity="0.7"/>
+        <line x1="205" y1="35" x2="275" y2="35" opacity="0.7"/><line x1="210" y1="60" x2="270" y2="60" opacity="0.7"/>
+        <line x1="310" y1="45" x2="370" y2="45" opacity="0.7"/><line x1="315" y1="70" x2="365" y2="70" opacity="0.7"/>
+      </g>
+    `;
+  }
+  else if (normalized.includes("EOS") || normalized.includes("ATHENA") || normalized.includes("SEA CLOUD") || normalized.includes("AQUIJO")) {
+    hullPath = "M 40 120 L 55 105 L 410 105 L 455 85 L 415 125 Z";
+    superstructureHtml = `<path d="M 160 105 L 180 92 L 320 92 L 340 105 Z" fill="none" stroke="#f0d36f" stroke-width="2"/>`;
+    accessoriesHtml = `
+      <g stroke="#f0d36f" stroke-width="1.5">
+        <line x1="120" y1="105" x2="105" y2="30" stroke-width="2" />
+        <line x1="220" y1="105" x2="210" y2="20" stroke-width="2" />
+        <line x1="320" y1="105" x2="310" y2="30" stroke-width="2" />
+        <!-- Basic Rigging Lines -->
+        <line x1="45" y1="120" x2="105" y2="30" opacity="0.4"/>
+        <line x1="105" y1="30" x2="210" y2="20" opacity="0.4"/>
+        <line x1="210" y1="20" x2="310" y2="30" opacity="0.4"/>
+        <line x1="310" y1="30" x2="415" y2="125" opacity="0.4"/>
+      </g>
+    `;
+  }
+
+  // 3. Ultra-Long Ultra-Sleek Profiles (Azzam, Eclipse, Nord)
+  else if (normalized === "AZZAM" || normalized === "ECLIPSE" || normalized === "NORD") {
+    hullPath = "M 35 124 L 390 124 L 465 102 L 440 128 L 65 130 Z";
+    superstructureHtml = `
+      <path d="M 100 110 L 140 86 L 350 86 L 390 110 Z" fill="none" stroke="#f0d36f" stroke-width="2.5" />
+      <path d="M 150 86 L 180 68 L 310 68 L 335 86 Z" fill="none" stroke="#f0d36f" stroke-width="2" />
+      <path d="M 195 68 L 210 54 L 275 54 L 290 68 Z" fill="none" stroke="#f0d36f" stroke-width="1.5" />
+    `;
+    accessoriesHtml = `<line x1="240" y1="54" x2="240" y2="34" stroke="#f0d36f" stroke-width="2"/>`;
+  }
+
+  // 4. Custom Dark-Hulled Master Superstructures (Limitless, Venus)
+  else if (normalized === "LIMITLESS") {
+    hullPath = "M 45 122 L 385 122 L 455 95 L 430 126 L 75 128 Z";
+    superstructureHtml = `
+      <path d="M 150 110 L 150 78 L 330 78 L 375 110 Z" fill="none" stroke="#f0d36f" stroke-width="3" />
+      <path d="M 190 78 L 205 58 L 305 58 L 325 78 Z" fill="none" stroke="#f0d36f" stroke-width="2" />
+    `;
+    accessoriesHtml = `<line x1="250" y1="58" x2="250" y2="38" stroke="#f0d36f" stroke-width="2"/>`;
+  }
+  else if (normalized === "VENUS") {
+    hullPath = "M 50 120 L 410 120 L 450 100 L 430 125 L 70 125 Z";
+    superstructureHtml = `
+      <rect x="140" y="80" width="220" height="40" fill="none" stroke="#f0d36f" stroke-width="3" rx="4"/>
+      <rect x="200" y="58" width="110" height="22" fill="none" stroke="#f0d36f" stroke-width="2" rx="2"/>
+    `;
+    accessoriesHtml = `<line x1="255" y1="58" x2="255" y2="38" stroke="#f0d36f" stroke-width="2"/>`;
+  }
+
+  // 5. Classic Steam/Retro Conversions (Christina O)
+  else if (normalized.includes("CHRISTINA O")) {
+    hullPath = "M 40 122 L 405 122 L 445 92 L 420 126 L 65 127 Z";
+    superstructureHtml = `
+      <path d="M 110 112 L 130 82 L 360 82 L 380 112 Z" fill="none" stroke="#f0d36f" stroke-width="2.5" />
+      <!-- Distinctive Vintage Central Funnel Stack -->
+      <path d="M 220 82 L 230 52 L 265 52 L 260 82 Z" fill="#06101f" stroke="#f0d36f" stroke-width="2.5" />
+    `;
+    accessoriesHtml = `
+      <line x1="135" y1="82" x2="135" y2="40" stroke="#f0d36f" stroke-width="2"/>
+      <line x1="355" y1="82" x2="355" y2="35" stroke="#f0d36f" stroke-width="2"/>
+    `;
+  }
+
+  // 6. Multi-Deck Commercial Scale Mega-Yachts (Dilbar, Rising Sun, Scheherazade, Blue, Opera, Dubai, Al Said)
+  else if (["DILBAR", "RISING SUN", "SCHEHERAZADE", "BLUE", "OPERA", "DUBAI", "AL SAID", "PRINCE ABDULAZIZ"].includes(normalized)) {
+    hullPath = "M 35 124 L 380 124 L 450 96 L 425 127 L 65 130 Z";
+    superstructureHtml = `
+      <path d="M 90 114 L 125 76 L 340 76 L 380 114 Z" fill="none" stroke="#f0d36f" stroke-width="3" />
+      <path d="M 135 76 L 165 54 L 310 54 L 335 76 Z" fill="none" stroke="#f0d36f" stroke-width="2" />
+      <path d="M 180 54 L 200 38 L 275 38 L 295 54 Z" fill="none" stroke="#f0d36f" stroke-width="1.5" />
+    `;
+    accessoriesHtml = `<line x1="235" y1="38" x2="235" y2="20" stroke="#f0d36f" stroke-width="2"/>`;
+    detailsHtml = `
+      <circle cx="395" cy="110" r="10" fill="none" stroke="#f0d36f" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="391" y="113" fill="#f0d36f" font-size="8" font-family="sans-serif">H</text>
+    `;
+  }
+
+  // 7. General Custom Profile Baseline for standard hulls
+  else {
+    hullPath = "M 40 122 L 380 122 L 445 94 L 420 126 L 75 128 Z";
+    superstructureHtml = `
+      <path d="M 110 110 L 145 82 L 340 82 L 380 110 Z" fill="none" stroke="#f0d36f" stroke-width="3"/>
+      <path d="M 160 82 L 185 60 L 300 60 L 325 82 Z" fill="none" stroke="#f0d36f" stroke-width="2"/>
+    `;
+    accessoriesHtml = `<line x1="240" y1="60" x2="240" y2="40" stroke="#f0d36f" stroke-width="2"/>`;
+  }
+
+  // Assemble dynamic grid, paths and waterlines together
   return `
-    <svg class="fallback-yacht" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
-      <line x1="30" y1="124" x2="470" y2="124" stroke="#d4af37" stroke-width="1" opacity=".45"/>
-      <path d="M48 112 L386 112 L452 88 L423 127 L84 131 Z" fill="none" stroke="#f0d36f" stroke-width="4"/>
-      <path d="M122 96 C165 66 246 68 302 92 L365 92" fill="none" stroke="#f0d36f" stroke-width="4"/>
-      <line x1="250" y1="32" x2="250" y2="74" stroke="#f0d36f" stroke-width="4"/>
-      <circle cx="268" cy="50" r="8" fill="none" stroke="#f0d36f" stroke-width="2"/>
+    <svg class="dynamic-yacht-svg" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- Blueprint Grid Line -->
+      <line x1="20" y1="136" x2="480" y2="136" stroke="#d4af37" stroke-width="1" opacity="0.35" stroke-dasharray="4,4"/>
+      
+      <!-- Primary Waterline -->
+      <line x1="20" y1="124" x2="480" y2="124" stroke="#d4af37" stroke-width="1" opacity="0.45"/>
+      
+      <!-- Generated Structural Profile Shapes -->
+      <path d="${hullPath}" fill="none" stroke="#f0d36f" stroke-width="3.5"/>
+      ${superstructureHtml}
+      ${accessoriesHtml}
+      ${detailsHtml}
+      
+      <!-- Calibration Layout Elements -->
+      <line x1="45" y1="145" x2="445" y2="145" stroke="#f0d36f" stroke-width="1" opacity="0.4"/>
+      <line x1="45" y1="141" x2="45" y2="149" stroke="#f0d36f" stroke-width="1"/>
+      <line x1="445" y1="141" x2="445" y2="149" stroke="#f0d36f" stroke-width="1"/>
     </svg>
   `;
 }
 
 function renderDiagram(){
-  document.getElementById("diagramViewer").innerHTML = fallbackYacht();
+  if (selectedYacht) {
+    document.getElementById("diagramViewer").innerHTML = generateYachtSVG(selectedYacht.name);
+  } else {
+    document.getElementById("diagramViewer").innerHTML = generateYachtSVG("");
+  }
   renderInfo();
 }
 
