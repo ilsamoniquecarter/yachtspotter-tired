@@ -34,7 +34,7 @@ body{
 
 .binocular-stage{
   width:min(96vw,760px);
-  margin:28px auto 0;
+  margin:72px auto 0;
   position:relative;
   display:flex;
   justify-content:center;
@@ -121,38 +121,24 @@ video,.preview{
     #06101f;
 }
 
-#diagramViewer img{
-  width:86%;
-  height:86%;
-  object-fit:contain;
-}
-
 .fallback-yacht{
   width:84%;
   height:84%;
 }
 
-/* CONTROLS */
+/* SPOT / SEARCH */
 
-.control-row{
-  width:min(86vw,560px);
-  margin:14px auto 24px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-  align-items:start;
-}
-
-.control-cell{
+.spot-section{
+  width:min(88vw,520px);
+  margin:42px auto 42px;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
 }
 
 .camera-button{
-  width:44px;
-  height:44px;
+  width:46px;
+  height:46px;
   border-radius:50%;
   border:none;
   display:flex;
@@ -162,7 +148,7 @@ video,.preview{
     radial-gradient(circle at 30% 22%,rgba(255,255,255,.44),transparent 18%),
     linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
   color:#06101f;
-  font-size:18px;
+  font-size:19px;
   box-shadow:
     0 9px 18px rgba(0,0,0,.28),
     inset 0 2px 4px rgba(255,255,255,.28),
@@ -170,9 +156,22 @@ video,.preview{
   cursor:pointer;
 }
 
+.spot-plaque{
+  margin-top:15px;
+  padding:10px 28px;
+  border-radius:999px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:19px;
+  letter-spacing:1.6px;
+  color:#06101f;
+  background:
+    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+}
+
 .search{
-  width:100%;
-  max-width:220px;
+  margin-top:18px;
+  width:min(72vw,280px);
   height:44px;
   padding:0 15px;
   border-radius:999px;
@@ -196,46 +195,52 @@ video,.preview{
   text-align:center;
 }
 
-/* INFO */
+/* IDENTIFICATION */
 
 .info-card{
   width:min(88vw,520px);
-  margin:0 auto 28px;
-  padding:13px;
-  border-radius:22px;
-  background:var(--glass);
-  border:1px solid var(--line);
+  margin:0 auto 44px;
+  padding:0;
+  background:transparent;
+  border:none;
   text-align:center;
 }
 
-.info-links{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  align-items:center;
-}
-
-.info-link{
+.vessel-hull{
   display:block;
-  padding:10px 8px;
-  border-radius:18px;
-  border:1px solid rgba(212,175,55,.34);
-  background:rgba(6,16,31,.54);
+  width:min(78vw,380px);
+  margin:0 auto 16px;
+  padding:13px 24px 15px;
   text-decoration:none;
-  color:white;
+  color:#06101f;
+  font-family:"Cormorant Garamond",serif;
+  font-size:26px;
+  line-height:1;
+  letter-spacing:1px;
+  background:
+    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
+  clip-path:polygon(9% 0%,91% 0%,100% 48%,91% 100%,9% 100%,0% 48%);
+  box-shadow:0 10px 22px rgba(0,0,0,.24);
 }
 
-.info-main{
+.owner-plaque{
+  display:inline-block;
+  min-width:min(72vw,320px);
+  padding:10px 20px;
+  border-radius:999px;
+  border:1px solid rgba(212,175,55,.42);
+  background:rgba(6,16,31,.58);
+  color:var(--gold);
+  text-decoration:none;
   font-family:"Cormorant Garamond",serif;
   font-size:21px;
-  color:var(--gold);
   line-height:1.05;
 }
 
 .got-button{
-  width:100%;
-  margin-top:13px;
-  padding:10px;
+  width:min(78vw,380px);
+  margin:30px auto 0;
+  padding:12px;
   border-radius:999px;
   border:none;
   background:
@@ -243,28 +248,34 @@ video,.preview{
   color:#06101f;
   font-family:"Cormorant Garamond",serif;
   font-weight:700;
-  font-size:18px;
-  letter-spacing:1px;
+  font-size:20px;
+  letter-spacing:1.2px;
   box-shadow:0 8px 18px rgba(0,0,0,.22);
   cursor:pointer;
 }
 
-/* FLEET */
+/* GOT YACHT COLLECTION */
 
-.fleet-title{
+.spotted-section{
   width:min(88vw,520px);
-  margin:30px auto 9px;
+  margin:18px auto 54px;
+  display:none;
+}
+
+.spotted-heading{
   font-family:"Cormorant Garamond",serif;
   font-size:21px;
   letter-spacing:3px;
   color:var(--gold);
+  text-align:center;
+  margin-bottom:13px;
 }
 
 .fleet-row{
   display:flex;
-  gap:11px;
+  gap:13px;
   overflow-x:auto;
-  padding:0 14px 32px;
+  padding:0 6px 8px;
 }
 
 .fleet-card{
@@ -312,97 +323,101 @@ video,.preview{
   border-radius:26px;
   background:linear-gradient(180deg,#0a1d37,#020812);
   border:1px solid rgba(212,175,55,.3);
-  padding:15px;
+  padding:18px;
+  text-align:center;
 }
 
 .overlay-img{
   width:100%;
   border-radius:20px;
-  margin-top:13px;
+  margin-top:15px;
 }
 
-.overlay-close{
+.overlay-close,
+.home-close{
   width:100%;
-  margin-top:12px;
-  padding:9px;
+  margin-top:16px;
+  padding:10px;
   border-radius:999px;
-  background:rgba(6,16,31,.74);
-  color:white;
-  border:1px solid rgba(212,175,55,.55);
-  font-size:12px;
+  background:
+    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
+  color:#06101f;
+  border:none;
+  font-family:"Cormorant Garamond",serif;
+  font-weight:700;
+  font-size:16px;
+  letter-spacing:1px;
 }
 
-/* ADD TO HOME */
+.home-title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:30px;
+  color:var(--gold);
+  margin-bottom:16px;
+}
+
+.home-steps{
+  color:var(--mist);
+  font-size:15px;
+  line-height:1.8;
+}
+
+/* LIGHTHOUSE FOOTER */
 
 .install{
   text-align:center;
-  margin:44px auto 36px;
+  margin:82px auto 42px;
   color:var(--mist);
   font-family:"Cormorant Garamond",serif;
-  font-size:16px;
+  font-size:17px;
   letter-spacing:.6px;
+  cursor:pointer;
 }
 
-.mini-binoculars{
-  width:92px;
-  height:44px;
-  margin:0 auto 10px;
+.lighthouse{
+  width:58px;
+  height:58px;
+  margin:0 auto 11px;
   position:relative;
-}
-
-.mini-binoculars .mini-bridge{
-  position:absolute;
-  left:50%;
-  top:46%;
-  width:26px;
-  height:14px;
-  transform:translate(-50%,-50%);
-  border-radius:999px;
-  background:
-    linear-gradient(145deg,#f0d36f,#d4af37,#8a681e);
-  box-shadow:
-    0 7px 14px rgba(0,0,0,.38),
-    inset 0 2px 3px rgba(255,255,255,.35),
-    inset 0 -4px 6px rgba(0,0,0,.35);
-  z-index:1;
-}
-
-.mini-binoculars .mini-lens{
-  position:absolute;
-  top:0;
-  width:46px;
-  height:46px;
   border-radius:50%;
-  padding:5px;
   background:
-    radial-gradient(circle at 28% 17%,rgba(255,255,255,.5),transparent 14%),
-    radial-gradient(circle at 72% 82%,rgba(0,0,0,.32),transparent 30%),
-    linear-gradient(145deg,#ffe58a 0%,#d4af37 30%,#a98125 58%,#4b350e 100%);
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.44),transparent 18%),
+    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
   box-shadow:
-    0 11px 18px rgba(0,0,0,.42),
-    inset 0 3px 5px rgba(255,255,255,.38),
-    inset 0 -6px 9px rgba(0,0,0,.42);
-  z-index:2;
+    0 13px 24px rgba(0,0,0,.35),
+    inset 0 2px 4px rgba(255,255,255,.28),
+    inset 0 -5px 8px rgba(0,0,0,.28);
 }
 
-.mini-binoculars .mini-left{left:0;}
-.mini-binoculars .mini-right{right:0;}
-
-.mini-binoculars .mini-inner{
-  width:100%;
-  height:100%;
-  border-radius:50%;
+.lighthouse::before{
+  content:"";
+  position:absolute;
+  left:22px;
+  top:13px;
+  width:14px;
+  height:30px;
   background:#06101f;
-  box-shadow:
-    inset 0 0 12px rgba(0,0,0,.85),
-    inset 0 0 3px rgba(212,175,55,.42);
+  clip-path:polygon(30% 0%,70% 0%,100% 100%,0% 100%);
+  opacity:.9;
+}
+
+.lighthouse::after{
+  content:"";
+  position:absolute;
+  left:18px;
+  top:9px;
+  width:22px;
+  height:9px;
+  border-radius:2px;
+  background:#06101f;
+  opacity:.9;
 }
 
 canvas{display:none;}
 
 @media(max-width:560px){
   .binocular-stage{
-    margin-top:22px;
+    margin-top:62px;
   }
 
   .binoculars{
@@ -413,30 +428,21 @@ canvas{display:none;}
     padding:2.8%;
   }
 
-  .control-row{
-    width:min(88vw,520px);
-    gap:14px;
-    margin-top:12px;
-    margin-bottom:28px;
+  .spot-section{
+    margin-top:38px;
+    margin-bottom:42px;
   }
 
-  .camera-button{
-    width:42px;
-    height:42px;
+  .vessel-hull{
+    font-size:23px;
   }
 
-  .search{
-    max-width:190px;
-    height:42px;
-    font-size:11px;
-  }
-
-  .info-main{
-    font-size:18px;
+  .owner-plaque{
+    font-size:19px;
   }
 
   .install{
-    margin-top:48px;
+    margin-top:86px;
   }
 }
 </style>
@@ -463,36 +469,30 @@ canvas{display:none;}
   </div>
 </div>
 
-<div class="control-row">
-  <div class="control-cell">
-    <button class="camera-button" onclick="spotYacht()">📷</button>
-    <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Retake</div>
-  </div>
+<div class="spot-section">
+  <button class="camera-button" onclick="spotYacht()">📷</button>
+  <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Retake</div>
 
-  <div class="control-cell">
-    <input
-      id="searchBox"
-      class="search"
-      placeholder="Vessel name"
-      oninput="searchYacht()"
-      autocorrect="off"
-      autocapitalize="none"
-      spellcheck="false"
-      autocomplete="off"
-    />
-  </div>
+  <div class="spot-plaque">SPOT YACHT</div>
+
+  <input
+    id="searchBox"
+    class="search"
+    placeholder="Vessel name"
+    oninput="searchYacht()"
+    autocorrect="off"
+    autocapitalize="none"
+    spellcheck="false"
+    autocomplete="off"
+  />
 </div>
 
 <div id="infoCard" class="info-card"></div>
-<div id="fleetArea"></div>
+<div id="fleetArea" class="spotted-section"></div>
 
-<div class="install">
-  <div class="mini-binoculars">
-    <div class="mini-bridge"></div>
-    <div class="mini-lens mini-left"><div class="mini-inner"></div></div>
-    <div class="mini-lens mini-right"><div class="mini-inner"></div></div>
-  </div>
-  Add to Home Screen
+<div id="installFooter" class="install" onclick="showHomeHelp()">
+  <div class="lighthouse"></div>
+  Add YachtSpotter<br>to Home Screen
 </div>
 
 <div id="overlay" class="overlay" onclick="closeOverlay(event)">
@@ -502,9 +502,22 @@ canvas{display:none;}
   </div>
 </div>
 
+<div id="homeOverlay" class="overlay" onclick="closeHomeHelp(event)">
+  <div class="overlay-card" onclick="event.stopPropagation()">
+    <div class="lighthouse"></div>
+    <div class="home-title">Add YachtSpotter<br>to Home Screen</div>
+    <div class="home-steps">
+      1. Tap Share ⬆<br>
+      2. Tap Add to Home Screen<br>
+      3. Tap Add
+    </div>
+    <button class="home-close" onclick="hideHomeHelp()">GOT IT</button>
+  </div>
+</div>
+
 <canvas id="canvas"></canvas>
 
-<script src="data.js?v=21"></script>
+<script src="data.js?v=22"></script>
 
 <script>
 const video = document.getElementById("video");
@@ -543,17 +556,15 @@ function renderInfo(){
   if(!selectedYacht) return;
 
   document.getElementById("infoCard").innerHTML = `
-    <div class="info-links">
-      <a class="info-link" href="${selectedYacht.yachtLink}" target="_blank">
-        <div class="info-main">${selectedYacht.name}</div>
-      </a>
+    <a class="vessel-hull" href="${selectedYacht.yachtLink}" target="_blank">
+      ${selectedYacht.name}
+    </a>
 
-      <a class="info-link" href="${selectedYacht.ownerLink}" target="_blank">
-        <div class="info-main">${selectedYacht.deepPockets}</div>
-      </a>
-    </div>
+    <a class="owner-plaque" href="${selectedYacht.ownerLink}" target="_blank">
+      ◇ ${selectedYacht.deepPockets} ◇
+    </a>
 
-    <button class="got-button" onclick="gotYacht()">GOT YACHT</button>
+    <button class="got-button" onclick="gotYacht()">GOT YACHT!</button>
   `;
 }
 
@@ -629,13 +640,20 @@ function gotYacht(){
 
 function renderFleet(){
   const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
+  const area = document.getElementById("fleetArea");
 
   if(!sightings.length){
-    document.getElementById("fleetArea").innerHTML = "";
+    area.style.display = "none";
+    area.innerHTML = "";
     return;
   }
 
-  let html = `<div class="fleet-title">FLEET</div><div class="fleet-row">`;
+  area.style.display = "block";
+
+  let html = `
+    <div class="spotted-heading">GOT YACHT!</div>
+    <div class="fleet-row">
+  `;
 
   sightings.forEach((s,index)=>{
     html += `
@@ -647,7 +665,7 @@ function renderFleet(){
   });
 
   html += `</div>`;
-  document.getElementById("fleetArea").innerHTML = html;
+  area.innerHTML = html;
 }
 
 function openFleet(index){
@@ -655,15 +673,13 @@ function openFleet(index){
   const s = sightings[index];
 
   document.getElementById("overlayContent").innerHTML = `
-    <div class="info-links">
-      <a class="info-link" href="${s.yachtLink}" target="_blank">
-        <div class="info-main">${s.name}</div>
-      </a>
+    <a class="vessel-hull" href="${s.yachtLink}" target="_blank">
+      ${s.name}
+    </a>
 
-      <a class="info-link" href="${s.ownerLink}" target="_blank">
-        <div class="info-main">${s.deepPockets}</div>
-      </a>
-    </div>
+    <a class="owner-plaque" href="${s.ownerLink}" target="_blank">
+      ◇ ${s.deepPockets} ◇
+    </a>
 
     <img class="overlay-img" src="${s.image}" alt="${s.name}">
   `;
@@ -679,8 +695,32 @@ function closeOverlay(e){
   if(e.target.id === "overlay") hideOverlay();
 }
 
+function showHomeHelp(){
+  document.getElementById("homeOverlay").style.display = "block";
+}
+
+function hideHomeHelp(){
+  document.getElementById("homeOverlay").style.display = "none";
+}
+
+function closeHomeHelp(e){
+  if(e.target.id === "homeOverlay") hideHomeHelp();
+}
+
+function updateInstallFooter(){
+  const standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  const footer = document.getElementById("installFooter");
+  if(footer){
+    footer.style.display = standalone ? "none" : "block";
+  }
+}
+
 renderDiagram();
 renderFleet();
+updateInstallFooter();
 </script>
 
 </body>
