@@ -10,13 +10,13 @@
 
 <style>
 :root{
-  --navy:#07182f;
-  --navy-dark:#020812;
+  --navy:#051122;
+  --navy-dark:#02070f;
   --gold:#d4af37;
   --brass:#b9932e;
   --mist:#b8c3d6;
-  --glass:rgba(255,255,255,.055);
-  --line:rgba(255,255,255,.11);
+  --panel-bg:#0a192f;
+  --panel-border:#1e3557;
 }
 
 *{box-sizing:border-box;}
@@ -25,16 +25,15 @@ body{
   margin:0;
   min-height:100vh;
   font-family:Inter,sans-serif;
-  background:
-    radial-gradient(circle at top,#12305a 0%,#07182f 36%,#020812 100%);
+  background:radial-gradient(circle at top,#112746 0%,#051122 60%,#01050a 100%);
   color:white;
+  padding-bottom: 40px;
 }
 
 /* MAIN BINOCULARS */
-
 .binocular-stage{
   width:min(96vw,760px);
-  margin:72px auto 0;
+  margin:40px auto 0;
   position:relative;
   display:flex;
   justify-content:center;
@@ -126,201 +125,275 @@ video,.preview{
   height:90%;
 }
 
-/* SPOT / SEARCH */
+/* INSTRUMENT PANEL / SHIP DASHBOARD */
+.dashboard-console{
+  width:min(92vw,560px);
+  margin:30px auto;
+  background:linear-gradient(180deg, var(--panel-bg) 0%, #050d1a 100%);
+  border:3px solid var(--panel-border);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+  text-align:center;
+}
 
-.spot-section{
-  width:min(88vw,520px);
-  margin:42px auto 42px;
+.console-heading{
+  font-family:monospace;
+  font-size:11px;
+  color:var(--panel-border);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.dial-grid{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  gap:10px;
+  margin-bottom:25px;
+}
+
+.dial-wrapper{
   display:flex;
   flex-direction:column;
   align-items:center;
 }
 
-.camera-button{
-  width:46px;
-  height:46px;
+/* Round Dial Interface Elements */
+.nautical-dial{
+  width:72px;
+  height:72px;
   border-radius:50%;
-  border:none;
+  border:4px solid #b9932e;
+  background:radial-gradient(circle at center, #0e223d 0%, #050f1c 100%);
+  box-shadow:0 8px 16px rgba(0,0,0,0.4), inset 0 4px 8px rgba(0,0,0,0.6);
   display:flex;
   align-items:center;
   justify-content:center;
-  background:
-    radial-gradient(circle at 30% 22%,rgba(255,255,255,.44),transparent 18%),
-    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
-  color:#06101f;
-  font-size:19px;
-  box-shadow:
-    0 9px 18px rgba(0,0,0,.28),
-    inset 0 2px 4px rgba(255,255,255,.28),
-    inset 0 -4px 7px rgba(0,0,0,.25);
+  cursor:pointer;
+  position:relative;
+  transition:transform 0.1s ease;
+}
+
+.nautical-dial:active{
+  transform:scale(0.95);
+}
+
+.nautical-dial::before {
+  content:'';
+  position:absolute;
+  inset:2px;
+  border-radius:50%;
+  border:1px dashed rgba(212, 175, 55, 0.3);
+}
+
+.dial-icon{
+  font-size:24px;
+  line-height:1;
+}
+
+.dial-label{
+  font-family:monospace;
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:1px;
+  margin-top:8px;
+  text-transform:uppercase;
+  font-weight:bold;
+}
+
+/* Heavy Mechanical Toggle Toggle Mechanism */
+.toggle-switch-box {
+  width:65px;
+  height:72px;
+  background:#040a12;
+  border:2px solid var(--panel-border);
+  border-radius:8px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+  padding:6px 0;
   cursor:pointer;
 }
 
-/* Converted from text plaque to a premium golden button interface */
-.browse-button {
-  margin-top: 15px;
-  padding: 10px 28px;
-  border-radius: 999px;
-  border: none;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: 1.6px;
-  color: #06101f;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.4), transparent 25%),
-    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
-  box-shadow: 0 8px 18px rgba(0,0,0,.22);
-  cursor: pointer;
-  transition: transform 0.1s ease;
+.toggle-indicator{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#203311;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.8);
+  transition:background 0.2s, box-shadow 0.2s;
 }
 
-.browse-button:active {
-  transform: scale(0.97);
+.toggle-indicator.active{
+  background:#00ff66;
+  box-shadow:0 0 8px #00ff66, inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.toggle-lever{
+  width:12px;
+  height:26px;
+  background:linear-gradient(90deg, #8c96a3, #cbd3de, #59616b);
+  border-radius:4px;
+  border-bottom:4px solid #333;
+  box-shadow:0 4px 6px rgba(0,0,0,0.4);
+  transform:translateY(2px);
+  transition:transform 0.15s;
+}
+
+.toggle-switch-box:active .toggle-lever{
+  transform:translateY(-2px);
+}
+
+.search-field-wrapper {
+  position:relative;
+  width:100%;
 }
 
 .search{
-  margin-top:18px;
-  width:min(72vw,280px);
+  width:100%;
   height:44px;
   padding:0 15px;
-  border-radius:999px;
-  border:1px solid rgba(212,175,55,.32);
-  background:rgba(2,8,18,.78);
+  border-radius:8px;
+  border:2px solid var(--panel-border);
+  background:#030812;
   color:white;
-  font-size:12px;
+  font-family:monospace;
+  font-size:13px;
   outline:none;
   text-align:center;
+  letter-spacing:1px;
+}
+
+.search:focus{
+  border-color:var(--gold);
 }
 
 .search::placeholder{
-  color:rgba(184,195,214,.72);
+  color:rgba(184,195,214,0.4);
 }
 
 .retake{
-  margin-top:8px;
+  margin-top:12px;
   color:var(--mist);
-  font-size:12px;
+  font-family:monospace;
+  font-size:11px;
+  text-decoration:underline;
   cursor:pointer;
-  text-align:center;
 }
 
-/* IDENTIFICATION */
-
+/* IDENTIFICATION DISPLAY */
 .info-card{
-  width:min(88vw,520px);
-  margin:0 auto 44px;
-  padding:0;
-  background:transparent;
-  border:none;
+  width:min(92vw,560px);
+  margin:0 auto 24px;
   text-align:center;
 }
 
 .vessel-hull{
   display:block;
-  width:min(78vw,380px);
-  margin:0 auto 16px;
-  padding:13px 24px 15px;
+  width:min(88vw,420px);
+  margin:0 auto 12px;
+  padding:14px;
   text-decoration:none;
   color:#06101f;
   font-family:"Cormorant Garamond",serif;
   font-size:26px;
   line-height:1;
-  letter-spacing:1px;
-  background:
-    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
-  clip-path:polygon(9% 0%,91% 0%,100% 48%,91% 100%,9% 100%,0% 48%);
-  box-shadow:0 10px 22px rgba(0,0,0,.24);
+  font-weight:700;
+  letter-spacing:1.5px;
+  background:linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
+  clip-path:polygon(6% 0%,94% 0%,100% 50%,94% 100%,6% 100%,0% 50%);
 }
 
 .owner-plaque{
   display:inline-block;
-  min-width:min(72vw,320px);
+  min-width:min(82vw,340px);
   padding:10px 20px;
   border-radius:999px;
   border:1px solid rgba(212,175,55,.42);
-  background:rgba(6,16,31,.58);
+  background:rgba(6,16,31,.75);
   color:var(--gold);
   text-decoration:none;
   font-family:"Cormorant Garamond",serif;
-  font-size:21px;
-  line-height:1.05;
-}
-
-.got-button{
-  width:min(78vw,380px);
-  margin:30px auto 0;
-  padding:12px;
-  border-radius:999px;
-  border:none;
-  background:
-    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
-  color:#06101f;
-  font-family:"Cormorant Garamond",serif;
-  font-weight:700;
   font-size:20px;
-  letter-spacing:1.2px;
-  box-shadow:0 8px 18px rgba(0,0,0,.22);
-  cursor:pointer;
 }
 
-/* GOT YACHT COLLECTION */
-
+/* STORAGE PORTEHOLES ROW */
 .spotted-section{
-  width:min(88vw,520px);
-  margin:18px auto 54px;
+  width:min(92vw,560px);
+  margin:30px auto;
   display:none;
-}
-
-.spotted-heading{
-  font-family:"Cormorant Garamond",serif;
-  font-size:21px;
-  letter-spacing:3px;
-  color:var(--gold);
-  text-align:center;
-  margin-bottom:13px;
+  background:rgba(4, 11, 22, 0.4);
+  border:1px dashed var(--panel-border);
+  border-radius:16px;
+  padding:16px;
 }
 
 .fleet-row{
   display:flex;
-  gap:13px;
+  gap:16px;
   overflow-x:auto;
-  padding:0 6px 8px;
+  padding-bottom:6px;
 }
 
 .fleet-card{
-  min-width:96px;
+  min-width:90px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
 }
 
 .fleet-porthole{
-  width:86px;
-  height:86px;
+  width:80px;
+  height:80px;
   border-radius:50%;
-  padding:6px;
-  background:
-    linear-gradient(145deg,#f0d36f,#d4af37,#b9932e,#674d17);
+  padding:5px;
+  background:linear-gradient(145deg,#f0d36f,#d4af37,#674d17);
+  box-shadow:0 6px 12px rgba(0,0,0,0.4);
 }
 
-.fleet-porthole img{
+.fleet-porthole .porthole-asset-frame {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:#06101f;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.fleet-porthole img {
   width:100%;
   height:100%;
   object-fit:cover;
-  border-radius:50%;
+}
+
+.fleet-porthole svg {
+  width:115%;
+  height:115%;
 }
 
 .fleet-name{
-  margin-top:7px;
+  margin-top:6px;
   text-align:center;
   font-family:"Cormorant Garamond",serif;
-  font-size:15px;
+  font-size:14px;
+  color:var(--mist);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  width:86px;
 }
 
-/* OVERLAY */
-
+/* POPUP MODULE OVERLAYS */
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(2,8,18,.9);
+  background:rgba(2,8,18,.92);
   backdrop-filter:blur(10px);
   display:none;
   z-index:50;
@@ -333,36 +406,50 @@ video,.preview{
   border-radius:26px;
   background:linear-gradient(180deg,#0a1d37,#020812);
   border:1px solid rgba(212,175,55,.3);
-  padding:18px;
+  padding:20px;
   text-align:center;
 }
 
-.overlay-img{
+.overlay-img-frame{
   width:100%;
-  border-radius:20px;
+  border-radius:16px;
   margin-top:15px;
+  overflow:hidden;
+  background:#06101f;
+  border:1px solid var(--panel-border);
+}
+
+.overlay-img-frame img{
+  width:100%;
+  display:block;
+}
+
+.overlay-img-frame svg{
+  width:100%;
+  padding:10px;
 }
 
 .overlay-close,
 .home-close{
   width:100%;
-  margin-top:16px;
-  padding:10px;
+  margin-top:20px;
+  padding:12px;
   border-radius:999px;
-  background:
-    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
+  background:linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
   color:#06101f;
   border:none;
   font-family:"Cormorant Garamond",serif;
   font-weight:700;
-  font-size:16px;
+  font-size:18px;
   letter-spacing:1px;
+  cursor:pointer;
 }
 
 .home-title{
   font-family:"Cormorant Garamond",serif;
-  font-size:30px;
+  font-size:28px;
   color:var(--gold);
+  margin-top:10px;
   margin-bottom:16px;
 }
 
@@ -372,89 +459,27 @@ video,.preview{
   line-height:1.8;
 }
 
-/* LIGHTHOUSE FOOTER */
-
+/* SHIPS LIGHTHOUSE ANCHOR FOOTER */
 .install{
   text-align:center;
-  margin:82px auto 42px;
+  margin:50px auto 20px;
   color:var(--mist);
   font-family:"Cormorant Garamond",serif;
-  font-size:17px;
-  letter-spacing:.6px;
+  font-size:16px;
+  letter-spacing:1px;
   cursor:pointer;
+  width:fit-content;
 }
 
-.lighthouse{
-  width:58px;
-  height:58px;
-  margin:0 auto 11px;
-  position:relative;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 22%,rgba(255,255,255,.44),transparent 18%),
-    linear-gradient(145deg,#f0d36f,#d4af37 36%,#b9932e 70%,#674d17);
-  box-shadow:
-    0 13px 24px rgba(0,0,0,.35),
-    inset 0 2px 4px rgba(255,255,255,.28),
-    inset 0 -5px 8px rgba(0,0,0,.28);
-}
-
-.lighthouse::before{
-  content:"";
-  position:absolute;
-  left:22px;
-  top:13px;
-  width:14px;
-  height:30px;
-  background:#06101f;
-  clip-path:polygon(30% 0%,70% 0%,100% 100%,0% 100%);
-  opacity:.9;
-}
-
-.lighthouse::after{
-  content:"";
-  position:absolute;
-  left:18px;
-  top:9px;
-  width:22px;
-  height:9px;
-  border-radius:2px;
-  background:#06101f;
-  opacity:.9;
+.lighthouse-img-icon{
+  width:50px;
+  height:50px;
+  object-fit:contain;
+  margin-bottom:8px;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
 }
 
 canvas{display:none;}
-
-@media(max-width:560px){
-  .binocular-stage{
-    margin-top:62px;
-  }
-
-  .binoculars{
-    height:min(49vw,230px);
-  }
-
-  .barrel{
-    padding:2.8%;
-  }
-
-  .spot-section{
-    margin-top:38px;
-    margin-bottom:42px;
-  }
-
-  .vessel-hull{
-    font-size:23px;
-  }
-
-  .owner-plaque{
-    font-size:19px;
-  }
-
-  .install{
-    margin-top:86px;
-  }
-}
 </style>
 </head>
 
@@ -467,7 +492,7 @@ canvas{display:none;}
     <div class="barrel barrel-left">
       <div class="lens">
         <video id="video" autoplay playsinline muted></video>
-        <img id="preview" class="preview" alt="Captured yacht">
+        <img id="preview" class="preview" alt="Captured viewport frame">
       </div>
     </div>
 
@@ -479,49 +504,74 @@ canvas{display:none;}
   </div>
 </div>
 
-<div class="spot-section">
-  <button class="camera-button" onclick="captureLivePhoto()">📷</button>
-  <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Retake</div>
+<div class="dashboard-console">
+  <div class="console-heading">Bridge Control Console</div>
+  
+  <div class="dial-grid">
+    <div class="dial-wrapper">
+      <div class="nautical-dial" onclick="captureLivePhoto()">
+        <span class="dial-icon">📷</span>
+      </div>
+      <div class="dial-label">Shutter</div>
+    </div>
 
-  <button class="browse-button" onclick="browseDatabaseNext()">BROWSE BOATS</button>
+    <div class="dial-wrapper">
+      <div class="nautical-dial" onclick="browseDatabaseNext()">
+        <span class="dial-icon">🧭</span>
+      </div>
+      <div class="dial-label">Browse</div>
+    </div>
 
-  <input
-    id="searchBox"
-    class="search"
-    placeholder="Vessel name"
-    oninput="searchYacht()"
-    autocorrect="off"
-    autocapitalize="none"
-    spellcheck="false"
-    autocomplete="off"
-  />
+    <div class="dial-wrapper">
+      <div class="toggle-switch-box" onclick="triggerToggleCommit()">
+        <div id="toggleIndicator" class="toggle-indicator"></div>
+        <div class="toggle-lever"></div>
+      </div>
+      <div class="dial-label">Log Vessel</div>
+    </div>
+  </div>
+
+  <div class="search-field-wrapper">
+    <input
+      id="searchBox"
+      class="search"
+      placeholder="SYS REGISTRY SEARCH..."
+      oninput="searchYacht()"
+      autocorrect="off"
+      autocapitalize="none"
+      spellcheck="false"
+      autocomplete="off"
+    />
+  </div>
+  <div id="retakeButton" class="retake" onclick="retakePhoto()" style="display:none;">Clear Snapshot Frame</div>
 </div>
 
 <div id="infoCard" class="info-card"></div>
+
 <div id="fleetArea" class="spotted-section"></div>
 
 <div id="installFooter" class="install" onclick="showHomeHelp()">
-  <div class="lighthouse"></div>
-  Add YachtSpotter<br>to Home Screen
+  <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse"><br>
+  ADD TO HOME SCREEN
 </div>
 
 <div id="overlay" class="overlay" onclick="closeOverlay(event)">
   <div class="overlay-card" onclick="event.stopPropagation()">
     <div id="overlayContent"></div>
-    <button class="overlay-close" onclick="hideOverlay()">Close</button>
+    <button class="overlay-close" onclick="hideOverlay()">Close Sheet</button>
   </div>
 </div>
 
 <div id="homeOverlay" class="overlay" onclick="closeHomeHelp(event)">
   <div class="overlay-card" onclick="event.stopPropagation()">
-    <div class="lighthouse"></div>
-    <div class="home-title">Add YachtSpotter<br>to Home Screen</div>
+    <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse">
+    <div class="home-title">System Installer</div>
     <div class="home-steps">
-      1. Tap Share ⬆<br>
-      2. Tap Add to Home Screen<br>
-      3. Tap Add
+      1. Open your browser options menu ⬆<br>
+      2. Tap "Add to Home Screen"<br>
+      3. Confirm profile link assignment
     </div>
-    <button class="home-close" onclick="hideHomeHelp()">GOT IT</button>
+    <button class="home-close" onclick="hideHomeHelp()">Acknowledge</button>
   </div>
 </div>
 
@@ -538,14 +588,18 @@ let currentIndex = 0;
 let selectedYacht = yachts[0];
 let capturedImage = null;
 
+// Clean stream acquisition initializer 
 navigator.mediaDevices.getUserMedia({
   video:{facingMode:{ideal:"environment"}},
   audio:false
 })
-.then(stream=>{video.srcObject=stream;})
-.catch(()=>{/* Fallback if camera stream blocks */});
+.then(stream=>{
+  video.srcObject = stream;
+  video.setAttribute("playsinline", true);
+  video.play();
+})
+.catch(()=>{/* Standby state if hardware blocks */});
 
-// Path 2: Hyper-Detailed Naval Architecture Blueprint Engine
 function generateYachtSVG(name, length = 120) {
   const normalized = name ? name.toUpperCase().trim() : "UNKNOWN";
   const yachtLength = length || 120;
@@ -645,62 +699,21 @@ function generateYachtSVG(name, length = 120) {
     <svg class="dynamic-yacht-svg" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
       <g stroke="#d4af37" stroke-width="0.25" opacity="0.12">
         <line x1="0" y1="10" x2="500" y2="10" /><line x1="0" y1="30" x2="500" y2="30" /><line x1="0" y1="50" x2="500" y2="50" /><line x1="0" y1="70" x2="500" y2="70" /><line x1="0" y1="90" x2="500" y2="90" /><line x1="0" y1="110" x2="500" y2="110" /><line x1="0" y1="130" x2="500" y2="130" /><line x1="0" y1="150" x2="500" y2="150" />
-        <line x1="25" y1="0" x2="25" y2="160" /><line x1="75" y1="0" x2="75" y2="160" /><line x1="125" y1="0" x2="125" y2="160" /><line x1="175" y1="0" x2="175" y2="160" /><line x1="225" y1="0" x2="225" y2="160" /><line x1="275" y1="0" x2="275" y2="160" /><line x1="325" y1="0" x2="325" y2="160" /><line x1="375" y1="0" x2="375" y2="160" /><line x1="425" y1="0" x2="425" y2="160" /><line x1="475" y1="0" x2="475" y2="160" />
       </g>
       <g stroke="#d4af37" stroke-width="0.5" opacity="0.22">
         <line x1="0" y1="20" x2="500" y2="20" /><line x1="0" y1="40" x2="500" y2="40" /><line x1="0" y1="60" x2="500" y2="60" /><line x1="0" y1="80" x2="500" y2="80" /><line x1="0" y1="100" x2="500" y2="100" /><line x1="0" y1="140" x2="500" y2="140" />
         <line x1="50" y1="0" x2="50" y2="160" /><line x1="100" y1="0" x2="100" y2="160" /><line x1="150" y1="0" x2="150" y2="160" /><line x1="200" y1="0" x2="200" y2="160" /><line x1="250" y1="0" x2="250" y2="160" /><line x1="300" y1="0" x2="300" y2="160" /><line x1="350" y1="0" x2="350" y2="160" /><line x1="400" y1="0" x2="400" y2="160" /><line x1="450" y1="0" x2="450" y2="160" />
       </g>
-      <g stroke="#d4af37" stroke-width="0.5" fill="none" opacity="0.18">
-        <line x1="90" y1="78" x2="90" y2="124" stroke-dasharray="1,2"/>
-        <line x1="140" y1="54" x2="140" y2="124" stroke-dasharray="1,2"/>
-        <line x1="200" y1="34" x2="200" y2="124" stroke-dasharray="1,2"/>
-        <line x1="260" y1="34" x2="260" y2="124" stroke-dasharray="1,2"/>
-        <line x1="320" y1="54" x2="320" y2="124" stroke-dasharray="1,2"/>
-        <line x1="380" y1="78" x2="380" y2="124" stroke-dasharray="1,2"/>
-        <path d="M 40 115 Q 245 132 450 88" stroke-width="0.75"/>
-        <path d="M 55 120 Q 245 138 435 105" stroke-width="0.5"/>
-      </g>
-      <g stroke="#f0d36f" stroke-width="0.75" opacity="0.4">
-        <path d="M 15 15 L 25 15 M 15 15 L 15 25" fill="none"/>
-        <path d="M 485 15 L 475 15 M 485 15 L 485 25" fill="none"/>
-        <circle cx="250" cy="12" r="3" fill="none" stroke-width="0.5"/>
-        <line x1="250" y1="4" x2="250" y2="20" stroke-width="0.5"/>
-      </g>
-      <g font-family="monospace" font-size="5" fill="#b8c3d6" opacity="0.65">
-        <text x="20" y="16">TYPE: HYDRODYN_MODEL_PROV</text>
-        <text x="20" y="23">UNIT: METRIC (MM)</text>
-        <text x="20" y="30">SYS: 2D_SHEER_ELEVATION</text>
-        <text x="175" y="16">DWG IDENT: YS-${normalized.substring(0,Math.min(normalized.length,4))}-2026</text>
-        <text x="175" y="23">HULL TYPE: DISPLACEMENT_V12</text>
-        <text x="390" y="16">STATION MAP: GA_B09</text>
-        <text x="390" y="23">PROPULSION: TWIN_SCREW</text>
-        <text x="390" y="30">SHEET: 01 OF 01</text>
-      </g>
       <line x1="15" y1="124" x2="485" y2="124" stroke="#f0d36f" stroke-width="1.25" opacity="0.75"/>
-      <text x="462" y="131" font-family="monospace" font-size="5" fill="#f0d36f" font-weight="bold" opacity="0.7">L.W.L.</text>
-      <circle cx="75" cy="124" r="2.5" fill="none" stroke="#f0d36f" stroke-width="0.75" opacity="0.6"/>
-      <line x1="72.5" y1="124" x2="77.5" y2="124" stroke="#f0d36f" stroke-width="0.5" opacity="0.6"/>
-      <circle cx="415" cy="122" r="2" fill="none" stroke="#f0d36f" stroke-width="0.5" opacity="0.4"/>
       <g fill="none">
         <path d="${hullPath}" stroke="#f0d36f" stroke-width="2"/>
         ${superstructure}
         ${details}
       </g>
-      <g fill="none" stroke="#f0d36f" stroke-width="0.75" opacity="0.65">
-        <line x1="50" y1="146" x2="440" y2="146" />
-        <line x1="50" y1="142" x2="50" y2="150" />
-        <line x1="147.5" y1="143" x2="147.5" y2="149" />
-        <line x1="245" y1="143" x2="245" y2="149" />
-        <line x1="342.5" y1="143" x2="342.5" y2="149" />
-        <line x1="440" y1="142" x2="440" y2="150" />
-      </g>
       <g font-family="Inter, sans-serif" font-size="6.5" fill="#d4af37" font-weight="600" text-anchor="middle">
         <text x="50" y="156">AFT 0m</text>
-        <text x="147.5" y="156">${Math.round(yachtLength * 0.25)}m</text>
-        <text x="245" y="156">${Math.round(yachtLength * 0.5)}m FRAME</text>
-        <text x="342.5" y="156">${Math.round(yachtLength * 0.75)}m</text>
-        <text x="440" y="156">FWD ${yachtLength}m</text>
+        <text x="245" y="156">${yachtLength}m FRAME</text>
+        <text x="440" y="156">FWD</text>
       </g>
     </svg>
   `;
@@ -725,7 +738,6 @@ function renderInfo(){
     <a class="owner-plaque" href="${selectedYacht.ownerLink}" target="_blank">
       ◇ ${selectedYacht.deepPockets} ◇
     </a>
-    <button class="got-button" onclick="gotYacht()">GOT YACHT!</button>
   `;
 }
 
@@ -751,32 +763,34 @@ function searchYacht(){
   }
 }
 
-/* 📷 Button Functionality: Captures image inside viewport left lens */
-function sampleLivePhoto() {
-  if(!video.videoWidth){
-    alert("Camera initialization incomplete.");
+/* FIX: Refactored target dimension sampling maps to guarantee accurate extraction */
+function captureLivePhoto() {
+  if(!video.videoWidth || !video.videoHeight){
+    alert("Instrument Sync Error: Camera stream not stable yet.");
     return;
   }
-  const ctx = canvas.getContext("2d");
+  
+  // Set dimensions directly to canvas element context properties
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+  
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  capturedImage = canvas.toDataURL("image/jpeg",0.7);
+  capturedImage = canvas.toDataURL("image/jpeg", 0.85);
+  
+  // Update viewports
   preview.src = capturedImage;
   preview.style.display = "block";
   video.style.display = "none";
   document.getElementById("retakeButton").style.display = "block";
 }
 
-/* BROWSE BOATS Button Functionality: Cycles the list array sequence */
 function browseDatabaseNext(){
   currentIndex = (currentIndex + 1) % yachts.length;
   selectedYacht = yachts[currentIndex];
   
-  // Keep the search box matched to the actively navigated vessel
   document.getElementById("searchBox").value = selectedYacht.name;
-  
   renderDiagram();
 }
 
@@ -788,31 +802,39 @@ function retakePhoto(){
   document.getElementById("retakeButton").style.display = "none";
 }
 
+/* Mechanical Lever Switch Action Logic */
+function triggerToggleCommit() {
+  const ind = document.getElementById("toggleIndicator");
+  ind.classList.add("active");
+  
+  // Commit sequence dispatch
+  setTimeout(() => {
+    gotYacht();
+    ind.classList.remove("active");
+  }, 250);
+}
+
 function gotYacht(){
-  // Auto-generate placeholder if the user relies on browsing blueprint maps directly
-  if (!capturedImage) {
-    const mockBlueprintCanvas = document.createElement("canvas");
-    mockBlueprintCanvas.width = 300;
-    mockBlueprintCanvas.height = 300;
-    const ctx = mockBlueprintCanvas.getContext("2d");
-    ctx.fillStyle = "#06101f";
-    ctx.fillRect(0,0,300,300);
-    ctx.strokeStyle = "#d4af37";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(20,20,260,260);
-    ctx.font = "14px monospace";
-    ctx.fillStyle = "#d4af37";
-    ctx.fillText(selectedYacht.name, 40, 150);
-    capturedImage = mockBlueprintCanvas.toDataURL("image/jpeg");
+  let finalAssetData = null;
+  let isVectorDraft = false;
+
+  if (capturedImage) {
+    finalAssetData = capturedImage;
+    isVectorDraft = false;
+  } else {
+    // Generate code block map string for blueprint recovery instead of empty profile name labels
+    finalAssetData = generateYachtSVG(selectedYacht.name, selectedYacht.length);
+    isVectorDraft = true;
   }
 
   const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
   sightings.unshift({
-    name:selectedYacht.name,
+    name:selectedYacht.yachtName || selectedYacht.name,
     deepPockets:selectedYacht.deepPockets,
     yachtLink:selectedYacht.yachtLink,
     ownerLink:selectedYacht.ownerLink,
-    image:capturedImage
+    asset:finalAssetData,
+    isVector:isVectorDraft
   });
 
   localStorage.setItem("fleet",JSON.stringify(sightings));
@@ -831,15 +853,24 @@ function renderFleet(){
 
   area.style.display = "block";
 
-  let html = `
-    <div class="spotted-heading">GOT YACHT!</div>
-    <div class="fleet-row">
-  `;
+  // CLEANED: Redundant text titles removed completely
+  let html = `<div class="fleet-row">`;
 
   sightings.forEach((s,index)=>{
+    let previewRenderBlock = "";
+    if(s.isVector) {
+       previewRenderBlock = s.asset; // Inject raw inline blueprint vector lines straight into porthole
+    } else {
+       previewRenderBlock = `<img src="${s.asset}" alt="Sighting photo">`;
+    }
+
     html += `
       <div class="fleet-card" onclick="openFleet(${index})">
-        <div class="fleet-porthole"><img src="${s.image}" alt="${s.name}"></div>
+        <div class="fleet-porthole">
+          <div class="porthole-asset-frame">
+             ${previewRenderBlock}
+          </div>
+        </div>
         <div class="fleet-name">${s.name}</div>
       </div>
     `;
@@ -853,6 +884,13 @@ function openFleet(index){
   const sightings = JSON.parse(localStorage.getItem("fleet") || "[]");
   const s = sightings[index];
 
+  let displayBlock = "";
+  if(s.isVector) {
+    displayBlock = s.asset;
+  } else {
+    displayBlock = `<img src="${s.asset}" alt="Vessel frame snapshot">`;
+  }
+
   document.getElementById("overlayContent").innerHTML = `
     <a class="vessel-hull" href="${s.yachtLink}" target="_blank">
       ${s.name}
@@ -860,7 +898,9 @@ function openFleet(index){
     <a class="owner-plaque" href="${s.ownerLink}" target="_blank">
       ◇ ${s.deepPockets} ◇
     </a>
-    <img class="overlay-img" src="${s.image}" alt="${s.name}">
+    <div class="overlay-img-frame">
+       ${displayBlock}
+    </div>
   `;
 
   document.getElementById("overlay").style.display = "block";
