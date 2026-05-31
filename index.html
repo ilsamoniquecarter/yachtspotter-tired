@@ -2,36 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>YachtSpotter // Tactical Matrix</title>
+    <title>YachtSpotter Navigator</title>
     <style>
-        body { font-family: sans-serif; background: #000; color: #0f0; padding: 20px; }
-        .yacht-card { border: 1px solid #0f0; padding: 15px; margin: 10px 0; }
+        :root {
+            --deep-marine: rgba(10, 15, 25, 0.85);
+            --quartz-amber: #d4af37;
+        }
+        body {
+            background: radial-gradient(circle at center, #1a2533, #0a0f19);
+            color: #d1d5db;
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 40px;
+        }
+        #yacht-container {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;
+        }
+        .binoculars-set {
+            display: flex; gap: 20px; align-items: center;
+        }
+        .lens {
+            width: 220px; height: 220px; border-radius: 50%;
+            border: 2px solid var(--quartz-amber);
+            background: var(--deep-marine);
+            backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
+        h3 { font-size: 14px; text-transform: uppercase; margin: 5px 0; color: var(--quartz-amber); }
+        a { color: #fff; font-size: 11px; text-decoration: none; border-bottom: 1px solid var(--quartz-amber); margin-top: 5px; }
     </style>
 </head>
 <body>
-    <h1>YACHTSPOTTER // TACTICAL MATRIX</h1>
-    <div id="matrix"></div>
 
-    <script>
-        // Directly fetch the file to ensure no cache interference
-        fetch('data.js?t=' + new Date().getTime())
-            .then(response => response.text())
-            .then(text => {
-                // This strips the 'const yachts =' part to get the raw array
-                const dataString = text.replace('const yachts =', '').replace(';', '');
-                const yachts = JSON.parse(dataString);
-                
-                const matrix = document.getElementById('matrix');
-                yachts.forEach(yacht => {
-                    matrix.innerHTML += `
-                        <div class="yacht-card">
-                            <h2>${yacht.name}</h2>
-                            <p>OWNER: ${yacht.deepPockets}</p>
-                            <a href="${yacht.yachtLink}" style="color: #fff;">Inspect Specs</a>
-                        </div>`;
-                });
-            })
-            .catch(err => console.error("Matrix Error:", err));
-    </script>
+<div id="yacht-container"></div>
+
+<!-- Replace 'data.js' with the actual path to your file -->
+<script src="data.js"></script>
+
+<script>
+    const container = document.getElementById('yacht-container');
+    yachts.forEach(yacht => {
+        const div = document.createElement('div');
+        div.className = 'binoculars-set';
+        div.innerHTML = `
+            <div class="lens">
+                <h3>${yacht.name}</h3>
+                <a href="${yacht.yachtLink}" target="_blank">VESSEL DATA</a>
+            </div>
+            <div class="lens">
+                <h3>${yacht.deepPockets}</h3>
+                <a href="${yacht.ownerLink}" target="_blank">OWNER FILINGS</a>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+</script>
+
 </body>
 </html>
