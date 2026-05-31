@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YachtSpotter Navigator</title>
+    <style>
+        :root {
+            --deep-marine: rgba(10, 15, 25, 0.85);
+            --quartz-amber: #d4af37;
+        }
+        body {
+            background: radial-gradient(circle at center, #1a2533, #0a0f19);
+            color: #d1d5db;
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 40px;
+        }
+        #yacht-container {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;
+        }
+        .binoculars-set {
+            display: flex; gap: 20px; align-items: center;
+        }
+        .lens {
+            width: 200px; height: 200px; border-radius: 50%;
+            border: 2px solid var(--quartz-amber);
+            background: var(--deep-marine);
+            backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
+        h3 { font-size: 13px; text-transform: uppercase; margin: 5px 0; color: var(--quartz-amber); }
+        a { color: #fff; font-size: 10px; text-decoration: none; border-bottom: 1px solid var(--quartz-amber); margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="yacht-container"></div>
+
+<!-- This script assumes your data.js is in the same folder as this file -->
+<script src="data.js"></script>
+
+<script>
+    const container = document.getElementById('yacht-container');
+    yachts.forEach(yacht => {
+        const div = document.createElement('div');
+        div.className = 'binoculars-set';
+        div.innerHTML = `
+            <div class="lens">
+                <h3>${yacht.name}</h3>
+                <a href="${yacht.yachtLink}" target="_blank">VESSEL DATA</a>
+            </div>
+            <div class="lens">
+                <h3>${yacht.deepPockets}</h3>
+                <a href="${yacht.ownerLink}" target="_blank">OWNER FILINGS</a>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+</script>
+
+</body>
+</html>
