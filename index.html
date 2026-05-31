@@ -18,19 +18,40 @@
             align-items: center;
             overflow: hidden;
         }
+
+        /* The Binocular Frame Overlay */
+        .binocular-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .binocular-overlay svg {
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* The Scrolling Container */
         #yacht-container {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 40px;
-            padding: 0 50vw; /* Keeps active lens in center */
+            padding: 0 50vw;
             scrollbar-width: none;
+            z-index: 5;
         }
         #yacht-container::-webkit-scrollbar { display: none; }
         
         .lens {
-            flex: 0 0 250px;
-            height: 250px;
+            flex: 0 0 200px;
+            height: 200px;
             border-radius: 50%;
             border: 4px solid var(--quartz-amber);
             background: var(--deep-marine);
@@ -40,33 +61,40 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        h3 { font-size: 13px; text-transform: uppercase; margin: 8px 0; color: var(--quartz-amber); letter-spacing: 1px; }
+        h3 { font-size: 12px; text-transform: uppercase; margin: 5px 0; color: var(--quartz-amber); letter-spacing: 1px; }
         a { color: #fff; font-size: 10px; text-decoration: none; border-bottom: 1px solid var(--quartz-amber); margin-top: 5px; opacity: 0.8; }
         a:hover { opacity: 1; }
     </style>
 </head>
 <body>
 
-<div id="yacht-container"></div>
+    <div class="binocular-overlay">
+        <svg viewBox="0 0 100 40">
+            <circle cx="20" cy="20" r="18" fill="none" stroke="#d4af37" stroke-width="2"/>
+            <circle cx="80" cy="20" r="18" fill="none" stroke="#d4af37" stroke-width="2"/>
+            <rect x="38" y="18" width="24" height="4" fill="#d4af37"/>
+        </svg>
+    </div>
 
-<script src="data.js"></script>
-<script>
-    const container = document.getElementById('yacht-container');
-    yachts.forEach(yacht => {
-        const div = document.createElement('div');
-        div.className = 'lens';
-        div.innerHTML = `
-            <h3>${yacht.name}</h3>
-            <a href="${yacht.yachtLink}" target="_blank">VESSEL</a>
-            <h3>${yacht.deepPockets}</h3>
-            <a href="${yacht.ownerLink}" target="_blank">OWNER</a>
-        `;
-        container.appendChild(div);
-    });
-</script>
+    <div id="yacht-container"></div>
 
+    <script src="data.js"></script>
+    <script>
+        const container = document.getElementById('yacht-container');
+        yachts.forEach(yacht => {
+            const div = document.createElement('div');
+            div.className = 'lens';
+            div.innerHTML = `
+                <h3>${yacht.name}</h3>
+                <a href="${yacht.yachtLink}" target="_blank">VESSEL</a>
+                <h3>${yacht.deepPockets}</h3>
+                <a href="${yacht.ownerLink}" target="_blank">OWNER</a>
+            `;
+            container.appendChild(div);
+        });
+    </script>
 </body>
 </html>
