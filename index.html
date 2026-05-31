@@ -2,31 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>YachtSpotter</title>
+    <title>YachtSpotter // Tactical Matrix</title>
+    <style>
+        body { font-family: sans-serif; background: #000; color: #0f0; padding: 20px; }
+        .yacht-card { border: 1px solid #0f0; padding: 15px; margin: 10px 0; }
+    </style>
 </head>
 <body>
-    <h1>YachtSpotter // Tactical Matrix</h1>
-    <div id="yacht-container"></div>
+    <h1>YACHTSPOTTER // TACTICAL MATRIX</h1>
+    <div id="matrix"></div>
 
-    <script src="data.js" defer></script>
-    
     <script>
-        // This waits for the window to fully load, then tries to read the data
-        window.addEventListener('load', () => {
-            console.log("Checking data...");
-            if (typeof yachts !== 'undefined') {
-                console.log("Data found:", yachts);
-                const container = document.getElementById('yacht-container');
+        // Directly fetch the file to ensure no cache interference
+        fetch('data.js?t=' + new Date().getTime())
+            .then(response => response.text())
+            .then(text => {
+                // This strips the 'const yachts =' part to get the raw array
+                const dataString = text.replace('const yachts =', '').replace(';', '');
+                const yachts = JSON.parse(dataString);
+                
+                const matrix = document.getElementById('matrix');
                 yachts.forEach(yacht => {
-                    const div = document.createElement('div');
-                    div.innerHTML = `<h3>${yacht.name}</h3><p>Owner: ${yacht.deepPockets}</p>`;
-                    container.appendChild(div);
+                    matrix.innerHTML += `
+                        <div class="yacht-card">
+                            <h2>${yacht.name}</h2>
+                            <p>OWNER: ${yacht.deepPockets}</p>
+                            <a href="${yacht.yachtLink}" style="color: #fff;">Inspect Specs</a>
+                        </div>`;
                 });
-            } else {
-                console.error("Data still undefined. Check file path or file content.");
-            }
-        });
+            })
+            .catch(err => console.error("Matrix Error:", err));
     </script>
 </body>
 </html>
-
