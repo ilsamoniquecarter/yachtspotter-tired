@@ -1,536 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>YachtSpotter // Tactical Instrumentation Console</title>
-  <link rel="manifest" href="manifest.json" />
-  <style>
-    :root {
-      --panel-bg: #0d1117;
-      --panel-border: #30363d;
-      --neon-gold: #f0d36f;
-      --dark-gold: #d4af37;
-      --text-main: #c9d1d9;
-      --text-muted: #8b949e;
-      --crt-glow: rgba(240, 211, 111, 0.03);
-      --mist: #b8c3d6;
-      --hull-stroke: #f0d36f;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YachtSpotter // Tactical Instrumentation Console Matrix</title>
+    <style>
+        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; padding: 20px; }
+        
+        /* Tactical Round Components */
+        .round-btn {
+            border-radius: 50px !important;
+            padding: 10px 25px;
+            border: 2px solid #0f0;
+            background: transparent;
+            color: #0f0;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .round-btn:active { background: #0f0; color: #000; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      background-color: #040608;
-      font-family: 'Courier New', Courier, monospace;
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      padding-bottom: 120px;
-      overflow-x: hidden;
-    }
-
-    .console-container {
-      width: 100%;
-      max-width: 740px;
-      background-color: var(--panel-bg);
-      border: 2px solid var(--panel-border);
-      border-radius: 14px;
-      padding: 35px;
-      box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 30px var(--crt-glow);
-      position: relative;
-    }
-
-    .console-container::before {
-      content: " ";
-      display: block;
-      position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      z-index: 10;
-      background-size: 100% 4px, 6px 100%;
-      pointer-events: none;
-      opacity: 0.35;
-    }
-
-    .console-header {
-      border-bottom: 1px dashed var(--panel-border);
-      padding-bottom: 20px;
-      margin-bottom: 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .system-title {
-      color: var(--neon-gold);
-      font-size: 1.3rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-    }
-
-    .telemetry-counter {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      font-weight: bold;
-      background-color: #161b22;
-      padding: 6px 12px;
-      border-radius: 4px;
-      border: 1px solid var(--panel-border);
-      letter-spacing: 1px;
-    }
-
-    .viewport-lens {
-      width: 100%;
-      height: 260px;
-      background-color: #080b0f;
-      border: 1px solid var(--panel-border);
-      border-radius: 8px;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      margin-bottom: 30px;
-    }
-
-    .dynamic-yacht-svg {
-      width: 100%;
-      height: 100%;
-      max-height: 210px;
-    }
-
-    .viewport-lens::before {
-      content: ''; position: absolute; top: 15px; left: 15px; width: 14px; height: 14px;
-      border-top: 2px solid var(--dark-gold); border-left: 2px solid var(--dark-gold);
-    }
-    .viewport-lens::after {
-      content: ''; position: absolute; top: 15px; right: 15px; width: 14px; height: 14px;
-      border-top: 2px solid var(--dark-gold); border-right: 2px solid var(--dark-gold);
-    }
-    .lens-bottom-left {
-      position: absolute; bottom: 15px; left: 15px; width: 14px; height: 14px;
-      border-bottom: 2px solid var(--dark-gold); border-left: 2px solid var(--dark-gold);
-    }
-    .lens-bottom-right {
-      position: absolute; bottom: 15px; right: 15px; width: 14px; height: 14px;
-      border-bottom: 2px solid var(--dark-gold); border-right: 2px solid var(--dark-gold);
-    }
-
-    .data-matrix {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      margin-bottom: 35px;
-    }
-
-    .data-row {
-      display: flex;
-      align-items: baseline;
-      border-bottom: 1px solid rgba(48, 54, 61, 0.4);
-      padding-bottom: 10px;
-    }
-
-    .data-label {
-      width: 180px;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: bold;
-    }
-
-    .data-value {
-      flex-grow: 1;
-      color: #ffffff;
-      font-size: 1.05rem;
-    }
-
-    .data-value a {
-      color: var(--neon-gold);
-      text-decoration: none;
-      border-bottom: 1px dotted var(--dark-gold);
-    }
-
-    .data-value a:hover {
-      color: #ffffff;
-      border-bottom: 1px solid #ffffff;
-    }
-
-    .control-deck {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .nav-btn {
-      background-color: #161b22;
-      color: var(--neon-gold);
-      border: 1px solid var(--panel-border);
-      padding: 18px 28px;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      user-select: none;
-      letter-spacing: 1.5px;
-    }
-
-    .nav-btn:hover {
-      background-color: #21262d;
-      border-color: var(--neon-gold);
-      box-shadow: 0 0 16px rgba(240, 211, 111, 0.2);
-    }
-
-    .nav-btn:active {
-      background-color: var(--dark-gold);
-      color: #000;
-      transform: scale(0.97);
-    }
-
-    .install {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      color: var(--mist);
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      cursor: pointer;
-      width: 280px;
-      z-index: 60;
-    }
-
-    .install:hover {
-      color: var(--neon-gold);
-    }
-
-    .lighthouse-img-icon {
-      width: 46px;
-      height: 46px;
-      display: inline-block;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.65));
-      transition: transform 0.3s ease;
-    }
-
-    .install:hover .lighthouse-img-icon {
-      transform: translateY(-3px);
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 8, 18, 0.96);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      display: none;
-      z-index: 120;
-      padding: 20px;
-    }
-
-    .overlay-card {
-      max-width: 450px;
-      margin: 110px auto;
-      border-radius: 16px;
-      background: linear-gradient(180deg, #0a1d37, #020812);
-      border: 2px solid var(--dark-gold);
-      padding: 35px;
-      text-align: center;
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
-    }
-
-    .home-title {
-      font-size: 28px;
-      font-weight: bold;
-      color: var(--neon-gold);
-      margin-top: 15px;
-      margin-bottom: 22px;
-      letter-spacing: 1px;
-    }
-
-    .home-steps {
-      color: var(--mist);
-      font-size: 16px;
-      line-height: 2;
-      margin-bottom: 30px;
-      text-align: left;
-    }
-
-    .home-close {
-      width: 100%;
-      padding: 16px;
-      border-radius: 8px;
-      background: linear-gradient(145deg, #f0d36f, #d4af37);
-      color: #06101f;
-      border: none;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-  </style>
+        #dashboard { display: grid; gap: 30px; margin-top: 30px; }
+        .yacht-card { 
+            border: 1px solid #0f0; 
+            padding: 20px; 
+            border-radius: 30px; 
+            background: #0a0a0a;
+        }
+        img { max-width: 100%; height: auto; border-radius: 10px; margin: 10px 0; }
+    </style>
 </head>
 <body>
 
-  <div class="console-container">
-    <div class="console-header">
-      <div class="system-title">YachtSpotter // Lens v2.4</div>
-      <div class="telemetry-counter" id="indexReadout">CORE: LOAD</div>
+    <h1>YACHTSPOTTER // TACTICAL MATRIX</h1>
+    
+    <div id="homescreen-prompt" class="round-btn" style="display:inline-block; cursor: default;">
+        Add to Home Screen
     </div>
 
-    <div class="viewport-lens" id="diagramViewer">
-      <div class="lens-bottom-left"></div>
-      <div class="lens-bottom-right"></div>
-    </div>
+    <div id="dashboard"></div>
 
-    <div class="data-matrix">
-      <div class="data-row">
-        <div class="data-label">Vessel Registry:</div>
-        <div class="data-value" id="shipName">INITIALIZING MODULE...</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Beneficiary / Owner:</div>
-        <div class="data-value" id="shipOwner">INITIALIZING MODULE...</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Intel Repository:</div>
-        <div class="data-value" id="yachtLinkContainer">---</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Asset Dossier:</div>
-        <div class="data-value" id="ownerLinkContainer">---</div>
-      </div>
-    </div>
+    <!-- Anti-Cache Versioning: Change this number whenever you update your data -->
+    <script src="data.js?v=20260531"></script>
+    
+    <script>
+        function init() {
+            const container = document.getElementById('dashboard');
+            
+            if (typeof yachts === 'undefined') {
+                container.innerHTML = "<h2>SYSTEM ERROR: DATA STREAM NOT FOUND.</h2>";
+                return;
+            }
 
-    <div class="control-deck">
-      <button class="nav-btn" id="prevBtn">« Prev Vessel</button>
-      <button class="nav-btn" id="nextBtn">Next Vessel »</button>
-    </div>
-  </div>
-
-  <div id="installFooter" class="install" onclick="showHomeHelp()">
-    <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse Core"><br>
-    ADD TO HOME SCREEN
-  </div>
-
-  <div id="homeOverlay" class="overlay" onclick="closeHomeHelp(event)">
-    <div class="overlay-card" onclick="event.stopPropagation()">
-      <img src="lighthouse.png" class="lighthouse-img-icon" alt="Lighthouse Matrix">
-      <div class="home-title">System Installer</div>
-      <div class="home-steps">
-        1. Access the web layout browser configuration menu ⬆<br>
-        2. Select the "Add to Home Screen" action loop<br>
-        3. Approve authorization prompt parameters
-      </div>
-      <button class="home-close" onclick="hideHomeHelp()">Acknowledge</button>
-    </div>
-  </div>
-
-  <script src="data.js?v=24"></script>
-
-  <script>
-    let currentVesselIndex = 0;
-
-    // PROCEDURAL GENERATION DICTIONARY
-    // Matches keywords inside your data array items to generate custom vector designs layout dynamically.
-    function generateYachtSVG(vessel) {
-      const name = vessel.name ? vessel.name.toUpperCase().trim() : "UNKNOWN";
-      // Fallback fallback design classification
-      let designType = "modern"; 
-
-      // Scan parameters to see which blueprint shape rules should fire
-      if (name === "A" || name.includes("MOTOR YACHT A")) designType = "stealth";
-      else if (name.includes("SAILING YACHT A")) designType = "aero-sail";
-      else if (name.includes("AZZAM")) designType = "liner-speed";
-      else if (name.includes("KORU") || name.includes("ATHENA") || name.includes("EOS")) designType = "classic-clipper";
-      else if (name.includes("LAUNCHPAD") || name.includes("NORD") || name.includes("ECLIPSE") || name.includes("DILBAR") || name.includes("OPERA")) designType = "multi-deck";
-      else if (name.includes("RISING SUN")) designType = "long-window";
-      else if (name.includes("BLACK PEARL") || name.includes("MALTESE FALCON")) designType = "dynarig";
-      else if (name.includes("VENUS")) designType = "minimalist";
-
-      // Blueprint Shape Rule Definitions Matrix
-      let hullPath = "M 40 115 L 370 115 L 450 88 L 420 122 L 75 125 Z";
-      let superstructure = "";
-      let details = "";
-
-      switch(designType) {
-        case "stealth":
-          hullPath = "M 45 122 L 105 78 L 340 78 L 440 112 L 455 122 L 70 124 Z";
-          superstructure = `
-            <path d="M 155 78 L 175 48 L 280 48 L 315 78 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2" />
-            <path d="M 195 48 L 205 32 L 255 32 L 265 48 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5" />
-          `;
-          details = `<path d="M 210 56 L 240 56 L 255 68 L 225 68 Z" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.8"/>`;
-          break;
-
-        case "aero-sail":
-          hullPath = "M 50 124 L 80 92 L 390 92 L 445 114 L 435 126 L 70 126 Z";
-          superstructure = `<path d="M 130 92 L 150 70 L 350 70 L 370 92 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2" />`;
-          details = `
-            <line x1="245" y1="56" x2="240" y2="2" stroke="var(--hull-stroke)" stroke-width="2.5"/>
-            <line x1="185" y1="70" x2="180" y2="10" stroke="var(--hull-stroke)" stroke-width="2"/>
-            <line x1="315" y1="70" x2="310" y2="15" stroke="var(--hull-stroke)" stroke-width="2"/>
-          `;
-          break;
-
-        case "liner-speed":
-          hullPath = "M 30 118 L 390 118 L 470 98 L 445 124 L 60 124 Z";
-          superstructure = `
-            <path d="M 120 118 L 135 94 L 380 94 L 395 118 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>
-            <path d="M 180 94 L 190 76 L 330 76 L 345 94 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
-          `;
-          details = `<line x1="330" y1="76" x2="340" y2="50" stroke="var(--hull-stroke)" stroke-width="1.5"/>`;
-          break;
-
-        case "classic-clipper":
-          hullPath = "M 35 105 C 55 124, 85 128, 120 128 L 410 128 C 445 125, 460 115, 475 92 L 440 124 L 35 105 Z";
-          superstructure = `
-            <path d="M 140 110 L 160 92 L 350 92 L 370 110 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
-            <path d="M 200 92 L 210 78 L 300 78 L 315 92 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.25"/>
-          `;
-          details = `
-            <line x1="165" y1="110" x2="160" y2="5" stroke="var(--hull-stroke)" stroke-width="2"/>
-            <line x1="255" y1="92" x2="250" y2="0" stroke="var(--hull-stroke)" stroke-width="2"/>
-            <line x1="345" y1="110" x2="340" y2="10" stroke="var(--hull-stroke)" stroke-width="2"/>
-          `;
-          break;
-
-        case "multi-deck":
-          hullPath = "M 35 120 L 360 120 L 460 85 L 430 126 L 60 128 Z";
-          superstructure = `
-            <path d="M 95 120 L 115 72 L 355 72 L 385 120 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2"/>
-            <path d="M 140 72 L 155 48 L 320 48 L 340 72 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>
-            <path d="M 190 48 L 200 28 L 285 28 L 295 48 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
-          `;
-          details = `
-            <rect x="130" y="85" width="200" height="6" fill="none" stroke="#d4af37" stroke-width="1"/>
-            <rect x="170" y="58" width="130" height="5" fill="none" stroke="#d4af37" stroke-width="1"/>
-          `;
-          break;
-
-        case "long-window":
-          hullPath = "M 40 122 L 380 122 L 465 92 L 435 126 L 65 126 Z";
-          superstructure = `
-            <path d="M 100 122 L 110 90 L 370 90 L 380 122 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
-            <path d="M 140 90 L 145 64 L 350 64 L 355 90 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
-          `;
-          details = `
-            <line x1="120" y1="105" x2="360" y2="105" stroke="#d4af37" stroke-width="1" stroke-dasharray="4 2"/>
-            <line x1="155" y1="78" x2="340" y2="78" stroke="#d4af37" stroke-width="1" stroke-dasharray="4 2"/>
-          `;
-          break;
-
-        case "dynarig":
-          hullPath = "M 45 120 C 70 126, 380 126, 410 124 L 455 95 L 430 126 Z";
-          superstructure = `<path d="M 150 110 L 170 88 L 330 88 L 350 110 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>`;
-          details = `
-            <line x1="200" y1="110" x2="200" y2="5" stroke="var(--hull-stroke)" stroke-width="2.5"/>
-            <line x1="270" y1="110" x2="270" y2="0" stroke="var(--hull-stroke)" stroke-width="2.5"/>
-            <line x1="340" y1="110" x2="340" y2="15" stroke="var(--hull-stroke)" stroke-width="2.5"/>
-          `;
-          break;
-
-        case "minimalist":
-          hullPath = "M 50 122 L 430 122 L 430 90 L 410 90 L 60 124 Z";
-          superstructure = `
-            <path d="M 160 90 L 160 62 L 380 62 L 390 90 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="2"/>
-          `;
-          details = `<rect x="180" y="70" width="180" height="10" fill="none" stroke="#d4af37" stroke-width="1"/>`;
-          break;
-
-        default: // Modern Standard Hull form
-          superstructure = `
-            <path d="M 110 115 L 140 82 L 340 82 L 375 115 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.75"/>
-            <path d="M 160 82 L 180 56 L 295 56 L 320 82 Z" fill="none" stroke="var(--hull-stroke)" stroke-width="1.5"/>
-          `;
-          details = `<circle cx="115" cy="120" r="1.5" fill="none" stroke="#d4af37"/>`;
-      }
-
-      return `
-        <svg class="dynamic-yacht-svg" width="100%" height="100%" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
-          <line x1="15" y1="124" x2="485" y2="124" stroke="var(--hull-stroke)" stroke-width="1.25" opacity="0.6"/>
-          <g fill="none">
-            <path d="${hullPath}" stroke="var(--hull-stroke)" stroke-width="2"/>
-            ${superstructure}
-            ${details}
-          </g>
-        </svg>
-      `;
-    }
-
-    function refreshDashboard() {
-      if (typeof yachts === 'undefined' || yachts.length === 0) {
-        document.getElementById("shipName").innerText = "DATALINK FAULT INTERCEPT";
-        document.getElementById("shipOwner").innerText = "DATA ARRAY RESOURCE MISSING";
-        return;
-      }
-
-      const activeShip = yachts[currentVesselIndex];
-
-      document.getElementById("indexReadout").innerText = `RECORD: ${currentVesselIndex + 1} / ${yachts.length}`;
-      document.getElementById("shipName").innerText = activeShip.name || "UNIDENTIFIED TARGET";
-      document.getElementById("shipOwner").innerText = activeShip.deepPockets || "CLASSIFIED FINANCES";
-
-      if (activeShip.yachtLink) {
-        document.getElementById("yachtLinkContainer").innerHTML = `<a href="${activeShip.yachtLink}" target="_blank">Superyacht Fan Profile »</a>`;
-      } else {
-        document.getElementById("yachtLinkContainer").innerText = "NO OPEN TELEMETRY LINK";
-      }
-
-      if (activeShip.ownerLink) {
-        document.getElementById("ownerLinkContainer").innerHTML = `<a href="${activeShip.ownerLink}" target="_blank">Wikipedia Dossier »</a>`;
-      } else {
-        document.getElementById("ownerLinkContainer").innerText = "SECURE DOMAIN PROFILE";
-      }
-
-      document.getElementById("diagramViewer").innerHTML = `
-        <div class="lens-bottom-left"></div>
-        <div class="lens-bottom-right"></div>
-        ${generateYachtSVG(activeShip)}
-      `;
-    }
-
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      if (typeof yachts !== 'undefined' && yachts.length > 0) {
-        currentVesselIndex = (currentVesselIndex + 1) % yachts.length;
-        refreshDashboard();
-      }
-    });
-
-    document.getElementById("prevBtn").addEventListener("click", () => {
-      if (typeof yachts !== 'undefined' && yachts.length > 0) {
-        currentVesselIndex = (currentVesselIndex - 1 + yachts.length) % yachts.length;
-        refreshDashboard();
-      }
-    });
-
-    function showHomeHelp() { document.getElementById("homeOverlay").style.display = "block"; }
-    function hideHomeHelp() { document.getElementById("homeOverlay").style.display = "none"; }
-    function closeHomeHelp(e) { if(e.target.id === "homeOverlay") hideHomeHelp(); }
-
-    window.addEventListener("load", () => {
-      refreshDashboard();
-    });
-  </script>
+            yachts.forEach(yacht => {
+                const card = document.createElement('div');
+                card.className = 'yacht-card';
+                card.innerHTML = `
+                    <h3>${yacht.name}</h3>
+                    <img src="${yacht.diagram}" alt="Diagram of ${yacht.name}">
+                    <p>OWNER: ${yacht.deepPockets}</p>
+                    <button class="round-btn" onclick="window.open('${yacht.yachtLink}')">Inspect Specs</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+        window.onload = init;
+    </script>
 </body>
 </html>
