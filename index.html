@@ -2,71 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YachtSpotter // Tactical Instrumentation Console Matrix</title>
-    <style>
-        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; padding: 20px; }
-        
-        /* Tactical Round Components */
-        .round-btn {
-            border-radius: 50px !important;
-            padding: 10px 25px;
-            border: 2px solid #0f0;
-            background: transparent;
-            color: #0f0;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        
-        .round-btn:active { background: #0f0; color: #000; }
-
-        #dashboard { display: grid; gap: 30px; margin-top: 30px; }
-        .yacht-card { 
-            border: 1px solid #0f0; 
-            padding: 20px; 
-            border-radius: 30px; 
-            background: #0a0a0a;
-        }
-        img { max-width: 100%; height: auto; border-radius: 10px; margin: 10px 0; }
-    </style>
+    <title>YachtSpotter</title>
 </head>
 <body>
+    <h1>YachtSpotter // Tactical Matrix</h1>
+    <div id="yacht-container"></div>
 
-    <h1>YACHTSPOTTER // TACTICAL MATRIX</h1>
-    
-    <div id="homescreen-prompt" class="round-btn" style="display:inline-block; cursor: default;">
-        Add to Home Screen
-    </div>
-
-    <div id="dashboard"></div>
-
-    <!-- Anti-Cache Versioning: Change this number whenever you update your data -->
-    <script src="data.js?v=20260531"></script>
+    <script src="data.js" defer></script>
     
     <script>
-        function init() {
-            const container = document.getElementById('dashboard');
-            
-            if (typeof yachts === 'undefined') {
-                container.innerHTML = "<h2>SYSTEM ERROR: DATA STREAM NOT FOUND.</h2>";
-                return;
+        // This waits for the window to fully load, then tries to read the data
+        window.addEventListener('load', () => {
+            console.log("Checking data...");
+            if (typeof yachts !== 'undefined') {
+                console.log("Data found:", yachts);
+                const container = document.getElementById('yacht-container');
+                yachts.forEach(yacht => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `<h3>${yacht.name}</h3><p>Owner: ${yacht.deepPockets}</p>`;
+                    container.appendChild(div);
+                });
+            } else {
+                console.error("Data still undefined. Check file path or file content.");
             }
-
-            yachts.forEach(yacht => {
-                const card = document.createElement('div');
-                card.className = 'yacht-card';
-                card.innerHTML = `
-                    <h3>${yacht.name}</h3>
-                    <img src="${yacht.diagram}" alt="Diagram of ${yacht.name}">
-                    <p>OWNER: ${yacht.deepPockets}</p>
-                    <button class="round-btn" onclick="window.open('${yacht.yachtLink}')">Inspect Specs</button>
-                `;
-                container.appendChild(card);
-            });
-        }
-        window.onload = init;
+        });
     </script>
 </body>
 </html>
+
